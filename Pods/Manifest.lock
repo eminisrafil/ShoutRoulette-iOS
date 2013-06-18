@@ -1,0 +1,33 @@
+PODS:
+  - AFNetworking (1.1.0)
+  - OpenTokSDK (1.4.2)
+  - RestKit (0.20.0):
+    - RestKit/Core
+  - RestKit/Core (0.20.0):
+    - RestKit/CoreData
+    - RestKit/Network
+    - RestKit/ObjectMapping
+  - RestKit/CoreData (0.20.0)
+  - RestKit/Network (0.20.0):
+    - AFNetworking (= 1.1.0)
+    - RestKit/ObjectMapping
+    - RestKit/Support
+    - SOCKit
+  - RestKit/ObjectMapping (0.20.0)
+  - RestKit/Support (0.20.0)
+  - SOCKit (1.1)
+  - SVPullToRefresh (0.4.1)
+
+DEPENDENCIES:
+  - OpenTokSDK (~> 1.4.2)
+  - RestKit (~> 0.20.0)
+  - SVPullToRefresh
+
+SPEC CHECKSUMS:
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  OpenTokSDK: 6821412b384d4c4d642877cda1d3e1f19cf5d0cf
+  RestKit: 580771664a14eaaa40bf53cf83584f12fc141930
+  SOCKit: ed67aeeca4a697b63a933229e53f4670d5b9300f
+  SVPullToRefresh: 61a0e4bd12bd6f8e3465909810b0fbeb1a28d5f2
+
+COCOAPODS: 0.19.1
