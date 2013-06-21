@@ -15,12 +15,16 @@
 
 @interface SRChoiceBox : UIView
 - (IBAction)buttonPress:(id)sender;
--(id) initWithLabel: (NSString *)label andTopicID: (NSNumber *)topicId andFrame:(CGRect)frame;
+-(id) initWithLabel: (NSDictionary *)labels andTopicID: (NSNumber *)topicId andFrame:(CGRect)frame;
 
 @property (nonatomic, weak) IBOutlet UIView *SRChoiceBox;
-@property (nonatomic, weak) IBOutlet UILabel *SRLabel;
 @property (nonatomic, weak) NSNumber *SRTopicId;
 @property (nonatomic, weak) id<SRChoiceBoxDelegate> delegate;
+
+@property (weak, nonatomic) IBOutlet UILabel *agreeCount;
+@property (weak, nonatomic) IBOutlet UILabel *disagreeCount;
+@property (weak, nonatomic) IBOutlet UILabel *observeCount;
+
 
 
 @end

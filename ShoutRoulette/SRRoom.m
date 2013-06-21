@@ -9,5 +9,4 @@
 #import "SRRoom.h"
 
 @implementation SRRoom
-@synthesize  title, roomId, sessionId,token, agree, disagree, position;
 @end

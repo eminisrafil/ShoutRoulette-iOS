@@ -7,13 +7,10 @@
 //
 
 #import "SRAPI.h"
-#import "SRTopic.h"
-#import "SRRoom.h"
+
 #define kAPIHOST @"http://srapp.herokuapp.com/"
 
 @implementation SRAPI
-@synthesize user =  _user;
-
 
 +(SRAPI*)sharedInstance
 {
@@ -26,18 +23,26 @@
     return sharedInstance;
 }
 
+
 -(SRAPI*)initWithBaseURL:(NSURL *) url
 {
-    
     self = [super initWithBaseURL:url];
     
+    [self setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        NSLog(@"changed %d", status);
+        //your code here
+    }];
+    
+    [self setUpRestKit];
+    return self;
+}
+
+-(void)setUpRestKit{
     if (self != nil) {
-        _user = nil;
         RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
-      //  RKLogConfigureByName("RestKit/Network", RKLogLevelCritical);
+        //RKLogConfigureByName("RestKit/Network", RKLogLevelCritical);
         [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
-        
-        
+
         [self registerHTTPOperationClass: [AFJSONRequestOperation class]];
         [self setDefaultHeader:@"Accept" value:RKMIMETypeJSON];
         
@@ -58,12 +63,12 @@
         RKObjectMapping *roomMapping = [RKObjectMapping mappingForClass:[SRRoom class]];
         [roomMapping addAttributeMappingsFromDictionary:@{
          @"room_id": @"roomId",
-         //@"title" :@"title",
+         @"title" :@"title",
          @"session_id": @"sessionId",
          @"token": @"token",
-         //@"created_at" : @"createdAt"
-         //@"agree": @"agree",
-         //@"disagree" : @"disagree"
+         @"created_at" : @"createdAt",
+         @"agree": @"agree",
+         @"disagree" : @"disagree"
          }];
         
         //delete a room
@@ -84,16 +89,14 @@
         [objectManager.router.routeSet addRoute:[RKRoute routeWithClass:[SRRoom class] pathPattern:@"room/:topicId/:position" method:RKRequestMethodGET]];
         //Close a Room
         [objectManager.router.routeSet addRoute:[RKRoute routeWithClass:[SRRoom class] pathPattern:@"room/:roomId/:position" method:RKRequestMethodDELETE]];
-
-
         
+        //topic -test
+        [objectManager.router.routeSet addRoute:[RKRoute routeWithClass:[SRTopic class] pathPattern:@"" method:RKRequestMethodGET]];
         
         [objectManager addResponseDescriptor:topicResponseDescriptor];
         [objectManager addResponseDescriptor:roomResponseDescriptor];
         [objectManager addResponseDescriptor:roomDeleteResponseDescriptor];
     }
-    
-    return self;
 }
 
 -(BOOL)isAutherized

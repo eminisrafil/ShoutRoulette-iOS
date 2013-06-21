@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "SRAPI.h"
 #import "CollapseClick.h"
-#import "CollapseClickCell.h"
 #import "SRChoiceBox.h"
 #import "SRPostTopic.h"
 
@@ -18,8 +17,8 @@
     
 }
 @property (weak, nonatomic) IBOutlet UIView *postShoutContainer;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet UIView *statusLabelContainer;
 
-
--(IBAction)shoutButton:(id)sender;
 
 @end

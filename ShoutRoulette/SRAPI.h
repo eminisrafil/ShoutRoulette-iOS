@@ -8,6 +8,10 @@
 
 #import "AFHTTPClient.h"
 #import <RestKit/RestKit.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+#import "SRTopic.h"
+#import "SRRoom.h"
+//#import "Reachability.h"
 
 typedef void(^JSONResponse)(NSDictionary* JSON);
 
@@ -17,8 +21,7 @@ typedef void(^JSONResponse)(NSDictionary* JSON);
 @property (strong, nonatomic) NSDictionary* user;
 
 +(SRAPI *)sharedInstance;
--(BOOL)isAutherized;
--(void)commandWithParams:(NSMutableDictionary*)params onCompletion:(JSONResponse)completionBlock;
+//-(void)commandWithParams:(NSMutableDictionary*)params onCompletion:(JSONResponse)completionBlock;
 
 
 

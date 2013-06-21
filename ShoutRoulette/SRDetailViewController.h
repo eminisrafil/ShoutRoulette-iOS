@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIView *userVidContainer;
 @property (weak, nonatomic) IBOutlet UILabel *roomTitle;
 @property (strong, nonatomic) RKObjectManager *objectManager;
+@property (weak, nonatomic) IBOutlet UIView *userScreenContainer;
+@property (weak, nonatomic) IBOutlet UIView *opponentScreenContainer;
 
 
 @property (strong, nonatomic) OTSession* _session;

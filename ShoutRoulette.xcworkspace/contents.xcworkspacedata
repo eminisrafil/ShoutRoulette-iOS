@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:bottomRoomSeperator.png">
-   </FileRef>
-   <FileRef
       location = "group:ShoutRoulette.xcodeproj">
    </FileRef>
    <FileRef

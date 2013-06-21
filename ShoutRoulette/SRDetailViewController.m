@@ -18,18 +18,18 @@
     //UIButton* _unsubscribeButton;
     //UILabel* _statusLabel;
 }
-- (void)configureView;
 @end
-
 
 @implementation SRDetailViewController
 @synthesize room;
-static int topOffset = 0;
-static int xOffset = 0;
-static double opponentVidHeight = 210;
-static double opponentVidWidth = 294;
-static double userVidHeight = 63;
-static double userVidWidth = 65;
+static int topOffsetUser = 3;
+static int xOffsetUser = 4;
+static int topOffsetOpponent = 6;
+static int xOffsetOpponent = 7;
+static double opponentVidHeight = 220;
+static double opponentVidWidth = 300;
+static double userVidHeight = 86;
+static double userVidWidth = 87;
 static bool subscribeToSelf = NO;
 
 //static NSString* const kApiKey = @"20193772";    // Replace with your API Key
@@ -52,6 +52,10 @@ static bool subscribeToSelf = NO;
 {
     
     self.opponentVidContainer.layer.cornerRadius = 8;
+    self.opponentVidContainer.layer.borderColor = [UIColor redColor].CGColor;
+    self.userVidContainer.layer.cornerRadius = 8;
+    self.userVidContainer.layer.borderColor = [UIColor redColor].CGColor;
+    self.opponentVidContainer.layer.borderWidth = 2;
     if (self.detailItem) {
     }
 }
@@ -59,6 +63,7 @@ static bool subscribeToSelf = NO;
     self._subscriber = nil;
     self._session = nil;
     self._publisher= nil;
+    
 }
 
 - (void)viewDidLoad
@@ -68,16 +73,15 @@ static bool subscribeToSelf = NO;
     self.kApiKey = @"20193772";    // Replace with your API Key
     self.kSessionId = @""; // Replace with your generated Session ID
     self.kToken = @"";
-    //_statusLabel = [[UILabel alloc] init];
-    //_statusLabel.frame = CGRectMake(10, 380, 240, 24);
-    //[self setStatusLabel];
-    //[self.view addSubview:_statusLabel];
+    
+    [self performGetRoomRequest];
 
+}
+-(void)performGetRoomRequest{
     self.room = self.detailItem;
     self.objectManager = [RKObjectManager sharedManager];
     [self.objectManager getObject:room path:nil parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         //restkit automatically maps JSON response to Room
-        NSLog(@"HERE ARE SUCCESS THE RESULTS %@", room.sessionId);
         self.detailDescriptionLabel.text = room.sessionId;
         self.kToken = room.token;
         self.kSessionId = room.sessionId;
@@ -87,17 +91,11 @@ static bool subscribeToSelf = NO;
     }failure:^(RKObjectRequestOperation *operation, NSError *error){
         NSLog(@"HERE ARE SUCCESS THE RESULTS %@", error);
     }];
-    
-
-    
-    [self configureView];
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-    //OTPublisher
-    //OTPublisherDelegate
-    safeShutdown = YES;
-    /*    NSLog(@"----------->>>>>>> %@", [NSString stringWithFormat:@"%@",self.parentViewController]);
+-(void)viewWillDisappear:(BOOL)animated{    
+    /*  
+     NSLog(@"----------->>>>>>> %@", [NSString stringWithFormat:@"%@",self.parentViewController]);
     NSLog(@"----------->>>>>>> %@", [NSString stringWithFormat:@"%u", self._session.sessionConnectionStatus]);
     NSLog(@"----------->>>>>>> A");
     if(self._subscriber){
@@ -117,16 +115,16 @@ static bool subscribeToSelf = NO;
     NSLog(@"----------->>>>>>> D");
      */
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    //[objectManager operationQueue].cancelAllOperations;
+
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"----------->>>>>>> %@", [NSString stringWithFormat:@"%u", self._session.sessionConnectionStatus]);
+    NSLog(@"----------->>>>>>> A");
     
+    safeShutdown = YES;
     [self._session removeObserver:self forKeyPath:@"connectionCount"];
     
-    [self._session setDelegate:nil];
-    [self._publisher setDelegate:nil];
-    [self._subscriber setDelegate:nil];
     if(self._subscriber){
         [self._subscriber close];
         self._subscriber = nil;
@@ -139,31 +137,16 @@ static bool subscribeToSelf = NO;
         [self._session disconnect];
         self._session=nil;
     }
-    /*    if(self._subscriber){
-        [self._subscriber close];
-        self._subscriber = nil;
-    }
-    if (self._publisher) {
-        [self doUnpublish];
-    }
     
-    if (self._session) {
-        [self._session disconnect];
-        self._session=nil;
-    }
-   
-
+    [self._session setDelegate:nil];
+    [self._publisher setDelegate:nil];
+    [self._subscriber setDelegate:nil];
     
-    if (_session) {
-        [self doDisconnect];
-    }
-   */
-    //put in new thread
-    //[self doCloseRoomId:room.roomId position:room.position];
+    [self doCloseRoomId:room.roomId position:room.position];
 }
 
 -(void)doCloseRoomId:(NSNumber *)roomId position:(NSString *)position{
-    //[objectManager deleteObject:room path:nil parameters:nil success: nil failure:nil];
+    [self.objectManager deleteObject:room path:nil parameters:nil success: nil failure:nil];
 }
 
 
@@ -171,97 +154,12 @@ static bool subscribeToSelf = NO;
 {
     
     [super didReceiveMemoryWarning];
+
+    [self dismissViewControllerAnimated:YES completion:nil];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - OpenTok methods
-
-/*
-- (void)createUI
-{
-    _connectButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _connectButton.frame = CGRectMake(10, 32, 100, 44);
-    [_connectButton setTitle:@"Connect" forState:UIControlStateNormal];
-    [_connectButton addTarget:self
-                       action:@selector(connectButtonClicked:)
-             forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_connectButton];
-    
-    _disconnectButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _disconnectButton.frame = CGRectMake(10, 32, 100, 44);
-    [_disconnectButton setTitle:@"Disconnect" forState:UIControlStateNormal];
-    [_disconnectButton addTarget:self
-                          action:@selector(disconnectButtonClicked:)
-                forControlEvents:UIControlEventTouchUpInside];
-    _disconnectButton.hidden = YES;
-    [self.view addSubview:_disconnectButton];
-    
-    _publishButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _publishButton.frame = CGRectMake(120, 32, 100, 44);
-    [_publishButton setTitle:@"Publish" forState:UIControlStateNormal];
-    [_publishButton addTarget:self
-                       action:@selector(publishButtonClicked:)
-             forControlEvents:UIControlEventTouchUpInside];
-    _publishButton.hidden = YES;
-    [self.view addSubview:_publishButton];
-    
-    _unpublishButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _unpublishButton.frame = CGRectMake(120, 32, 100, 44);
-    [_unpublishButton setTitle:@"Unpublish" forState:UIControlStateNormal];
-    [_unpublishButton addTarget:self
-                         action:@selector(unpublishButtonClicked:)
-               forControlEvents:UIControlEventTouchUpInside];
-    _unpublishButton.hidden = YES;
-    [self.view addSubview:_unpublishButton];
-    
-    _unsubscribeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _unsubscribeButton.frame = CGRectMake(10, 14 + topOffset + widgetHeight * 2, 100, 44);
-    [_unsubscribeButton setTitle:@"Unsubscribe" forState:UIControlStateNormal];
-    [_unsubscribeButton addTarget:self
-                           action:@selector(unsubscribeButtonClicked:)
-                 forControlEvents:UIControlEventTouchUpInside];
-    _unsubscribeButton.hidden = YES;
-    [self.view addSubview:_unsubscribeButton];
-    
-    _statusLabel = [[UILabel alloc] init];
-    _statusLabel.frame = CGRectMake(10, 400, 240, 24);
-    [self setStatusLabel];
-    [self.view addSubview:_statusLabel];
-}
-
-- (void)connectButtonClicked:(UIButton*)button
-{
-    _connectButton.hidden = YES;
-    _statusLabel.text = @"Connecting...";
-    [self doConnect];
-}
-
-- (void)disconnectButtonClicked:(UIButton*)button
-{
-    _disconnectButton.hidden = YES;
-    [self doDisconnect];
-}
-
-- (void)publishButtonClicked:(UIButton*)button
-{
-    _publishButton.hidden = YES;
-    [self doPublish];
-}
-
-- (void)unpublishButtonClicked:(UIButton*)button
-{
-    _unpublishButton.hidden = YES;
-    [self doUnpublish];
-}
-
-
-- (void)unsubscribeButtonClicked:(UIButton*)button
-{
-    _unsubscribeButton.hidden = YES;
-    [_subscriber close];
-    _subscriber = nil;
-}
-*/
 
 
 - (void)updateSubscriber
@@ -300,8 +198,11 @@ static bool subscribeToSelf = NO;
     self._publisher.publishAudio = YES;
     self._publisher.publishVideo = YES;
     [self._session publish:self._publisher];
-    [self.userVidContainer addSubview:self._publisher.view];
-    [self._publisher.view setFrame:CGRectMake(xOffset, topOffset, userVidWidth, userVidHeight)];
+    
+    [self._publisher.view setFrame:CGRectMake(xOffsetUser, topOffsetUser, userVidWidth, userVidHeight)];
+    self._publisher.view.layer.cornerRadius = 2;
+    self._publisher.view.layer.borderWidth = 1;
+    [self.userScreenContainer addSubview:self._publisher.view];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -342,16 +243,6 @@ static bool subscribeToSelf = NO;
 
     [self._session unpublish:self._publisher];
     self._publisher = nil;
-    /*
-    if (publisher == nil) {
-        return;
-    }
-    if ([_publishers containsObject:publisher]) {
-        [_publishers removeObject:publisher];
-        [publisher close];
-    } else {
-        [NSException raise:@"OTException" format:@"attempt to unpublish an unknown publisher instance"];
-    }*/
     
 }
 
@@ -369,10 +260,6 @@ static bool subscribeToSelf = NO;
 - (void)sessionDidConnect:(OTSession*)session
 {
     [self doPublish];
-    //_disconnectButton.hidden = NO;
-    //_connectButton.hidden = YES;
-    //_publishButton.hidden = NO;
-    //[self setStatusLabel];
     NSLog(@"sessionDidConnect: %@", session.sessionId);
     NSLog(@"- connectionId: %@", session.connection.connectionId);
     NSLog(@"- creationTime: %@", session.connection.creationTime);
@@ -380,24 +267,14 @@ static bool subscribeToSelf = NO;
 
 - (void)sessionDidDisconnect:(OTSession*)session
 {
-    //_statusLabel.text = @"Disconnected from session.";
     NSLog(@"sessionDidDisconnect: %@", session.sessionId);
-   // _publishButton.hidden = YES;
-   // _unpublishButton.hidden = YES;
-   // _disconnectButton.hidden = YES;
-    //_connectButton.hidden = NO;
 }
 
 - (void)session:(OTSession*)session didFailWithError:(OTError*)error
 {
-    //_connectButton.hidden = NO;
     NSLog(@"session: didFailWithError:");
     NSLog(@"- error code: %d", error.code);
     NSLog(@"- description: %@", error.localizedDescription);
-    //_publishButton.hidden = YES;
-    //_unpublishButton.hidden = YES;
-    //_disconnectButton.hidden = YES;
-    //_connectButton.hidden = NO;
 }
 
 - (void)session:(OTSession*)mySession didReceiveStream:(OTStream*)stream
@@ -470,13 +347,14 @@ static bool subscribeToSelf = NO;
 - (void)subscriberDidConnectToStream:(OTSubscriber*)subscriber
 {
     NSLog(@"subscriberDidConnectToStream (%@)", subscriber.stream.connection.connectionId);
-    [subscriber.view setFrame:CGRectMake(xOffset, topOffset, opponentVidWidth, opponentVidHeight)];
-    [self.opponentVidContainer addSubview:subscriber.view];
+    [subscriber.view setFrame:CGRectMake(xOffsetOpponent, topOffsetOpponent, opponentVidWidth, opponentVidHeight)];
+    subscriber.view.layer.cornerRadius = 2;
+    subscriber.view.layer.borderWidth = 1;
+    [self.opponentScreenContainer addSubview:subscriber.view];
 }
 
 - (void)subscriberVideoDataReceived:(OTSubscriber*)subscriber {
     NSLog(@"subscriberVideoDataReceived (%@)", subscriber.stream.streamId);
-    //_unsubscribeButton.hidden = NO;
 }
 
 - (void)subscriber:(OTSubscriber *)subscriber didFailWithError:(OTError *)error

@@ -10,22 +10,22 @@
 #import "SRDetailViewController.h"
 
 @implementation SRChoiceBox
-@synthesize SRChoiceBox = _SRChoiceBox, SRLabel =_SRLabel, SRTopicId = _SRTopicId, delegate;
 
 -(void) loadViewsFromBundle{
     NSString *class_name = NSStringFromClass([self class]);
     [[NSBundle mainBundle] loadNibNamed:class_name owner:self options:nil];
-    _SRLabel.text = @"Hello";
     [self addSubview:self.SRChoiceBox];
     
 }
 
--(id)initWithLabel:(NSString *)label andTopicID:(NSNumber *)topicId andFrame:(CGRect)frame{
+-(id)initWithLabel:(NSDictionary *)labels andTopicID:(NSNumber *)topicId andFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
         [self loadViewsFromBundle];
-        _SRLabel.text = label;
-        _SRTopicId = topicId;
+        self.SRTopicId = topicId;
+        self.agreeCount.text = [NSString stringWithFormat: @"%@",labels[@"agreeDebaters"]];
+        self.disagreeCount.text =  [NSString stringWithFormat: @"%@",labels[@"disagreeDebaters"]];
+        self.observeCount.text =  [NSString stringWithFormat: @"%@",labels[@"observers"]];
     }
     return self;
 }

@@ -181,7 +181,7 @@ static char UIScrollViewPullToRefreshView;
 
 - (void)layoutSubviews {
     CGFloat remainingWidth = self.superview.bounds.size.width-200;
-    float position = 0.50;
+    float position = 0.5;
     
     CGRect titleFrame = self.titleLabel.frame;
     titleFrame.origin.x = ceilf(remainingWidth*position+44);

@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRAPI.m"
-         timestampString = "390427969.403035"
+         timestampString = "393366279.76364"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "14"
-         endingLineNumber = "14"
+         startingLineNumber = "13"
+         endingLineNumber = "13"
          landmarkName = "@implementation SRAPI"
          landmarkType = "3">
       </FileBreakpoint>
@@ -21,24 +21,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRAPI.h"
-         timestampString = "389650159.220917"
+         timestampString = "393384059.150327"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "20"
-         endingLineNumber = "20"
-         landmarkName = "-isAutherized"
-         landmarkType = "4">
+         startingLineNumber = "22"
+         endingLineNumber = "22"
+         landmarkName = "@interface SRAPI"
+         landmarkType = "2">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRAPI.m"
-         timestampString = "390427969.403035"
+         timestampString = "393366279.76364"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "22"
-         endingLineNumber = "22"
+         startingLineNumber = "19"
+         endingLineNumber = "19"
          landmarkName = "+sharedInstance"
          landmarkType = "5">
       </FileBreakpoint>
@@ -46,25 +46,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRAPI.m"
-         timestampString = "390427969.403035"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "48"
-         endingLineNumber = "48"
-         landmarkName = "-initWithBaseURL:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRChoiceBox.m"
-         timestampString = "390190236.138273"
+         timestampString = "393477109.178602"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "16"
-         endingLineNumber = "16"
+         startingLineNumber = "15"
+         endingLineNumber = "15"
          landmarkName = "-loadViewsFromBundle"
          landmarkType = "5">
       </FileBreakpoint>
@@ -73,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRChoiceBox.m"
-         timestampString = "390371651.728757"
+         timestampString = "393477109.178602"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "23"
-         endingLineNumber = "23"
+         startingLineNumber = "21"
+         endingLineNumber = "21"
          landmarkName = "-initWithLabel:andTopicID:andFrame:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -86,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRChoiceBox.h"
-         timestampString = "390371651.728757"
+         timestampString = "393315250.00644"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "27"
-         endingLineNumber = "27">
+         startingLineNumber = "31"
+         endingLineNumber = "31">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -109,116 +96,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRChoiceBox.m"
-         timestampString = "390372333.186903"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "28"
-         endingLineNumber = "28"
-         landmarkName = "-initWithLabel:andTopicID:andFrame:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRAPI.m"
-         timestampString = "391645305.252169"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "58"
-         endingLineNumber = "58"
-         landmarkName = "-initWithBaseURL:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRAPI.m"
-         timestampString = "391645305.252169"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "86"
-         endingLineNumber = "86"
-         landmarkName = "-initWithBaseURL:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393198681.012792"
+         timestampString = "393463152.314355"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "40"
-         endingLineNumber = "40"
-         landmarkName = "@implementation SRDetailViewController"
-         landmarkType = "3">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393198681.012792"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "50"
-         endingLineNumber = "50"
-         landmarkName = "@implementation SRDetailViewController"
-         landmarkType = "3">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393211908.073043"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "80"
-         endingLineNumber = "80"
-         landmarkName = "-viewDidLoad"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393225310.194735"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "157"
-         endingLineNumber = "157"
-         landmarkName = "-viewDidDisappear:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393225310.194735"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "182"
-         endingLineNumber = "182"
-         landmarkName = "@implementation SRDetailViewController"
-         landmarkType = "3">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393225310.194735"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "269"
-         endingLineNumber = "269"
+         startingLineNumber = "167"
+         endingLineNumber = "167"
          landmarkName = "-updateSubscriber"
          landmarkType = "5">
       </FileBreakpoint>
@@ -227,24 +110,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../CollapseClickCopy/CollapseClick/CollapseClickDemo/CollapseClickDemo/CollapseClickCell.m"
-         timestampString = "391232200.779341"
+         timestampString = "393293190.85284"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "23"
-         endingLineNumber = "23"
-         landmarkName = "+newCollapseClickCellWithTitle:stats:index:content:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "../CollapseClickCopy/CollapseClick/CollapseClickDemo/CollapseClickDemo/CollapseClickCell.m"
-         timestampString = "392528281.317825"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "32"
-         endingLineNumber = "32"
+         startingLineNumber = "24"
+         endingLineNumber = "24"
          landmarkName = "+newCollapseClickCellWithTitle:stats:index:content:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -253,11 +123,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../CollapseClickCopy/CollapseClick/CollapseClickDemo/CollapseClickDemo/CollapseClick.m"
-         timestampString = "391833061.902416"
+         timestampString = "393361286.00681"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "117"
-         endingLineNumber = "117"
+         startingLineNumber = "121"
+         endingLineNumber = "121"
          landmarkName = "-repositionCollapseClickCellsBelowIndex:withOffset:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -318,37 +188,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRMasterViewController.m"
-         timestampString = "393144655.854256"
+         timestampString = "393475371.103947"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "59"
-         endingLineNumber = "59"
-         landmarkName = "-CCUpdate:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRPostTopic.m"
-         timestampString = "393144268.254246"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "42"
-         endingLineNumber = "42"
-         landmarkName = "-post:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRMasterViewController.m"
-         timestampString = "393144655.854256"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "164"
-         endingLineNumber = "164"
+         startingLineNumber = "185"
+         endingLineNumber = "185"
          landmarkName = "-viewForCollapseClickContentViewAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -356,38 +200,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRPostTopic.m"
-         timestampString = "393144268.254246"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "46"
-         endingLineNumber = "46"
-         landmarkName = "-validatePost:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRPostTopic.m"
-         timestampString = "393144268.254246"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "45"
-         endingLineNumber = "45"
-         landmarkName = "-validatePost:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "../CollapseClickCopy/CollapseClick/CollapseClickDemo/CollapseClickDemo/CollapseClick.m"
-         timestampString = "391833061.902416"
+         timestampString = "393361286.00681"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "172"
-         endingLineNumber = "172"
+         startingLineNumber = "176"
+         endingLineNumber = "176"
          landmarkName = "-openCollapseClickCellAtIndex:animated:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -396,38 +214,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../CollapseClickCopy/CollapseClick/CollapseClickDemo/CollapseClickDemo/CollapseClick.m"
-         timestampString = "391833061.902416"
+         timestampString = "393361286.00681"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "130"
-         endingLineNumber = "130"
+         startingLineNumber = "134"
+         endingLineNumber = "134"
          landmarkName = "-didSelectCollapseClickButton:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRMasterViewController.m"
-         timestampString = "393144655.854256"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "189"
-         endingLineNumber = "189"
-         landmarkName = "-touchesBegan:withEvent:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRPostTopic.m"
-         timestampString = "393144268.254246"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "54"
-         endingLineNumber = "54"
-         landmarkName = "-touchesBegan:withEvent:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -460,25 +252,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "../CollapseClickCopy/CollapseClick/CollapseClickDemo/CollapseClickDemo/CollapseClickCell.m"
-         timestampString = "392528281.317825"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "31"
-         endingLineNumber = "31"
-         landmarkName = "+newCollapseClickCellWithTitle:stats:index:content:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393225310.194735"
+         timestampString = "393463152.314355"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "359"
-         endingLineNumber = "359"
+         startingLineNumber = "250"
+         endingLineNumber = "250"
          landmarkName = "-setStatusLabel"
          landmarkType = "5">
       </FileBreakpoint>
@@ -487,11 +266,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393225310.194735"
+         timestampString = "393463152.314355"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "405"
-         endingLineNumber = "405"
+         startingLineNumber = "282"
+         endingLineNumber = "282"
          landmarkName = "-session:didReceiveStream:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -499,52 +278,156 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393225310.194735"
+         filePath = "ShoutRoulette/SRPostTopic.m"
+         timestampString = "393312026.675177"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "470"
-         endingLineNumber = "470"
-         landmarkName = "-subscriberDidConnectToStream:"
+         startingLineNumber = "32"
+         endingLineNumber = "32"
+         landmarkName = "-post:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393225310.194735"
+         filePath = "ShoutRoulette/SRPostTopic.m"
+         timestampString = "393315250.00644"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "476"
-         endingLineNumber = "476"
-         landmarkName = "@implementation SRDetailViewController"
-         landmarkType = "3">
+         startingLineNumber = "57"
+         endingLineNumber = "57"
+         landmarkName = "-textView:shouldChangeTextInRange:replacementText:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393225310.194735"
+         filePath = "ShoutRoulette/SRChoiceBox.m"
+         timestampString = "393477109.178602"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "481"
-         endingLineNumber = "481"
-         landmarkName = "@implementation SRDetailViewController"
-         landmarkType = "3">
+         startingLineNumber = "27"
+         endingLineNumber = "27"
+         landmarkName = "-initWithLabel:andTopicID:andFrame:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393211908.073043"
+         filePath = "ShoutRoulette/SRMasterViewController.m"
+         timestampString = "393475371.103947"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "195"
+         endingLineNumber = "195"
+         landmarkName = "-buttonWasPressed:topicId:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShoutRoulette/SRPostTopic.m"
+         timestampString = "393361286.00681"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "70"
+         endingLineNumber = "70"
+         landmarkName = "-textView:shouldChangeTextInRange:replacementText:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShoutRoulette/SRPostTopic.m"
+         timestampString = "393361286.00681"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "71"
+         endingLineNumber = "71"
+         landmarkName = "-textView:shouldChangeTextInRange:replacementText:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShoutRoulette/SRPostTopic.m"
+         timestampString = "393358705.13525"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "64"
+         endingLineNumber = "64"
+         landmarkName = "-textView:shouldChangeTextInRange:replacementText:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShoutRoulette/SRMasterViewController.m"
+         timestampString = "393475371.103947"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "88"
          endingLineNumber = "88"
-         landmarkName = "-viewDidLoad"
+         landmarkName = "-isPostShoutContainerOpen"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShoutRoulette/SRMasterViewController.m"
+         timestampString = "393475371.103947"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "131"
+         endingLineNumber = "131"
+         landmarkName = "-noResults"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShoutRoulette/SRMasterViewController.m"
+         timestampString = "393475371.103947"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "146"
+         endingLineNumber = "146"
+         landmarkName = "-statusUpdate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShoutRoulette/SRMasterViewController.m"
+         timestampString = "393475371.103947"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "72"
+         endingLineNumber = "72"
+         landmarkName = "-showPostShout"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShoutRoulette/SRMasterViewController.m"
+         timestampString = "393475371.103947"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "106"
+         endingLineNumber = "106"
+         landmarkName = "-loadTableData"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -552,26 +435,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393211908.073043"
+         timestampString = "393463152.314355"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "78"
-         endingLineNumber = "78"
-         landmarkName = "-viewDidLoad"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "ShoutRoulette/SRDetailViewController.m"
-         timestampString = "393225310.194735"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "310"
-         endingLineNumber = "310"
-         landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
-         landmarkType = "5">
+         startingLineNumber = "26"
+         endingLineNumber = "26"
+         landmarkName = "@implementation SRDetailViewController"
+         landmarkType = "3">
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>
