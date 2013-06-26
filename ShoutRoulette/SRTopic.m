@@ -9,5 +9,4 @@
 #import "SRTopic.h"
 
 @implementation SRTopic
-@synthesize title, topicId, createdAt;
 @end

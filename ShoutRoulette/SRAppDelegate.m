@@ -11,9 +11,7 @@
 @implementation SRAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-
-    
+{    
     [self customizeNav];
     return YES;
 }
@@ -28,10 +26,6 @@
     UIImage *backButton = [UIImage imageNamed:@"backButton"];
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButton forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1000, -1000)forBarMetrics:UIBarMetricsDefault];
-    
-    
-
-    
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

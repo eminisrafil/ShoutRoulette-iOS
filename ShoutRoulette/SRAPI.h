@@ -21,8 +21,6 @@ typedef void(^JSONResponse)(NSDictionary* JSON);
 @property (strong, nonatomic) NSDictionary* user;
 
 +(SRAPI *)sharedInstance;
-//-(void)commandWithParams:(NSMutableDictionary*)params onCompletion:(JSONResponse)completionBlock;
-
 
 
 @end

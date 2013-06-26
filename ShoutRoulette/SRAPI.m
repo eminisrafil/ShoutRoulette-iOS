@@ -30,7 +30,6 @@
     
     [self setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         NSLog(@"changed %d", status);
-        //your code here
     }];
     
     [self setUpRestKit];
@@ -39,7 +38,7 @@
 
 -(void)setUpRestKit{
     if (self != nil) {
-        RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+        //RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
         //RKLogConfigureByName("RestKit/Network", RKLogLevelCritical);
         [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 

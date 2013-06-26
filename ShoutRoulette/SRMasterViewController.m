@@ -8,7 +8,6 @@
 //
 
 #import "SRMasterViewController.h"
-#import "SRDetailViewController.h"
 #import "UIScrollView+SVPullToRefresh.h"
 
 
@@ -21,6 +20,7 @@
 @implementation SRMasterViewController
 
 -(void) viewWillAppear:(BOOL)animated{
+    //setup nav button
     UIImage *rightButtonImage = [UIImage imageNamed:@"logo"];
     
     UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -41,96 +41,42 @@
     [self.postShoutContainer addSubview:postShout];
     postShout.delegate = self;
     
-    //MyCollapseable Click "TableView"
+    //Collapseable Click "TableView"
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(CCUpdate:) name:@"CollapseClickUpdated" object:nil];
-    myCollapseClick.CollapseClickDelegate = self;
+    self.CollapseClickCell.CollapseClickDelegate = self;
     [self loadTableData];
 }
 
--(void) CCUpdate:(NSNotification*)notification{
-    [myCollapseClick removePullToRefresh];
-    [myCollapseClick addPullToRefreshWithActionHandler:^(void){
-        [self loadTableData];
-    }];
-
-}
-
-//open/close container for posting shouts
--(void)showPostShout{
-    [self.view endEditing:YES];
-    CGRect newCCFrame = myCollapseClick.frame;
-    CGRect newPostShoutFrame = self.postShoutContainer.frame;
-    
-    if ([self isPostShoutContainerOpen]) {
-        newCCFrame.origin.y -= 133;
-        newPostShoutFrame.origin.y -= 133;
-        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.postShoutContainer.alpha = 0;
-            myCollapseClick.frame= newCCFrame;
-            self.postShoutContainer.frame = newPostShoutFrame;
-        } completion: ^(BOOL finished){
-            //delete
-        }];
-    } else{
-        newCCFrame.origin.y += 133;
-        newPostShoutFrame.origin.y += 133;
-        [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.postShoutContainer.alpha = 1;
-            myCollapseClick.frame= newCCFrame;
-            self.postShoutContainer.frame = newPostShoutFrame;
-        } completion: ^(BOOL finished){
-            //delete
-        }];
-    }
-}
-
--(BOOL) isPostShoutContainerOpen{
-    return (myCollapseClick.frame.origin.y==0)? NO : YES;
-}
-
-//New shout was sent
--(void)postTopicButtonPressed:(NSString *)contents {
-    NSDictionary *newTopic = @{@"topic":contents};
-    [[RKObjectManager sharedManager] postObject:nil path:@"topics/new" parameters:newTopic
-     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
-         if([self isPostShoutContainerOpen]){
-             [self showPostShout];
-         }
-    } failure:^(RKObjectRequestOperation *operation, NSError *error){
-
-    }];
-}
 
 -(void)loadTableData{    
     [[RKObjectManager sharedManager] getObjectsAtPath:@"http://srapp.herokuapp.com/" parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         NSArray* topicsArray = [mappingResult array];
         _objects = [topicsArray copy];
         if(self.isViewLoaded){
-            [myCollapseClick.pullToRefreshView stopAnimating];
-            [myCollapseClick reloadCollapseClick];
-            //[self statusUpdate:@"Updated"];
+            [self.CollapseClickCell.pullToRefreshView stopAnimating];
+            [self.CollapseClickCell reloadCollapseClick];
         }
     }failure:^(RKObjectRequestOperation *operation, NSError *error){
-        [myCollapseClick.pullToRefreshView stopAnimating];
+        [self.CollapseClickCell.pullToRefreshView stopAnimating];
         [self noResults];
     }];
 }
 
 -(void)noResults{
     //clear table data
-    [myCollapseClick.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    [self.CollapseClickCell.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
     
     //load imageView
     UIImageView *noResultsImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"noInternet.png"]];
     
     //center it + add it
     noResultsImageView.frame = CGRectOffset(noResultsImageView.frame, (self.view.frame.size.width -  noResultsImageView.frame.size.width)/2, (self.view.frame.size.height -  noResultsImageView.frame.size.height)/2);
-    [myCollapseClick addSubview:noResultsImageView];
+    [self.CollapseClickCell addSubview:noResultsImageView];
     
     //ensure contentsize large enough to allow pull to refresh
-     myCollapseClick.contentSize =CGSizeMake(320, 430);
+     self.CollapseClickCell.contentSize =CGSizeMake(320, 430);
     
-    [self attachPullToRefresh:myCollapseClick];
+    [self attachPullToRefresh:self.CollapseClickCell];
     
     [self statusUpdate:@"Try Again"];
 }
@@ -142,8 +88,8 @@
     }];
 }
 
--(void)statusUpdate:(NSString *) message{
-    
+//update fading status UILabel at the bottom of the screen
+-(void)statusUpdate:(NSString *) message{    
     self.statusLabel.text = message;
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
     animation.FromValue = [NSNumber numberWithFloat:0.0f];
@@ -157,7 +103,61 @@
     [self.statusLabelContainer.layer addAnimation:animation forKey:nil];
 }
 
+#pragma mark - Posting a new shout/topic
+//open/close container for posting shouts
+-(void)showPostShout{
+    [self.view endEditing:YES];
+    CGRect newCCFrame = self.CollapseClickCell.frame;
+    CGRect newPostShoutFrame = self.postShoutContainer.frame;
+    
+    if ([self isPostShoutContainerOpen]) {
+        newCCFrame.origin.y -= 133;
+        newPostShoutFrame.origin.y -= 133;
+        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.postShoutContainer.alpha = 0;
+            self.CollapseClickCell.frame= newCCFrame;
+            self.postShoutContainer.frame = newPostShoutFrame;
+        } completion: ^(BOOL finished){
+            //delete
+        }];
+    } else{
+        newCCFrame.origin.y += 133;
+        newPostShoutFrame.origin.y += 133;
+        [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.postShoutContainer.alpha = 1;
+            self.CollapseClickCell.frame= newCCFrame;
+            self.postShoutContainer.frame = newPostShoutFrame;
+        } completion: ^(BOOL finished){
+            //delete
+        }];
+    }
+}
+
+-(BOOL) isPostShoutContainerOpen{
+    return (self.CollapseClickCell.frame.origin.y==0)? NO : YES;
+}
+
+//New shout was sent
+-(void)postTopicButtonPressed:(NSString *)contents {
+    NSDictionary *newTopic = @{@"topic":contents};
+    [[RKObjectManager sharedManager] postObject:nil path:@"topics/new" parameters:newTopic success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
+            if([self isPostShoutContainerOpen]){
+                [self showPostShout];
+            }
+    } failure:^(RKObjectRequestOperation *operation, NSError *error){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"We weren't able to post your shout. Try again soon!" delegate:nil cancelButtonTitle:@"Sure" otherButtonTitles:nil, nil];
+        [alert show];
+    }];
+}
 #pragma mark -Collapse Click
+//Reattach pull to refresh handler when CollapseClick ScrollView is reloaded
+-(void) CCUpdate:(NSNotification*)notification{
+    [self.CollapseClickCell removePullToRefresh];
+    [self.CollapseClickCell addPullToRefreshWithActionHandler:^(void){
+        [self loadTableData];
+    }];
+}
+
 //returns stats for each topic
 -(NSDictionary*)statsForCollapseClick:(int)index{
     SRTopic *loadedTopic = [_objects objectAtIndex:index];
@@ -178,7 +178,7 @@
     return loadedTopic.title;
 }
 
-
+//Displays content for expanded cell
 -(UIView *)viewForCollapseClickContentViewAtIndex:(int)index{
     SRTopic *loadedTopic = [_objects objectAtIndex:index];
     SRChoiceBox *newBox = [[SRChoiceBox alloc] initWithLabel:[self statsForCollapseClick:index] andTopicID:loadedTopic.topicId andFrame: CGRectMake(5, 5, 310, 150)];
@@ -199,11 +199,14 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if (myCollapseClick.frame.origin.y>0) {
+    //close Post Shout Container
+    if (self.CollapseClickCell.frame.origin.y>0) {
         [self showPostShout];
     }
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {       
-        [[segue destinationViewController] setDetailItem:sender];
+
+    if ([[segue identifier] isEqualToString:@"showDetail"]) {
+        self.RoomViewController = [segue destinationViewController];
+        self.RoomViewController.room = sender;
     }
 }
 

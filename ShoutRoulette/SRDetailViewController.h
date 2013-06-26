@@ -14,27 +14,20 @@
 
 @interface SRDetailViewController : UIViewController <OTPublisherDelegate, OTSessionDelegate, OTSubscriberDelegate>
 
-@property (strong, nonatomic) id detailItem;
-@property (weak, nonatomic) SRRoom *room;
-
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
-@property (weak, nonatomic) IBOutlet UILabel *token;
-@property (weak, nonatomic) IBOutlet UIView *opponentVidContainer;
-@property (weak, nonatomic) IBOutlet UIView *userVidContainer;
 @property (weak, nonatomic) IBOutlet UILabel *roomTitle;
-@property (strong, nonatomic) RKObjectManager *objectManager;
 @property (weak, nonatomic) IBOutlet UIView *userScreenContainer;
 @property (weak, nonatomic) IBOutlet UIView *opponentScreenContainer;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+
+@property (strong, nonatomic) SRRoom *room;
+
+@property (strong, nonatomic) OTSession* session;
+@property (strong, nonatomic) OTPublisher* publisher;
+@property (strong, nonatomic) OTSubscriber* subscriber;
 
 
-@property (strong, nonatomic) OTSession* _session;
-@property (strong, nonatomic) OTPublisher* _publisher;
-@property (strong, nonatomic) OTSubscriber* _subscriber;
 
-@property (strong, nonatomic) NSString* kApiKey;    // Replace with your API Key
-@property (strong, nonatomic) NSString* kSessionId; // Replace with your generated Session ID
-@property (strong, nonatomic) NSString* kToken;     // Replace with your generated Token (use Project Tools or from a server-side library)
-
+@property dispatch_queue_t opentokQueue;
 
 -(void)doCloseRoomId:(NSNumber *) roomId position:(NSString*)position;
 @end

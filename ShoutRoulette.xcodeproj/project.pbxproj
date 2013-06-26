@@ -25,11 +25,6 @@
 		2364B07F17454CCC003C134C /* SRRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 2364B07E17454CCC003C134C /* SRRoom.m */; };
 		2395AC56175711090002E46A /* SRPostTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 2395AC55175711080002E46A /* SRPostTopic.m */; };
 		2395AC58175711750002E46A /* SRPostTopic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2395AC57175711740002E46A /* SRPostTopic.xib */; };
-		239752F6176EA674002A8574 /* blackBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 239752F2176EA674002A8574 /* blackBackground.png */; };
-		239752F7176EA674002A8574 /* agree.png in Resources */ = {isa = PBXBuildFile; fileRef = 239752F3176EA674002A8574 /* agree.png */; };
-		239752F8176EA674002A8574 /* disagree.png in Resources */ = {isa = PBXBuildFile; fileRef = 239752F4176EA674002A8574 /* disagree.png */; };
-		239752F9176EA674002A8574 /* observe.png in Resources */ = {isa = PBXBuildFile; fileRef = 239752F5176EA674002A8574 /* observe.png */; };
-		239752FB176EAE80002A8574 /* roomBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 239752FA176EAE80002A8574 /* roomBackground.png */; };
 		239D194D1738C8E6004658C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239D194C1738C8E6004658C8 /* UIKit.framework */; };
 		239D194F1738C8E6004658C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239D194E1738C8E6004658C8 /* Foundation.framework */; };
 		239D19511738C8E6004658C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239D19501738C8E6004658C8 /* CoreGraphics.framework */; };
@@ -42,18 +37,24 @@
 		239D19661738C8E6004658C8 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239D19641738C8E6004658C8 /* MainStoryboard.storyboard */; };
 		239D19691738C8E6004658C8 /* SRMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 239D19681738C8E6004658C8 /* SRMasterViewController.m */; };
 		239D196C1738C8E6004658C8 /* SRDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 239D196B1738C8E6004658C8 /* SRDetailViewController.m */; };
-		23AC1E751765345E00BB637A /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AC1E741765345E00BB637A /* logo.png */; };
-		23AC1E771765347000BB637A /* NavBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AC1E761765347000BB637A /* NavBar.png */; };
-		23AC1E791765349300BB637A /* backButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AC1E781765349300BB637A /* backButton.png */; };
-		23AC1E7D17657FA500BB637A /* cellBase.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AC1E7C17657FA500BB637A /* cellBase.png */; };
-		23AC1E7F176585C300BB637A /* notificationBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AC1E7E176585C200BB637A /* notificationBox.png */; };
-		23AC1E8417658E8800BB637A /* Shout!.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AC1E8017658E8800BB637A /* Shout!.png */; };
-		23AC1E8517658E8800BB637A /* shoutBoxBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AC1E8117658E8800BB637A /* shoutBoxBackground.png */; };
-		23AC1E8617658E8800BB637A /* shoutButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AC1E8217658E8800BB637A /* shoutButton.png */; };
-		23AC1E8717658E8800BB637A /* shoutTextField.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AC1E8317658E8800BB637A /* shoutTextField.png */; };
-		23BC4990176EB3B600325DCA /* bottomRoomSeperator.png in Resources */ = {isa = PBXBuildFile; fileRef = 23BC498F176EB3B600325DCA /* bottomRoomSeperator.png */; };
 		23C7630617407DF1009774FC /* SRChoiceBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23C7630517407DF1009774FC /* SRChoiceBox.xib */; };
 		23C7630917408577009774FC /* SRChoiceBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C7630817408577009774FC /* SRChoiceBox.m */; };
+		23DE3F94177AA367000006A9 /* cellBase.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F92177AA367000006A9 /* cellBase.png */; };
+		23DE3F95177AA367000006A9 /* notificationBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F93177AA367000006A9 /* notificationBox.png */; };
+		23DE3F97177AA58D000006A9 /* NavBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F96177AA58D000006A9 /* NavBar.png */; };
+		23DE3FA4177AA5AB000006A9 /* agree.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F98177AA5AB000006A9 /* agree.png */; };
+		23DE3FA5177AA5AB000006A9 /* backButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F99177AA5AB000006A9 /* backButton.png */; };
+		23DE3FA6177AA5AB000006A9 /* blackBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F9A177AA5AB000006A9 /* blackBackground.png */; };
+		23DE3FA7177AA5AB000006A9 /* bottomRoomSeperator.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F9B177AA5AB000006A9 /* bottomRoomSeperator.png */; };
+		23DE3FA8177AA5AB000006A9 /* disagree.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F9C177AA5AB000006A9 /* disagree.png */; };
+		23DE3FA9177AA5AB000006A9 /* observe.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F9D177AA5AB000006A9 /* observe.png */; };
+		23DE3FAA177AA5AB000006A9 /* roomBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F9E177AA5AB000006A9 /* roomBackground.png */; };
+		23DE3FAB177AA5AB000006A9 /* Shout!.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3F9F177AA5AB000006A9 /* Shout!.png */; };
+		23DE3FAC177AA5AB000006A9 /* shoutBoxBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3FA0177AA5AB000006A9 /* shoutBoxBackground.png */; };
+		23DE3FAD177AA5AB000006A9 /* shoutButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3FA1177AA5AB000006A9 /* shoutButton.png */; };
+		23DE3FAE177AA5AB000006A9 /* ShoutRoulette.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3FA2177AA5AB000006A9 /* ShoutRoulette.png */; };
+		23DE3FAF177AA5AB000006A9 /* shoutTextField.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3FA3177AA5AB000006A9 /* shoutTextField.png */; };
+		23DE3FB5177AAA3D000006A9 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 23DE3FB4177AAA3C000006A9 /* logo.png */; };
 		CB3E79DDD4F349779BB541A7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17C616799240789E6129D6 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -84,11 +85,6 @@
 		2395AC54175711080002E46A /* SRPostTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRPostTopic.h; sourceTree = "<group>"; };
 		2395AC55175711080002E46A /* SRPostTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRPostTopic.m; sourceTree = "<group>"; };
 		2395AC57175711740002E46A /* SRPostTopic.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SRPostTopic.xib; sourceTree = "<group>"; };
-		239752F2176EA674002A8574 /* blackBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackBackground.png; sourceTree = "<group>"; };
-		239752F3176EA674002A8574 /* agree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = agree.png; sourceTree = "<group>"; };
-		239752F4176EA674002A8574 /* disagree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disagree.png; sourceTree = "<group>"; };
-		239752F5176EA674002A8574 /* observe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = observe.png; sourceTree = "<group>"; };
-		239752FA176EAE80002A8574 /* roomBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roomBackground.png; sourceTree = "<group>"; };
 		239D19491738C8E6004658C8 /* ShoutRoulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShoutRoulette.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		239D194C1738C8E6004658C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		239D194E1738C8E6004658C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -107,19 +103,25 @@
 		239D19681738C8E6004658C8 /* SRMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRMasterViewController.m; sourceTree = "<group>"; };
 		239D196A1738C8E6004658C8 /* SRDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRDetailViewController.h; sourceTree = "<group>"; };
 		239D196B1738C8E6004658C8 /* SRDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRDetailViewController.m; sourceTree = "<group>"; };
-		23AC1E741765345E00BB637A /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		23AC1E761765347000BB637A /* NavBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NavBar.png; sourceTree = "<group>"; };
-		23AC1E781765349300BB637A /* backButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backButton.png; sourceTree = "<group>"; };
-		23AC1E7C17657FA500BB637A /* cellBase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellBase.png; sourceTree = "<group>"; };
-		23AC1E7E176585C200BB637A /* notificationBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notificationBox.png; sourceTree = "<group>"; };
-		23AC1E8017658E8800BB637A /* Shout!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Shout!.png"; sourceTree = "<group>"; };
-		23AC1E8117658E8800BB637A /* shoutBoxBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoutBoxBackground.png; sourceTree = "<group>"; };
-		23AC1E8217658E8800BB637A /* shoutButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoutButton.png; sourceTree = "<group>"; };
-		23AC1E8317658E8800BB637A /* shoutTextField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoutTextField.png; sourceTree = "<group>"; };
-		23BC498F176EB3B600325DCA /* bottomRoomSeperator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottomRoomSeperator.png; sourceTree = "<group>"; };
 		23C7630517407DF1009774FC /* SRChoiceBox.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SRChoiceBox.xib; sourceTree = "<group>"; };
 		23C7630717408577009774FC /* SRChoiceBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRChoiceBox.h; sourceTree = "<group>"; };
 		23C7630817408577009774FC /* SRChoiceBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRChoiceBox.m; sourceTree = "<group>"; };
+		23DE3F92177AA367000006A9 /* cellBase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cellBase.png; path = ShoutRoulette/assets/cellBase.png; sourceTree = "<group>"; };
+		23DE3F93177AA367000006A9 /* notificationBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = notificationBox.png; path = ShoutRoulette/assets/notificationBox.png; sourceTree = "<group>"; };
+		23DE3F96177AA58D000006A9 /* NavBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavBar.png; path = assets/NavBar.png; sourceTree = "<group>"; };
+		23DE3F98177AA5AB000006A9 /* agree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = agree.png; path = assets/agree.png; sourceTree = "<group>"; };
+		23DE3F99177AA5AB000006A9 /* backButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = backButton.png; path = assets/backButton.png; sourceTree = "<group>"; };
+		23DE3F9A177AA5AB000006A9 /* blackBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blackBackground.png; path = assets/blackBackground.png; sourceTree = "<group>"; };
+		23DE3F9B177AA5AB000006A9 /* bottomRoomSeperator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bottomRoomSeperator.png; path = assets/bottomRoomSeperator.png; sourceTree = "<group>"; };
+		23DE3F9C177AA5AB000006A9 /* disagree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = disagree.png; path = assets/disagree.png; sourceTree = "<group>"; };
+		23DE3F9D177AA5AB000006A9 /* observe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = observe.png; path = assets/observe.png; sourceTree = "<group>"; };
+		23DE3F9E177AA5AB000006A9 /* roomBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = roomBackground.png; path = assets/roomBackground.png; sourceTree = "<group>"; };
+		23DE3F9F177AA5AB000006A9 /* Shout!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Shout!.png"; path = "assets/Shout!.png"; sourceTree = "<group>"; };
+		23DE3FA0177AA5AB000006A9 /* shoutBoxBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shoutBoxBackground.png; path = assets/shoutBoxBackground.png; sourceTree = "<group>"; };
+		23DE3FA1177AA5AB000006A9 /* shoutButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shoutButton.png; path = assets/shoutButton.png; sourceTree = "<group>"; };
+		23DE3FA2177AA5AB000006A9 /* ShoutRoulette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShoutRoulette.png; path = assets/ShoutRoulette.png; sourceTree = "<group>"; };
+		23DE3FA3177AA5AB000006A9 /* shoutTextField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shoutTextField.png; path = assets/shoutTextField.png; sourceTree = "<group>"; };
+		23DE3FB4177AAA3C000006A9 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = assets/logo.png; sourceTree = "<group>"; };
 		E20F5996255246A38FB8072B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -149,12 +151,12 @@
 				232D3B13173AE2AB004D1280 /* CollapseClickCell.m */,
 				232D3B14173AE2AB004D1280 /* CollapseClickCell.xib */,
 				2321F07C17729E6200781628 /* noInternet.png */,
-				23AC1E7C17657FA500BB637A /* cellBase.png */,
+				23DE3F92177AA367000006A9 /* cellBase.png */,
+				23DE3F93177AA367000006A9 /* notificationBox.png */,
 				23041C541772314A000FD8FE /* arrowCopy.png */,
 				2321F0761772404200781628 /* arrow1.png */,
 				2321F0771772404200781628 /* arrow2.png */,
 				2321F0781772404200781628 /* arrow3.png */,
-				23AC1E7E176585C200BB637A /* notificationBox.png */,
 			);
 			name = collapseclick;
 			path = ..;
@@ -163,19 +165,20 @@
 		2395AC4F1756F6660002E46A /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				239752F2176EA674002A8574 /* blackBackground.png */,
-				23BC498F176EB3B600325DCA /* bottomRoomSeperator.png */,
-				239752F3176EA674002A8574 /* agree.png */,
-				239752F4176EA674002A8574 /* disagree.png */,
-				239752F5176EA674002A8574 /* observe.png */,
-				23AC1E781765349300BB637A /* backButton.png */,
-				23AC1E8017658E8800BB637A /* Shout!.png */,
-				23AC1E8117658E8800BB637A /* shoutBoxBackground.png */,
-				23AC1E8217658E8800BB637A /* shoutButton.png */,
-				23AC1E8317658E8800BB637A /* shoutTextField.png */,
-				23AC1E761765347000BB637A /* NavBar.png */,
-				23AC1E741765345E00BB637A /* logo.png */,
-				239752FA176EAE80002A8574 /* roomBackground.png */,
+				23DE3F96177AA58D000006A9 /* NavBar.png */,
+				23DE3F98177AA5AB000006A9 /* agree.png */,
+				23DE3F99177AA5AB000006A9 /* backButton.png */,
+				23DE3F9A177AA5AB000006A9 /* blackBackground.png */,
+				23DE3FB4177AAA3C000006A9 /* logo.png */,
+				23DE3F9B177AA5AB000006A9 /* bottomRoomSeperator.png */,
+				23DE3F9C177AA5AB000006A9 /* disagree.png */,
+				23DE3F9D177AA5AB000006A9 /* observe.png */,
+				23DE3F9E177AA5AB000006A9 /* roomBackground.png */,
+				23DE3F9F177AA5AB000006A9 /* Shout!.png */,
+				23DE3FA0177AA5AB000006A9 /* shoutBoxBackground.png */,
+				23DE3FA1177AA5AB000006A9 /* shoutButton.png */,
+				23DE3FA2177AA5AB000006A9 /* ShoutRoulette.png */,
+				23DE3FA3177AA5AB000006A9 /* shoutTextField.png */,
 				23231E5E1773ACA400366011 /* opponentCharDefault.png */,
 				23231E5F1773ACA400366011 /* opponentVidContainer.png */,
 				23231E601773ACA400366011 /* userCharDefault.png */,
@@ -318,21 +321,6 @@
 				232D3B18173AE2AB004D1280 /* CollapseClickCell.xib in Resources */,
 				23C7630617407DF1009774FC /* SRChoiceBox.xib in Resources */,
 				2395AC58175711750002E46A /* SRPostTopic.xib in Resources */,
-				23AC1E751765345E00BB637A /* logo.png in Resources */,
-				23AC1E771765347000BB637A /* NavBar.png in Resources */,
-				23AC1E791765349300BB637A /* backButton.png in Resources */,
-				23AC1E7D17657FA500BB637A /* cellBase.png in Resources */,
-				23AC1E7F176585C300BB637A /* notificationBox.png in Resources */,
-				23AC1E8417658E8800BB637A /* Shout!.png in Resources */,
-				23AC1E8517658E8800BB637A /* shoutBoxBackground.png in Resources */,
-				23AC1E8617658E8800BB637A /* shoutButton.png in Resources */,
-				23AC1E8717658E8800BB637A /* shoutTextField.png in Resources */,
-				239752F6176EA674002A8574 /* blackBackground.png in Resources */,
-				239752F7176EA674002A8574 /* agree.png in Resources */,
-				239752F8176EA674002A8574 /* disagree.png in Resources */,
-				239752F9176EA674002A8574 /* observe.png in Resources */,
-				239752FB176EAE80002A8574 /* roomBackground.png in Resources */,
-				23BC4990176EB3B600325DCA /* bottomRoomSeperator.png in Resources */,
 				23041C551772314A000FD8FE /* arrowCopy.png in Resources */,
 				2321F0791772404200781628 /* arrow1.png in Resources */,
 				2321F07A1772404200781628 /* arrow2.png in Resources */,
@@ -342,6 +330,22 @@
 				23231E631773ACA400366011 /* opponentVidContainer.png in Resources */,
 				23231E641773ACA400366011 /* userCharDefault.png in Resources */,
 				23231E651773ACA400366011 /* userVidContainer.png in Resources */,
+				23DE3F94177AA367000006A9 /* cellBase.png in Resources */,
+				23DE3F95177AA367000006A9 /* notificationBox.png in Resources */,
+				23DE3F97177AA58D000006A9 /* NavBar.png in Resources */,
+				23DE3FA4177AA5AB000006A9 /* agree.png in Resources */,
+				23DE3FA5177AA5AB000006A9 /* backButton.png in Resources */,
+				23DE3FA6177AA5AB000006A9 /* blackBackground.png in Resources */,
+				23DE3FA7177AA5AB000006A9 /* bottomRoomSeperator.png in Resources */,
+				23DE3FA8177AA5AB000006A9 /* disagree.png in Resources */,
+				23DE3FA9177AA5AB000006A9 /* observe.png in Resources */,
+				23DE3FAA177AA5AB000006A9 /* roomBackground.png in Resources */,
+				23DE3FAB177AA5AB000006A9 /* Shout!.png in Resources */,
+				23DE3FAC177AA5AB000006A9 /* shoutBoxBackground.png in Resources */,
+				23DE3FAD177AA5AB000006A9 /* shoutButton.png in Resources */,
+				23DE3FAE177AA5AB000006A9 /* ShoutRoulette.png in Resources */,
+				23DE3FAF177AA5AB000006A9 /* shoutTextField.png in Resources */,
+				23DE3FB5177AAA3D000006A9 /* logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
