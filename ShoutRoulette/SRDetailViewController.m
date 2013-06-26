@@ -39,7 +39,7 @@ static bool subscribeToSelf = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.kApiKey = @"20193772";   
+    self.kApiKey = @"20193772"; //<--yes i know this is here. 
     self.kSessionId = @""; 
     self.kToken = @"";
     
@@ -235,7 +235,7 @@ static bool subscribeToSelf = NO;
     //NSLog(@"publisherDidStartStreaming: %@", publisher);
     //NSLog(@"- publisher.session: %@", publisher.session.sessionId);
     NSLog(@"- publisher.name: %@", publisher.name);
-    self.statusLabel.text = @"Searching for idiots...";
+    self.statusLabel.text = @"publishing...";
 }
 
 -(void)publisherDidStopStreaming:(OTPublisher*)publisher
