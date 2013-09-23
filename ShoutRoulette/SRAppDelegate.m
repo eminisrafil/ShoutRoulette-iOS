@@ -4,28 +4,66 @@
 //
 //  Created by emin on 5/7/13.
 //  Copyright (c) 2013 SR. All rights reserved.
-//
+
 
 #import "SRAppDelegate.h"
+#import "TestFlight.h"
+
+#define XCODE_COLORS_ESCAPE_MAC @"\033["
+#define XCODE_COLORS_ESCAPE_IOS @"\xC2\xA0["
+
+#if TARGET_OS_IPHONE
+#define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_IOS
+#else
+#define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_MAC
+#endif
+
+#define XCODE_COLORS_RESET_FG  XCODE_COLORS_ESCAPE @"fg;" // Clear any foreground color
+#define XCODE_COLORS_RESET_BG  XCODE_COLORS_ESCAPE @"bg;" // Clear any background color
+#define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @";"   // Clear any foreground or background color
 
 @implementation SRAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
     [self customizeNav];
-    return YES;
+    
+    // start of your application:didFinishLaunchingWithOptions // ...
+    [TestFlight takeOff:@"ac04c1e5-5155-4ca9-9ccd-40788feefe35"];
+    
+    return true;
 }
 
 -(void) customizeNav{
     //navigation controller
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-    UIImage *navBackground = [UIImage imageNamed:@"navBar"];
+    UIImage *navBackground = [UIImage imageNamed:@"NavBar.png"];
     [[UINavigationBar appearance] setBackgroundImage:navBackground forBarMetrics:UIBarMetricsDefault];
     
+    
+    
+    
+    setenv("XcodeColors", "YES", 0);
+    
+    NSLog(@"If you don't see colors below, make sure you follow the installation instructions in the README.");
+    
+	NSLog(XCODE_COLORS_ESCAPE @"fg0,0,255;" @"Blue text" XCODE_COLORS_RESET);
+    
+	NSLog(XCODE_COLORS_ESCAPE @"bg220,0,0;" @"Red background" XCODE_COLORS_RESET);
+    
+	NSLog(XCODE_COLORS_ESCAPE @"fg0,0,255;"
+		  XCODE_COLORS_ESCAPE @"bg220,0,0;"
+		  @"Blue text on red background"
+		  XCODE_COLORS_RESET);
+    
+	NSLog(XCODE_COLORS_ESCAPE @"fg209,57,168;" @"You can supply your own RGB values!" XCODE_COLORS_RESET);
+    
+    /* Taken out because back button on SRDetailViewController needs custom functionality
     //set up back button
     UIImage *backButton = [UIImage imageNamed:@"backButton"];
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButton forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1000, -1000)forBarMetrics:UIBarMetricsDefault];
+     */
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

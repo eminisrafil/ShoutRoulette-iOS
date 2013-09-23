@@ -7,6 +7,8 @@
 //
 
 #import "SRAPI.h"
+#import "RKPaginator.h"
+
 
 #define kAPIHOST @"http://srapp.herokuapp.com/"
 
@@ -38,8 +40,9 @@
 
 -(void)setUpRestKit{
     if (self != nil) {
-        //RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
-        //RKLogConfigureByName("RestKit/Network", RKLogLevelCritical);
+        RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+        RKLogConfigureByName("RestKit/Network", RKLogLevelCritical);
+        //RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
         [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 
         [self registerHTTPOperationClass: [AFJSONRequestOperation class]];
@@ -83,6 +86,8 @@
         
         RKResponseDescriptor *roomDeleteResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:roomDeleteMapping pathPattern:nil keyPath:nil statusCodes:[NSIndexSet indexSetWithIndex:204]];
         
+
+        
         //Routing
         //Get a Room
         [objectManager.router.routeSet addRoute:[RKRoute routeWithClass:[SRRoom class] pathPattern:@"room/:topicId/:position" method:RKRequestMethodGET]];
@@ -92,9 +97,38 @@
         //topic -test
         [objectManager.router.routeSet addRoute:[RKRoute routeWithClass:[SRTopic class] pathPattern:@"" method:RKRequestMethodGET]];
         
+        //Add Response Descriptors
         [objectManager addResponseDescriptor:topicResponseDescriptor];
         [objectManager addResponseDescriptor:roomResponseDescriptor];
         [objectManager addResponseDescriptor:roomDeleteResponseDescriptor];
+        
+        //Pagination
+        
+        RKObjectMapping *topicPaginationMapping = [RKObjectMapping mappingForClass:[RKPaginator class]];
+        
+        [topicPaginationMapping addAttributeMappingsFromDictionary:@{
+         @"Pagination.per_page": @"perPage",
+         //@"Pagination.current_page": @"page",
+         @"Pagination.total_pages": @"pageCount",
+         @"pagination.total_objects": @"objectCount",
+         }];
+//        "pagination": { "per_page": 10, "total_pages": 25, "total_objects": 250 }
+//        "Pagination": [
+//                       {
+//                           "total_pages": 3,
+//                           "current_page": "1",
+//                           "per_page": 20
+        [objectManager setPaginationMapping:topicPaginationMapping];
+        
+        
+        //RKPaginator *topicPaginater = [objectManager paginatorWithPathPattern:[NSString stringWithFormat:@"/?page=:currentPage"]];
+        
+        //RKPaginator *topicPaginator2 = [[RKPaginator alloc] initWithRequest: [NSString stringWithFormat:@"/?page=:currentPage"] paginationMapping:topicPaginationMapping responseDescriptors:nil];
+        
+        //NSLog(@"loading page");
+        //topicPaginater.currentPage = 0;
+        //[topicPaginater loadNextPage];
+        //[topicPaginator2 loadNextPage];
     }
 }
 

@@ -42,7 +42,7 @@
 /**
  * The type of the stream. This value can be `"basic"` or `"archive"`.
  * The value `"basic"` identifies a stream published by a user connected to the session.
- * The value `"archive"` identifies an [archive stream](http://www.tokbox.com/opentok/docs/concepts/archiving.html)
+ * The value `"archive"` identifies an [archive stream](http://tokbox.com/opentok/v1/concepts/archiving.html)
  * (from an archive being played back).
  */
 @property(readonly) NSString* type;

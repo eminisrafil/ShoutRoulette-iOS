@@ -34,13 +34,16 @@
         [self.textView resignFirstResponder];
         [self.delegate postTopicButtonPressed:textViewContent];
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You Big Dummy" message:@"Shouts should be between 4-144 characters" delegate:nil cancelButtonTitle:@"Sorry, ShoutRoulette" otherButtonTitles:nil, nil];
+        
+        NSString * alertMessage =[NSString stringWithFormat:@"Shouts should be between %i-%i characters", kMinPostLength, kMaxPostLength];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You Big Dummy" message:alertMessage delegate:nil cancelButtonTitle:@"Sorry, ShoutRoulette" otherButtonTitles:nil, nil];
         [alert show];
     }
 
 }
 -(bool)validatePost:(NSString *) post{
-    if (post.length >3 && post.length<145) {
+    if (post.length > kMinPostLength && post.length < kMaxPostLength) {
         return YES;
     } else {
         return NO;
@@ -61,11 +64,11 @@
     }
     
     NSInteger newLength = (textView.text.length - range.length) + text.length;
-    if(newLength <= 10)
+    if(newLength <= kMaxPostLength)
     {
         return YES;
     } else {
-        NSInteger emptySpace = 10 - (textView.text.length - range.length);
+        NSInteger emptySpace = kMaxPostLength - (textView.text.length - range.length);
         textView.text = [[[textView.text substringToIndex:range.location]
                           stringByAppendingString:[text substringToIndex:emptySpace]]
                           stringByAppendingString:[textView.text substringFromIndex:(range.location + range.length)]];
@@ -74,5 +77,6 @@
     
     
 }
+
 
 @end

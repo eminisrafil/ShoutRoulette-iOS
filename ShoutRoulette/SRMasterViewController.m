@@ -9,12 +9,14 @@
 
 #import "SRMasterViewController.h"
 #import "UIScrollView+SVPullToRefresh.h"
+#import "UIScrollView+SVInfiniteScrolling.h"
 
 
 
 @interface SRMasterViewController () {
     NSMutableArray *_objects;
 }
+@property NSInteger offset;
 @end
 
 @implementation SRMasterViewController
@@ -36,6 +38,9 @@
     [super viewDidLoad];
     [SRAPI sharedInstance];
     
+    //set offset for loading tabledata
+    self.offset = 1;
+    
     //configure container for posting shouts
     SRPostTopic *postShout = [[SRPostTopic alloc]initWithFrame:CGRectMake(0, 0, 320, 133)];
     [self.postShoutContainer addSubview:postShout];
@@ -45,16 +50,24 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(CCUpdate:) name:@"CollapseClickUpdated" object:nil];
     self.CollapseClickCell.CollapseClickDelegate = self;
     [self loadTableData];
+    
+    //attach pulltorefresh/infinite scroll
+    [self attachPullToRefresh:self.CollapseClickCell];
+    self.CollapseClickCell.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
 }
 
-
--(void)loadTableData{    
-    [[RKObjectManager sharedManager] getObjectsAtPath:@"http://srapp.herokuapp.com/" parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
+-(void)loadTableData{
+    NSNumber *NSNumberOffset = @(self.offset);
+    NSDictionary * param = @{@"?page=": NSNumberOffset};
+    [[RKObjectManager sharedManager] getObjectsAtPath:@"http://srapp.herokuapp.com/" parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         NSArray* topicsArray = [mappingResult array];
         _objects = [topicsArray copy];
         if(self.isViewLoaded){
             [self.CollapseClickCell.pullToRefreshView stopAnimating];
+            [self.CollapseClickCell.infiniteScrollingView stopAnimating];
             [self.CollapseClickCell reloadCollapseClick];
+            
+            NSLog(@"%d offset", self.offset);
         }
     }failure:^(RKObjectRequestOperation *operation, NSError *error){
         [self.CollapseClickCell.pullToRefreshView stopAnimating];
@@ -64,7 +77,11 @@
 
 -(void)noResults{
     //clear table data
+    UIView *retain = self.CollapseClickCell.subviews[0];
     [self.CollapseClickCell.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    
+    //reset pull to refresh
+    [self.CollapseClickCell removePullToRefresh];
     
     //load imageView
     UIImageView *noResultsImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"noInternet.png"]];
@@ -74,16 +91,27 @@
     [self.CollapseClickCell addSubview:noResultsImageView];
     
     //ensure contentsize large enough to allow pull to refresh
-     self.CollapseClickCell.contentSize =CGSizeMake(320, 430);
+    self.CollapseClickCell.contentSize =CGSizeMake(320, 420+retain.frame.size.height);
     
-    [self attachPullToRefresh:self.CollapseClickCell];
+    [self.CollapseClickCell addPullToRefreshWithActionHandler:^(void){
+        [self loadTableData];
+    }];
+    //[self attachPullToRefresh:self.CollapseClickCell];
+    
     
     [self statusUpdate:@"Try Again"];
 }
 
 -(void)attachPullToRefresh:(id)object{
-    [object removePullToRefresh];
+    //pull to refresh
     [object addPullToRefreshWithActionHandler:^(void){
+        [self loadTableData];
+    }];
+    
+    
+    //infinite scroll
+    [object addInfiniteScrollingWithActionHandler:^(void){
+        self.offset = self.offset + 1;
         [self loadTableData];
     }];
 }
@@ -150,12 +178,8 @@
     }];
 }
 #pragma mark -Collapse Click
-//Reattach pull to refresh handler when CollapseClick ScrollView is reloaded
 -(void) CCUpdate:(NSNotification*)notification{
-    [self.CollapseClickCell removePullToRefresh];
-    [self.CollapseClickCell addPullToRefreshWithActionHandler:^(void){
-        [self loadTableData];
-    }];
+    //Do something when scrollview is updated
 }
 
 //returns stats for each topic
@@ -194,7 +218,12 @@
     SRRoom *room = [[SRRoom alloc] init];
     room.position  = choice;
     room.topicId = topicId;
+    
     [self performSegueWithIdentifier:@"showDetail" sender:room];
+}
+
+-(void)didClickCollapseClickCellAtIndex:(int)index isNowOpen:(BOOL)open{
+
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -205,8 +234,10 @@
     }
 
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        self.RoomViewController = [segue destinationViewController];
-        self.RoomViewController.room = sender;
+        //self.RoomViewController = [segue destinationViewController];
+
+        SRDetailViewController *newRoomVC = [segue destinationViewController];
+        newRoomVC.room = sender;
     }
 }
 

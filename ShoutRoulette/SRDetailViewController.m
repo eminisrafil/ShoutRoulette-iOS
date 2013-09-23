@@ -7,16 +7,17 @@
 //
 
 #import "SRDetailViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
-static int topOffsetUser = 3;
-static int xOffsetUser = 4;
+//static int topOffsetUser = 3;
+//static int xOffsetUser = 4;
 static int topOffsetOpponent = 6;
 static int xOffsetOpponent = 7;
 static double opponentVidHeight = 220;
 static double opponentVidWidth = 300;
-static double userVidHeight = 86;
-static double userVidWidth = 87;
-static bool subscribeToSelf = NO;
+//static double userVidHeight = 86;
+//static double userVidWidth = 87;
+//static bool subscribeToSelf = NO;
 
 @interface SRDetailViewController ()
 
@@ -24,64 +25,151 @@ static bool subscribeToSelf = NO;
 @property (strong, nonatomic) NSString* kSessionId;
 @property (strong, nonatomic) NSString* kToken;
 
+@property BOOL safe;
+@property (strong, nonatomic) NSString* state;
+@property NSInteger* connectionCount;
 @end
 
 @implementation SRDetailViewController
 
-//set to nil just incase
+
 -(void)viewWillAppear:(BOOL)animated{
-    self.subscriber = nil;
-    self.session = nil;
-    self.publisher= nil;
-    
+    self.safe = YES;
+    NSLog(@"ROOM DID APPEAR");
 }
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.kApiKey = @"20193772"; //<--yes i know this is here. 
-    self.kSessionId = @""; 
-    self.kToken = @"";
-    
-    self.opentokQueue = dispatch_queue_create("OPentTokStopCrashingPlease", NULL);
+    [self configOpentTok];
     [self performGetRoomRequest];
+    [self configNavBar];
+    [self configNotifcations];
+    
+    //[self updateStatusLabel:@"Connecting" withColor:[UIColor blackColor]];
 
 }
+
+-(void) configOpentTok{   
+    [self.openTokHandler registerUserVideoStreamContainer:self.userScreenContainer];
+    [self.openTokHandler registerOpponentOneVideoStreamContainer:self.opponentScreenContainer];
+}
+
+-(void) configNavBar
+{
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(pressBackButton)];
+    UIImage *backButtonImage = [UIImage imageNamed:@"backButton"];
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setFrame:CGRectMake(0, 0, 47, 32)];
+    [backButton setImage:backButtonImage forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(pressBackButton) forControlEvents:UIControlEventAllEvents];
+    UIBarButtonItem *navBackButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    [self.navigationItem setLeftBarButtonItem:navBackButton];
+    
+    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:backButton style: UIBarButtonItemStyleBordered target:self action:@selector(pressBackButton)];
+    //[[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButton forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    //[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1000, -1000)forBarMetrics:UIBarMetricsDefault];
+}
+
+-(void)pressBackButton{
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    [self manageSafeClose];
+    
+    [self.openTokHandler safetlyCloseSession];
+    double delayInSeconds = 0;
+    //[self updateStatusLabel:@"Disconnecting" withColor:[UIColor grayColor]];
+
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.navigationController popViewControllerAnimated:YES];
+    //});
+}
+
+-(void)configNotifcations
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(recieveNotification:)
+                                                 name:kSROpenTokVideoHandlerNotifcations
+                                               object:nil
+     ];
+}
+
+-(void)recieveNotification:(NSNotification *)notification
+{
+    if ([[notification name] isEqualToString:kSROpenTokVideoHandlerNotifcations]){
+        NSDictionary *userInfo = notification.userInfo;
+        NSNumber *message = [userInfo objectForKey:@"message"];
+        [self statusMessage: message];
+    }
+}
+
+-(void)statusMessage:(NSNumber*)message{
+    
+        NSString *result = nil;
+        
+        switch([message intValue]) {
+            case 0:
+                result = @"Disconnected";
+                break;
+            case 1:
+                result = @"Connecting...";
+                break;
+            case 2:
+                result = @"Publishing Your Video...";
+                break;
+            case 3:
+                result = @"Searching for Idiots...";
+                break;
+            case 4:
+                result = @"Start Shouting!";
+                break;
+            case 5:
+                result = @"Opponent Stopped Shouting! You Win!";
+                break;
+            case 6:
+                result = @"Disconnecting...";
+                break;
+                
+                
+            default:
+                result = @"Retry";
+        }
+
+    [self updateStatusLabel:result withColor:[self statusLabelColorPicker:message]];
+    NSLog(@"STATUS LABEL UPDATE: %@", message);
+
+}
+
+-(UIColor*)statusLabelColorPicker:(NSString *)Message{
+    return [UIColor blackColor];
+
+}
+
 -(void)performGetRoomRequest{
     [[RKObjectManager sharedManager] getObject:self.room
                                           path:nil
                                     parameters:nil
         success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
-            self.kToken = self.room.token;
-            self.kSessionId = self.room.sessionId;
+            self.openTokHandler.kToken = self.room.token;
+            self.openTokHandler.kSessionId = self.room.sessionId;
             self.roomTitle.text = self.room.title;
-            [self doConnect];
+            self.navigationController.title = self.room.position;
+            [self.openTokHandler doConnectToRoomWithSession];
         }failure:^(RKObjectRequestOperation *operation, NSError *error){
-            NSLog(@"HERE ARE SUCCESS THE RESULTS %@", error);
+            //Retry?
     }];
 }
 
--(void)viewWillDisappear:(BOOL)animated{    
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-}
 
 -(void)viewDidDisappear:(BOOL)animated{
+    [self doCloseRoomId:self.room.roomId position:self.room.position];
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    NSLog(@"ROOM DISAPPEARED! ");
+}
 
-    //dispatch_async(self.opentokQueue, ^{
-    [self.session removeObserver:self forKeyPath:@"connectionCount"];
-    if(self.subscriber){
-        [self.subscriber close];
-        self.subscriber = nil;
-    }
-    if (self.publisher) {
-        [self doUnpublish];
-    }
-    
-    if (self.session) {
-        [self.session disconnect];
-        self.session=nil;
-    }
-    //});
+-(void)manageSafeClose{
     [self doCloseRoomId:self.room.roomId position:self.room.position];
 }
 
@@ -94,177 +182,57 @@ static bool subscribeToSelf = NO;
      ];
 }
 
-
 //listen for connection changes to update status label
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@"connectionCount"]) {
-        [self setStatusLabel];
-    }
+    //if ([keyPath isEqualToString:@"connectionCount"]) {
+        //[self setStatusLabel];
+    //}
 }
 
-- (void)setStatusLabel
+
+#pragma mark - label
+- (void)updateStatusLabel:(NSString *) message withColor:(UIColor*) color
 {
-    if (self.session && self.session.connectionCount == 1) {
-     //self.statusLabel.text = [NSString stringWithFormat:@"Connections: %d Streams: %d", _session.connectionCount, _session.streams.count];
-        self.statusLabel.text = @"Connected";
-    }
+    self.statusLabel.text = message;
+    [self fadeOutFadeInAnimation:self.statusLabel andColor:color];
+}
+
+- (void)fadeOutFadeInAnimation:(UILabel *)label andColor:(UIColor*)color
+{
+    //Customize animation
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    animation.FromValue = [NSNumber numberWithFloat:0.2f];
+    animation.toValue = [NSNumber numberWithFloat:1.0f];
+    animation.autoreverses = YES;
+    //animation.BeginTime = CACurrentMediaTime()+.8;
+    //animation.timingFuncti on = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseOut];
+    animation.removedOnCompletion = NO;
+    animation.duration = 1;
+    animation.repeatCount = 99;
     
+    //add animation
+    [label.layer addAnimation:animation forKey:nil];
+    
+    //change label color
+    label.textColor = color;
+}
+
+-(void)stopAnimations:(UIView*) view{
+    [view.layer removeAllAnimations];
+}
+
+-(UIColor *)darkGreen{
+    return [UIColor colorWithRed:(0/255.0) green:(104/255.0) blue:(0/255.0) alpha:1];
+}
+
+-(void)retryButtonPressed:(id)sender{
+    [self doCloseRoomId:self.room.roomId position:self.room.position];
+    [self performGetRoomRequest];
     
 }
 
-#pragma mark - OpenTok methods
-- (void)updateSubscriber
-{
-    for (NSString* streamId in self.session.streams) {
-        OTStream* stream = [self.session.streams valueForKey:streamId];
-        if (stream.connection.connectionId != self.session.connection.connectionId) {
-            self.subscriber = [[OTSubscriber alloc] initWithStream:stream delegate:self];
-            break;
-        }
-    }
-}
 
-#pragma mark - OpenTok methods
-//Connect to a new room
-- (void)doConnect
-{    self.session = [[OTSession alloc] initWithSessionId:self.kSessionId
-                                           delegate:self];
-    [self.session addObserver:self
-               forKeyPath:@"connectionCount"
-                  options:NSKeyValueObservingOptionNew
-                  context:nil];
-    [self.session connectWithApiKey:self.kApiKey token:self.kToken];
-}
-
-- (void)doDisconnect
-{
-    [self.session disconnect];
-}
-
-//Publish the users stream. (Smaller box)
-- (void)doPublish
-{
-    self.publisher = [[OTPublisher alloc] initWithDelegate:self name:UIDevice.currentDevice.name];
-    self.publisher.publishAudio = YES;
-    self.publisher.publishVideo = YES;
-    [self.session publish:self.publisher];
-    
-    [self.publisher.view setFrame:CGRectMake(xOffsetUser, topOffsetUser, userVidWidth, userVidHeight)];
-    self.publisher.view.layer.cornerRadius = 2;
-    self.publisher.view.layer.borderWidth = 1;
-    [self.userScreenContainer addSubview:self.publisher.view];
-}
-
-
-
-//Unpublish user stream
-- (void)doUnpublish
-{
-    if (self.publisher) {
-        [self.session unpublish:self.publisher];
-        self.publisher = nil;
-    }
-}
-
-#pragma mark - OTSessionDelegate methods
-//Room is ready for shouting
-- (void)sessionDidConnect:(OTSession*)session
-{
-   [self doPublish];
-   // NSLog(@"sessionDidConnect: %@", session.sessionId);
-   // NSLog(@"- connectionId: %@", session.connection.connectionId);
-}
-
-- (void)sessionDidDisconnect:(OTSession*)session
-{
-    NSLog(@"sessionDidDisconnect: %@", session.sessionId);
-}
-
-- (void)session:(OTSession*)session didFailWithError:(OTError*)error
-{
-    NSLog(@"session: didFailWithError:");
-    NSLog(@"- error code: %d", error.code);
-    NSLog(@"- description: %@", error.localizedDescription);
-}
-
-- (void)session:(OTSession*)mySession didReceiveStream:(OTStream*)stream
-{
-    NSLog(@"session: didReceiveStream:");
-    //NSLog(@"- connection.connectionId: %@", stream.connection.connectionId);
-    //NSLog(@"- connection.creationTime: %@", stream.connection.creationTime);
-    //NSLog(@"- session.sessionId: %@", stream.session.sessionId);
-    //NSLog(@"- streamId: %@", stream.streamId);
-    //NSLog(@"- type %@", stream.type);
-    //NSLog(@"- creationTime %@", stream.creationTime);
-    //NSLog(@"- name %@", stream.name);
-    if ( (subscribeToSelf && [stream.connection.connectionId isEqualToString: self.session.connection.connectionId])
-        ||
-        (!subscribeToSelf && ![stream.connection.connectionId isEqualToString: self.session.connection.connectionId])
-        ) {
-        if (!self.subscriber) {
-            self.subscriber = [[OTSubscriber alloc] initWithStream:stream delegate:self];
-            self.subscriber.subscribeToAudio = YES;
-            self.subscriber.subscribeToVideo = YES;
-        }
-    }
-}
-
-- (void)session:(OTSession*)session didDropStream:(OTStream*)stream
-{
-    NSLog(@"session didDropStream (%@)", stream.streamId);
-    if (!subscribeToSelf
-        && self.subscriber
-        && [self.subscriber.stream.streamId isEqualToString: stream.streamId]) {
-        self.subscriber = nil;
-        [self updateSubscriber];
-    }
-}
-
-#pragma mark - User Stream - OTPublisherDelegate methods
-
-- (void)publisher:(OTPublisher*)publisher didFailWithError:(OTError*) error
-{
-    NSLog(@"publisher: %@ didFailWithError:", publisher);
-    NSLog(@"- error code: %d", error.code);
-    NSLog(@"- description: %@", error.localizedDescription);
-}
-
-- (void)publisherDidStartStreaming:(OTPublisher *)publisher
-{
-    //NSLog(@"publisherDidStartStreaming: %@", publisher);
-    //NSLog(@"- publisher.session: %@", publisher.session.sessionId);
-    NSLog(@"- publisher.name: %@", publisher.name);
-    self.statusLabel.text = @"publishing...";
-}
-
--(void)publisherDidStopStreaming:(OTPublisher*)publisher
-{
-    //self._publishButton.hidden = NO;
-    NSLog(@"publisherDidStopStreaming:%@", publisher);
-}
-
-#pragma mark - Opponent Stream - OTSubscriberDelegate methods
-//opponent connected
-- (void)subscriberDidConnectToStream:(OTSubscriber*)subscriber
-{
-    NSLog(@"subscriberDidConnectToStream (%@)", subscriber.stream.connection.connectionId);
-    [subscriber.view setFrame:CGRectMake(xOffsetOpponent, topOffsetOpponent, opponentVidWidth, opponentVidHeight)];
-    subscriber.view.layer.cornerRadius = 2;
-    subscriber.view.layer.borderWidth = 1;
-    [self.opponentScreenContainer addSubview:subscriber.view];
-}
-
-- (void)subscriberVideoDataReceived:(OTSubscriber*)subscriber {
-    NSLog(@"subscriberVideoDataReceived (%@)", subscriber.stream.streamId);
-}
-
-- (void)subscriber:(OTSubscriber *)subscriber didFailWithError:(OTError *)error
-{
-    NSLog(@"subscriber: %@ didFailWithError: ", subscriber.stream.streamId);
-    NSLog(@"- code: %d", error.code);
-    NSLog(@"- description: %@", error.localizedDescription);
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -272,4 +240,17 @@ static bool subscribeToSelf = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
 @end
+
+//- (void)updateSubscriber
+//{
+//    NSLog(@"updateing subscriber");
+//    for (NSString* streamId in self.session.streams) {
+//        OTStream* stream = [self.session.streams valueForKey:streamId];
+//        if (stream.connection.connectionId != self.session.connection.connectionId) {
+//            self.subscriber = [[OTSubscriber alloc] initWithStream:stream delegate:self];
+//            break;
+//        }
+//    }
+//}

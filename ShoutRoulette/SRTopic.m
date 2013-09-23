@@ -9,4 +9,15 @@
 #import "SRTopic.h"
 
 @implementation SRTopic
+
+
+- (BOOL)isEqual:(id)object {
+    if (![object isKindOfClass:[SRTopic class]]) {
+        return NO;
+    }  
+    
+    SRTopic *other = (SRTopic *)object;
+    return [other.topicId intValue] == [self.topicId intValue];
+}
+
 @end

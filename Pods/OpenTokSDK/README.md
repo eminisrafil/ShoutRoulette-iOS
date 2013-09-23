@@ -5,11 +5,11 @@ This package contains what you need to get you started using the OpenTok iOS SDK
 
 The OpenTok iOS SDK lets you use OpenTok video sessions in apps you build for iPad, iPhone, and iPod touch devices.
 This means you can use OpenTok video sessions that connect iOS users with each other and with web clients.
-For information on OpenTok, see http://www.tokbox.com/.
+For information on OpenTok, see http://tokbox.com/.
 
 Documentation of the SDK is available here: 
 
-http://www.tokbox.com/opentok/ios/docs/index.html
+http://tokbox.com/opentok/v1/libraries/client/ios/index.html
 
 The OpenTokHelloWorld project is simplest sample app. The OpenTokBasic sample uses more of the API. These sample apps are also at GitHub:
 
@@ -21,11 +21,15 @@ Support is available at the OpenTok forums: http://www.tokbox.com/forums/
 Release Notes
 -------------
 
+September 17, 2003 - Version 1.4.3
+
+* Fixed a bug that caused clients running iOS 7 to crash.
+
 May 16, 2013 - Version 1.4.2
 
 * Fixed some issues with running OpenTok applications in the background.
 * Added native support for armv7s architecture.
-* Fixed a bug that was causing inconsistent UI when manipulating media track functions (eg. publishVideo, subscribeToAudio, etc.)
+* Fixed a bug that was causing inconsistent UI when manipulating media track functions (e.g. publishVideo, subscribeToAudio, etc.)
 
 April 9, 2013 - Version 1.4.1
 
@@ -108,7 +112,7 @@ in the Opentok.framework/Versions/A/Resources subdirectory of the OpenTok iOS SD
 We cannot pre-link them in the OpenTok framework, so your project must link them. Expand the "Frameworks" directory
 of the sample application in XCode project browser. Drag and drop the contents of this directory into your own iOS project.
 
-You can connect to the same OpenTok session that the OpenTokHello sample app uses by going to http://www.tokbox.com/opentok/docs/js/tutorials//helloworld.html. You can generate a new session ID at this URL:
+You can generate a new session ID at this URL:
 
 https://dashboard.tokbox.com/projects
 
@@ -146,6 +150,13 @@ to copy them from the OpenTokHello sample app.
 	The additional frameworks and libraries include the following: AudioToolbox.framework, AVFoundation.framework, CFNetwork.framework,
 	CoreAudio.framework, CoreMedia.framework, CoreTelephony.framework, CoreVideo.framework, libz.dylib, libstdc++.dylib, MobileCoreServices.framework,
 	OpenGLES.framework, QuartzCore.framework, Security.framework, SystemConfiguration.framework.
+
+6. When running in the background, the OpenTok SDK requires certain Info.pList settings to continue publishing and subscribing to
+audio video streams. In XCode, open Info tab for your app's target and add a Required Background Modes entry (if it does not already
+exist). Add the following to the list of required background modes:
+
+	- App plays audio
+	- App provides Voice over IP services
 
 Next steps:
 

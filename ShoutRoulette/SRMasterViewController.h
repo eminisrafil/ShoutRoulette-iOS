@@ -14,11 +14,10 @@
 #import "SRDetailViewController.h"
 
 @interface SRMasterViewController : UIViewController<CollapseClickDelegate, SRChoiceBoxDelegate, SRPostTopicDelegate>
-@property (weak) IBOutlet CollapseClick *CollapseClickCell;
+@property (weak, nonatomic) IBOutlet CollapseClick *CollapseClickCell;
 @property (weak, nonatomic) IBOutlet UIView *postShoutContainer;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UIView *statusLabelContainer;
-@property (strong, nonatomic) SRDetailViewController *RoomViewController;
 
 
 @end
