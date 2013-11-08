@@ -1,4 +1,3 @@
-
 //
 //  SRMasterViewController.m
 //  ShoutRoulette
@@ -8,237 +7,498 @@
 //
 
 #import "SRMasterViewController.h"
+#import "SRDetailViewController.h"
+#import "SRCollapsibleCell.h"
+#import "SRAPI.h"
+
+#import "SRUrlHelper.h"
+#import "SRNavBarHelper.h"
+#import "SRAnimationHelper.h"
+
 #import "UIScrollView+SVPullToRefresh.h"
 #import "UIScrollView+SVInfiniteScrolling.h"
 
 
-
-@interface SRMasterViewController () {
-    NSMutableArray *_objects;
-}
+@interface SRMasterViewController ()
 @property NSInteger offset;
+@property NSInteger totalPages;
+@property NSMutableArray *topicsArray;
+@property BOOL isPaginatorLoading;
+
 @end
 
 @implementation SRMasterViewController
 
--(void) viewWillAppear:(BOOL)animated{
-    //setup nav button
-    UIImage *rightButtonImage = [UIImage imageNamed:@"logo"];
+- (void)viewDidLoad {
+	[super viewDidLoad];
     
-    UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [rightButton setFrame:CGRectMake(0, 0, 30, 30)];
-    [rightButton addTarget:self action:@selector(showPostShout) forControlEvents:UIControlEventTouchUpInside];
-    [rightButton setImage:rightButtonImage forState:UIControlStateNormal];
-    
-     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+	[self configureTableView];
+	[self configureNavBar];
+	[SRAPI sharedInstance];
+	[self paginate];
+	self.openTokHandler = [SROpenTokVideoHandler new];
+	[self configureNotifications];
+	[self configurePostTopicContainer];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [SRAPI sharedInstance];
-    
-    //set offset for loading tabledata
-    self.offset = 1;
-    
-    //configure container for posting shouts
-    SRPostTopic *postShout = [[SRPostTopic alloc]initWithFrame:CGRectMake(0, 0, 320, 133)];
-    [self.postShoutContainer addSubview:postShout];
-    postShout.delegate = self;
-    
-    //Collapseable Click "TableView"
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(CCUpdate:) name:@"CollapseClickUpdated" object:nil];
-    self.CollapseClickCell.CollapseClickDelegate = self;
-    [self loadTableData];
-    
-    //attach pulltorefresh/infinite scroll
-    [self attachPullToRefresh:self.CollapseClickCell];
-    self.CollapseClickCell.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+- (void)configureNotifications {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchNewTopicsAndReloadTableData) name:kSRFetchNewTopicsAndReloadTableData object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchRoomWithUrl:) name:kSRFetchRoomFromUrl object:nil];
 }
 
--(void)loadTableData{
-    NSNumber *NSNumberOffset = @(self.offset);
-    NSDictionary * param = @{@"?page=": NSNumberOffset};
-    [[RKObjectManager sharedManager] getObjectsAtPath:@"http://srapp.herokuapp.com/" parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
-        NSArray* topicsArray = [mappingResult array];
-        _objects = [topicsArray copy];
-        if(self.isViewLoaded){
-            [self.CollapseClickCell.pullToRefreshView stopAnimating];
-            [self.CollapseClickCell.infiniteScrollingView stopAnimating];
-            [self.CollapseClickCell reloadCollapseClick];
+- (void)fetchNewTopicsAndReloadTableData {
+	self.offset = 1;
+	[self.topicsTableView.infiniteScrollingView startAnimating];
+	[self paginate];
+}
+
+- (void)fetchRoomWithUrl:(NSNotification *)notificaiton {
+	NSURL *url = notificaiton.userInfo[@"url"];
+	NSDictionary *query = [SRUrlHelper parseQueryString:[url query]];
+	SRRoom *room = [[SRRoom alloc] init];
+	room.position  = (NSString *)[url pathComponents][3];
+	room.topicId = [url pathComponents][2];
+	room.sessionId = query[@"q"];
+    
+	[self performSegueWithIdentifier:kSRMasterVCPushToDetailVC sender:room];
+}
+
+- (void)configureNavBar {
+	UIBarButtonItem *rightPostTopicButton =
+    [SRNavBarHelper buttonForNavBarWithImage:[UIImage imageNamed:@"logo"]
+                            highlightedImage:nil
+                                    selector:@selector(showPostTopicContainer)
+                                      target:self
+     ];
+	self.navigationItem.rightBarButtonItem = rightPostTopicButton;
+    
+	UIBarButtonItem *leftShuffleButton =
+    [SRNavBarHelper buttonForNavBarWithImage:[UIImage imageNamed:@"shuffle.png"]
+                            highlightedImage:[UIImage imageNamed:@"shufflePressed.png"]
+                                    selector:@selector(joinRandomRoom)
+                                      target:self
+     ];
+	self.navigationItem.leftBarButtonItem = leftShuffleButton;
+}
+
+- (void)joinRandomRoom {
+	NSMutableArray *activeTopics = [self activeTopicsWithPeopleInThem];
+	SRRoom *randomRoom = [self randomRoom:activeTopics];
+    
+	[self performSegueWithIdentifier:kSRMasterVCPushToDetailVC sender:randomRoom];
+}
+
+- (NSMutableArray *)activeTopicsWithPeopleInThem {
+	NSMutableArray *activeTopics = [NSMutableArray new];
+    
+	for (SRTopic *topic in self.topicsArray) {
+		if ([topic.agreeDebaters integerValue] > 0 || [topic.disagreeDebaters integerValue] > 0) {
+			[activeTopics addObject:topic];
+		}
+	}
+    
+	return activeTopics;
+}
+
+- (SRRoom *)randomRoom:(NSMutableArray *)topicsArray {
+	SRTopic *randomTopic;
+	SRRoom *randomRoom = [SRRoom new];
+	int numberOfTopics = topicsArray.count;
+    
+	if (numberOfTopics > 0) {
+		int randomNum = arc4random() % numberOfTopics;
+		randomTopic = (SRTopic *)topicsArray[randomNum];
+        
+		if (randomTopic.agreeDebaters.intValue > randomTopic.disagreeDebaters.intValue) {
+			randomRoom.position  = @"disagree";
+		}
+		else if (randomTopic.agreeDebaters.intValue < randomTopic.disagreeDebaters.intValue) {
+			randomRoom.position  = @"agree";
+		}
+		else {
+			randomRoom.position = [self randomlyChooseAgreeDisagree];
+		}
+	}
+	else {
+		int randomNum = arc4random() % self.topicsArray.count;
+		randomTopic = (SRTopic *)self.topicsArray[randomNum];
+		randomRoom.position = [self randomlyChooseAgreeDisagree];
+	}
+	randomRoom.topicId = randomTopic.topicId;
+	return randomRoom;
+}
+
+
+- (NSString *)randomlyChooseAgreeDisagree {
+	int r = arc4random() % 2;
+	return (r == 0) ? @"agree" : @"disagree";
+}
+
+- (void)configureTableView {
+	self.offset = 1;
+    
+	UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+	[refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+	[self.topicsTableView addSubview:refreshControl];
+    
+	[self addInfiniteScrolling:self.topicsTableView];
+    
+	self.openCellIndex = nil;
+    
+	self.topicsTableView.layer.shouldRasterize = YES;
+	self.topicsTableView.layer.rasterizationScale = [[UIScreen mainScreen] scale];
+}
+
+- (void)configurePostTopicContainer {
+	SRPostTopic *postTopic = [[SRPostTopic alloc]initWithFrame:CGRectMake(0, 0, 320, 133)];
+	[self.postTopicContainer addSubview:postTopic];
+	postTopic.delegate = self;
+}
+
+- (void)addInfiniteScrolling:(UITableView *)tableView {
+	[tableView addInfiniteScrollingWithActionHandler: ^(void) {
+	    self.offset += 1;
+	    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+	        [self paginate];
+	        double delayInSeconds = 0.8;
+	        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	        dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+	            [self.topicsTableView.infiniteScrollingView stopAnimating];
+			});
+		});
+	}];
+    
+	self.topicsTableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+}
+
+- (void)refresh:(UIRefreshControl *)refreshControl {
+	self.offset = 1;
+	self.openCellIndex = nil;
+    
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+	    [self paginate];
+	    double delayInSeconds = 1;
+	    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+	        [refreshControl endRefreshing];
+		});
+	});
+}
+
+- (void)paginate {
+	__weak typeof(self) weakSelf = self;
+    
+	if (!self.paginator) {
+		self.paginator.perPage = 20;
+		NSString *requestString = [NSString stringWithFormat:kSRPaginationParamterString];
+		self.paginator = [[RKObjectManager sharedManager] paginatorWithPathPattern:requestString];
+        
+		[self.paginator setCompletionBlockWithSuccess: ^(RKPaginator *paginator, NSArray *objects, NSUInteger page) {
+		    NSMutableArray *topicsArrayTemp = [objects mutableCopy];
+		    weakSelf.isPaginatorLoading = NO;
             
-            NSLog(@"%d offset", self.offset);
-        }
-    }failure:^(RKObjectRequestOperation *operation, NSError *error){
-        [self.CollapseClickCell.pullToRefreshView stopAnimating];
-        [self noResults];
-    }];
+		    if (weakSelf.offset == 1) {
+		        [weakSelf replaceRowsInTableView:topicsArrayTemp];
+			}
+		    else {
+		        [weakSelf insertRowsInTableView:topicsArrayTemp];
+			}
+		    [weakSelf.topicsTableView.infiniteScrollingView stopAnimating];
+		} failure: ^(RKPaginator *paginator, NSError *error) {
+		    weakSelf.isPaginatorLoading = NO;
+		    [weakSelf.topicsTableView.infiniteScrollingView stopAnimating];
+		    [weakSelf.self noResults];
+		}];
+	}
+    
+	if (!weakSelf.isPaginatorLoading) {
+		weakSelf.isPaginatorLoading = YES;
+		[self.paginator loadPage:self.offset];
+	}
 }
 
--(void)noResults{
-    //clear table data
-    UIView *retain = self.CollapseClickCell.subviews[0];
-    [self.CollapseClickCell.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-    
-    //reset pull to refresh
-    [self.CollapseClickCell removePullToRefresh];
-    
-    //load imageView
-    UIImageView *noResultsImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"noInternet.png"]];
-    
-    //center it + add it
-    noResultsImageView.frame = CGRectOffset(noResultsImageView.frame, (self.view.frame.size.width -  noResultsImageView.frame.size.width)/2, (self.view.frame.size.height -  noResultsImageView.frame.size.height)/2);
-    [self.CollapseClickCell addSubview:noResultsImageView];
-    
-    //ensure contentsize large enough to allow pull to refresh
-    self.CollapseClickCell.contentSize =CGSizeMake(320, 420+retain.frame.size.height);
-    
-    [self.CollapseClickCell addPullToRefreshWithActionHandler:^(void){
-        [self loadTableData];
-    }];
-    //[self attachPullToRefresh:self.CollapseClickCell];
-    
-    
-    [self statusUpdate:@"Try Again"];
+- (void)noResults {
+	double delayInSeconds = 0.6;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+	    [self performSegueWithIdentifier:kSRMasterVCPushToNoResults sender:nil];
+	});
 }
 
--(void)attachPullToRefresh:(id)object{
-    //pull to refresh
-    [object addPullToRefreshWithActionHandler:^(void){
-        [self loadTableData];
-    }];
+#pragma mark - Posting a new topic
+//open/close container for posting topics
+- (void)showPostTopicContainer {
+	[self.view endEditing:YES];
+	CGRect newTableViewFrame = self.topicsTableView.frame;
+	CGRect newPostTopicFrame = self.postTopicContainer.frame;
+	float duration, alpha;
     
+	if ([self isPostTopicContainerOpen]) {
+		newTableViewFrame.origin.y -= 133;
+		newPostTopicFrame.origin.y -= 133;
+		duration = .3;
+		alpha = 0;
+	}
+	else {
+		newTableViewFrame.origin.y += 133;
+		newPostTopicFrame.origin.y += 133;
+		duration = .4;
+		alpha = 1;
+	}
     
-    //infinite scroll
-    [object addInfiniteScrollingWithActionHandler:^(void){
-        self.offset = self.offset + 1;
-        [self loadTableData];
-    }];
+	[UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations: ^{
+	    self.postTopicContainer.alpha = alpha;
+	    self.topicsTableView.frame = newTableViewFrame;
+	    self.postTopicContainer.frame = newPostTopicFrame;
+	} completion:nil];
 }
 
-//update fading status UILabel at the bottom of the screen
--(void)statusUpdate:(NSString *) message{    
-    self.statusLabel.text = message;
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    animation.FromValue = [NSNumber numberWithFloat:0.0f];
-    animation.toValue = [NSNumber numberWithFloat:1.0f];
-    animation.autoreverses = YES;
-    animation.BeginTime = CACurrentMediaTime()+.8;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseOut];
-    animation.removedOnCompletion = NO;
-    animation.duration = 2;
+- (BOOL)isPostTopicContainerOpen {
+	return (self.postTopicContainer.frame.origin.y < 0) ? NO : YES;
+}
+
+- (void)statusUpdate:(NSString *)message {
+	self.statusLabel.text = message;
+	[self.statusLabel.layer addAnimation:[SRAnimationHelper fadeOfSRMasterViewStatusLabel] forKey:nil];
+}
+
+- (void)postTopicButtonPressed:(NSString *)contents {
+	//set up params
+	NSDictionary *newTopic = @{ @"topic":contents };
     
-    [self.statusLabelContainer.layer addAnimation:animation forKey:nil];
-}
-
-#pragma mark - Posting a new shout/topic
-//open/close container for posting shouts
--(void)showPostShout{
-    [self.view endEditing:YES];
-    CGRect newCCFrame = self.CollapseClickCell.frame;
-    CGRect newPostShoutFrame = self.postShoutContainer.frame;
-    
-    if ([self isPostShoutContainerOpen]) {
-        newCCFrame.origin.y -= 133;
-        newPostShoutFrame.origin.y -= 133;
-        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.postShoutContainer.alpha = 0;
-            self.CollapseClickCell.frame= newCCFrame;
-            self.postShoutContainer.frame = newPostShoutFrame;
-        } completion: ^(BOOL finished){
-            //delete
-        }];
-    } else{
-        newCCFrame.origin.y += 133;
-        newPostShoutFrame.origin.y += 133;
-        [UIView animateWithDuration:.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.postShoutContainer.alpha = 1;
-            self.CollapseClickCell.frame= newCCFrame;
-            self.postShoutContainer.frame = newPostShoutFrame;
-        } completion: ^(BOOL finished){
-            //delete
-        }];
-    }
-}
-
--(BOOL) isPostShoutContainerOpen{
-    return (self.CollapseClickCell.frame.origin.y==0)? NO : YES;
-}
-
-//New shout was sent
--(void)postTopicButtonPressed:(NSString *)contents {
-    NSDictionary *newTopic = @{@"topic":contents};
-    [[RKObjectManager sharedManager] postObject:nil path:@"topics/new" parameters:newTopic success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
-            if([self isPostShoutContainerOpen]){
-                [self showPostShout];
-            }
-    } failure:^(RKObjectRequestOperation *operation, NSError *error){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"We weren't able to post your shout. Try again soon!" delegate:nil cancelButtonTitle:@"Sure" otherButtonTitles:nil, nil];
-        [alert show];
-    }];
-}
-#pragma mark -Collapse Click
--(void) CCUpdate:(NSNotification*)notification{
-    //Do something when scrollview is updated
-}
-
-//returns stats for each topic
--(NSDictionary*)statsForCollapseClick:(int)index{
-    SRTopic *loadedTopic = [_objects objectAtIndex:index];
-    NSDictionary *stats = @{
-                        @"agreeDebaters": loadedTopic.agreeDebaters,
-                        @"disagreeDebaters": loadedTopic.disagreeDebaters,
-                        @"observers": loadedTopic.observers
-                        };
-    return stats;
-}
-
--(int) numberOfCellsForCollapseClick{
-    return _objects.count;
-}
-
--(NSString *)titleForCollapseClickAtIndex:(int)index{
-    SRTopic *loadedTopic = [_objects objectAtIndex:index];
-    return loadedTopic.title;
-}
-
-//Displays content for expanded cell
--(UIView *)viewForCollapseClickContentViewAtIndex:(int)index{
-    SRTopic *loadedTopic = [_objects objectAtIndex:index];
-    SRChoiceBox *newBox = [[SRChoiceBox alloc] initWithLabel:[self statsForCollapseClick:index] andTopicID:loadedTopic.topicId andFrame: CGRectMake(5, 5, 310, 150)];
-    newBox.delegate = self;
-    return newBox;
+	[[RKObjectManager sharedManager] postObject:nil path:@"topics/new" parameters:newTopic success: ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+	    if ([self isPostTopicContainerOpen]) {
+	        //close post box if it's open
+	        [self showPostTopicContainer];
+		}
+	    [self statusUpdate:@"Topic Posted!"];
+	} failure: ^(RKObjectRequestOperation *operation, NSError *error) {
+	    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
+	                                                    message:@"We weren't able to post your shout. Try again soon!"
+	                                                   delegate:nil
+	                                          cancelButtonTitle:@"Sure"
+	                                          otherButtonTitles:nil, nil];
+	    [alert show];
+	}];
 }
 
 //Delegate for SRChoiceBox - user chooses Agree/Disagree/Observe
--(void) buttonWasPressed:(NSString *)choice topicId:(NSNumber *)topicId{
-    if([choice isEqualToString:@"observe"]){
-        return;
-    }
-    SRRoom *room = [[SRRoom alloc] init];
-    room.position  = choice;
-    room.topicId = topicId;
+- (void)positionWasChoosen:(NSString *)choice topicId:(NSNumber *)topicId {
+	SRRoom *room = [[SRRoom alloc] init];
+	room.position  = choice;
+	room.topicId = topicId;
     
-    [self performSegueWithIdentifier:@"showDetail" sender:room];
+	if ([choice isEqualToString:@"observe"]) {
+		[self performSegueWithIdentifier:kSRMasterVCPushToObserveVC sender:room];
+	}
+	else {
+		[self performSegueWithIdentifier:kSRMasterVCPushToDetailVC sender:room];
+	}
 }
 
--(void)didClickCollapseClickCellAtIndex:(int)index isNowOpen:(BOOL)open{
-
+- (void)segueToRoomWithTopicID:(NSNumber *)topicId andPosition:(NSString *)choice {
+	SRRoom *room = [[SRRoom alloc] init];
+	room.position  = choice;
+	room.topicId = topicId;
+    
+	if ([choice isEqualToString:@"observe"]) {
+		[self performSegueWithIdentifier:kSRMasterVCPushToObserveVC sender:room];
+	}
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    //close Post Shout Container
-    if (self.CollapseClickCell.frame.origin.y>0) {
-        [self showPostShout];
-    }
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([self isPostTopicContainerOpen]) {
+		[self showPostTopicContainer];
+	}
+    
+	if ([[segue identifier] isEqualToString:kSRMasterVCPushToDetailVC] || [[segue identifier] isEqualToString:kSRMasterVCPushToObserveVC]) {
+		if (self.openTokHandler) {
+			[self.openTokHandler safetlyCloseSession];
+		}
+		[[segue destinationViewController] setOpenTokHandler:self.openTokHandler];
+		[[segue destinationViewController] setRoom:sender];
+	}
+	sender = nil;
+}
 
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        //self.RoomViewController = [segue destinationViewController];
+#pragma mark - UITABLEVIEW
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return 1;
+}
 
-        SRDetailViewController *newRoomVC = [segue destinationViewController];
-        newRoomVC.room = sender;
-    }
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return [self.topicsArray count];
+}
+
+- (void)insertRowsInTableView:(NSMutableArray *)topics {
+	if (topics.count < 1) {
+		[self noNewResults];
+		return;
+	}
+    
+	NSMutableArray *temp = [NSMutableArray new];
+	int lastRowNumber = [self.topicsTableView numberOfRowsInSection:0] - 1;
+    
+	for (SRTopic *topic in topics) {
+		if (![self.topicsArray containsObject:topic]) {
+			[self.topicsArray addObject:topic];
+			NSIndexPath *ip = [NSIndexPath indexPathForRow:lastRowNumber inSection:0];
+			[temp addObject:ip];
+			++lastRowNumber;
+		}
+	}
+	if (temp.count < 1) {
+		[self noNewResults];
+		return;
+	}
+    
+	[self.topicsTableView beginUpdates];
+	[self.topicsTableView insertRowsAtIndexPaths:temp
+	                            withRowAnimation:UITableViewRowAnimationTop];
+	[self.topicsTableView endUpdates];
+}
+
+- (void)noNewResults {
+	int lastRowNumber = [self.topicsTableView numberOfRowsInSection:0] - 1;
+	[self statusUpdate:@"No New Topics. Check Back Soon!"];
+	[self.topicsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastRowNumber - 6 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	self.offset--;
+}
+
+- (void)replaceRowsInTableView:(NSMutableArray *)topics {
+	self.topicsArray = topics;
+    
+    
+	[UIView animateWithDuration:.3 delay:.5 options:UIViewAnimationOptionCurveEaseInOut animations: ^{
+	    self.topicsTableView.layer.opacity = 0;
+	} completion: ^(BOOL finished) {
+	    self.topicsTableView.layer.opacity = 1;
+	    [[self.topicsTableView layer] addAnimation:[SRAnimationHelper tableViewReloadDataAnimation] forKey:@"UITableViewReloadDataAnimationKey"];
+        
+	    self.topicsTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	    [self.topicsTableView reloadData];
+	}];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSString *CellIdentifier = kSRCollapsibleCellClosed;
+	SRCollapsibleCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[SRCollapsibleCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+	}
+    
+	SRTopic *topic = [self.topicsArray objectAtIndex:indexPath.row];
+	[cell updateWithTopic:topic];
+    
+	if ([self isCellOpen:indexPath]) {
+		CGAffineTransform transformation = CGAffineTransformMakeRotation(M_PI / 2);
+		cell.arrow.transform = transformation;
+		if (![self hasChoiceBox:cell]) {
+			[self insertChoiceBox:cell atIndex:indexPath];
+		}
+	}
+	else {
+		CGAffineTransform transformation = CGAffineTransformMakeRotation(0);
+		cell.arrow.transform = transformation;
+	}
+    
+    
+	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([self isCellOpen:indexPath]) {
+		[self closeCellAtIndexPath:indexPath];
+	}
+	else {
+		NSIndexPath *openCell = self.openCellIndex;
+		NSIndexPath *newOpenCell = indexPath;
+		[self closeCellAtIndexPath:openCell];
+		[self openCellAtIndexPath:newOpenCell];
+	}
+	[tableView beginUpdates];
+	[tableView endUpdates];
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([indexPath isEqual:self.openCellIndex]) {
+		return 217.0;
+	}
+	else {
+		return 63.0;
+	}
+}
+
+- (void)rotateCellArrowAtIndexPath:(NSIndexPath *)indexPath willOpen:(BOOL)willOpen animated:(BOOL)animated {
+	SRCollapsibleCell *cell = (SRCollapsibleCell *)[self.topicsTableView cellForRowAtIndexPath:indexPath];
+    
+	CGAffineTransform transformation;
+    
+	if (willOpen) {
+		transformation = CGAffineTransformMakeRotation(M_PI / 2);
+	}
+	else {
+		transformation = CGAffineTransformMakeRotation(0);
+	}
+    
+	if (animated) {
+		[UIView animateWithDuration:.2 delay:0 options:UIViewAnimationOptionCurveLinear animations: ^{
+		    cell.arrow.transform = transformation;
+		}  completion:nil];
+	}
+	else {
+		cell.arrow.transform = transformation;
+	}
+}
+
+- (BOOL)isCellOpen:(NSIndexPath *)indexPath {
+	return [indexPath isEqual:self.openCellIndex];
+}
+
+- (void)closeCellAtIndexPath:(NSIndexPath *)indexPath {
+	[self rotateCellArrowAtIndexPath:indexPath willOpen:NO animated:YES];
+	[self removeSRChoiceBoxFromCellAtIndexPath:indexPath];
+	self.openCellIndex = nil;
+}
+
+- (void)openCellAtIndexPath:(NSIndexPath *)indexPath {
+	[self rotateCellArrowAtIndexPath:indexPath willOpen:YES animated:YES];
+	SRCollapsibleCell *cell = (SRCollapsibleCell *)[self.topicsTableView cellForRowAtIndexPath:indexPath];
+	[self insertChoiceBox:cell atIndex:indexPath];
+	self.openCellIndex = indexPath;
+}
+
+- (void)removeSRChoiceBoxFromCellAtIndexPath:(NSIndexPath *)indexPath {
+	SRCollapsibleCell *cell = (SRCollapsibleCell *)[self.topicsTableView cellForRowAtIndexPath:indexPath];
+	for (id subview in cell.SRCollapsibleCellContent.subviews) {
+		if ([subview isKindOfClass:[SRChoiceBox class]]) {
+			[subview removeFromSuperview];
+		}
+	}
+}
+
+- (void)insertChoiceBox:(SRCollapsibleCell *)cell atIndex:(NSIndexPath *)indexPath {
+	SRChoiceBox *newBox = [[SRChoiceBox alloc] initWithFrame:CGRectMake(0, 0, 310, 141)];
+	SRTopic *topic = [self.topicsArray objectAtIndex:indexPath.row];
+	[newBox updateWithSRTopic:topic];
+	newBox.delegate = self;
+    
+	[cell.SRCollapsibleCellContent addSubview:newBox];
+}
+
+- (BOOL)hasChoiceBox:(SRCollapsibleCell *)cell {
+	for (UIView *subview in cell.SRCollapsibleCellContent.subviews) {
+		if ([subview isKindOfClass:[SRChoiceBox class]]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+- (void)dealloc {
+	//In theory, this VC should not be deallocated
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

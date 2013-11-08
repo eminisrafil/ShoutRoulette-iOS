@@ -10,6 +10,7 @@
 
 @interface SRNoResultsViewController : UIViewController
 
-@property IBOutlet UIScrollView *containerScrollView;
+@property (weak, nonatomic) IBOutlet UIScrollView *containerScrollView;
+@property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 
 @end

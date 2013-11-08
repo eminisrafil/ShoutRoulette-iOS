@@ -8,64 +8,42 @@
 
 #import "SRNoResultsViewController.h"
 #import "SVPullToRefresh.h"
-@interface SRNoResultsViewController ()
-
-@end
+#import <QuartzCore/QuartzCore.h>
+#import <TestFlight.h>
 
 @implementation SRNoResultsViewController
 
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self configureScrollViewContainer];
-    [self addCenteredImageTo:self.containerScrollView];
-
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	[self configureScrollViewContainer];
+	[self addCenteredImageTo:self.containerScrollView];
+	[TestFlight passCheckpoint:@"No-Results-ViewController"];
 }
 
--(void)configureScrollViewContainer{
-    //Make scrollview larger than frame to allow pullToRefresh
-    self.containerScrollView.contentSize = CGSizeMake(self.view.frame.size.width, (self.view.frame.size.height*1.20));
+- (void)configureScrollViewContainer {
+	self.containerScrollView.contentSize = CGSizeMake(self.view.frame.size.width, (self.view.frame.size.height * 1.20));
     
-    //add pullToRefresh
-    __weak SRNoResultsViewController *weakSelf = self;
-    [self.containerScrollView addPullToRefreshWithActionHandler:^(void){
-        [weakSelf performSelector:@selector(refresh) withObject:nil afterDelay:1.2];
-        //add more actions
-    }];
+	__weak SRNoResultsViewController *weakSelf = self;
+	[self.containerScrollView addPullToRefreshWithActionHandler: ^(void) {
+	    [weakSelf performSelector:@selector(refresh) withObject:nil afterDelay:1.2];
+	}];
     
+	[self.containerScrollView.pullToRefreshView setArrowColor:[UIColor whiteColor]];
 }
 
--(void)addCenteredImageTo:(UIView*)view{
-    //load image
-    UIImageView *noResultsImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"noInternet.png"]];
+- (void)addCenteredImageTo:(UIView *)view {
+	UIImageView *noResultsImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"noInternet.png"]];
     
-    //center it + add it
-    noResultsImageView.frame = CGRectOffset(noResultsImageView.frame, (self.view.frame.size.width -  noResultsImageView.frame.size.width)/2, (self.view.frame.size.height -  noResultsImageView.frame.size.height)/2);
+	noResultsImageView.frame = CGRectOffset(noResultsImageView.frame, (self.view.frame.size.width -  noResultsImageView.frame.size.width) / 2, (self.view.frame.size.height -  noResultsImageView.frame.size.height) / 2);
     
-    [self.view addSubview:noResultsImageView];
+	[view addSubview:noResultsImageView];
 }
 
-
--(void)refresh
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-    [self.parentViewController performSelector:@selector(loadTableData)];
-
-    //[self.parentViewController performSelector:@selector(loadt)];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+- (void)refresh {
+	[self dismissViewControllerAnimated:YES completion: ^{
+	    [[NSNotificationCenter defaultCenter] postNotificationName:kSRFetchNewTopicsAndReloadTableData object:nil];
+	}];
 }
 
 @end

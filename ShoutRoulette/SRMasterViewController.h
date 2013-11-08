@@ -1,23 +1,26 @@
 //
 //  SRMasterViewController.h
-//  ShoutRoulette
 //
-//  Created by emin on 5/7/13.
-//  Copyright (c) 2013 SR. All rights reserved.
+//
+//  Created by emin on 8/29/13.
+//
 //
 
 #import <UIKit/UIKit.h>
-#import "SRAPI.h"
-#import "CollapseClick.h"
-#import "SRChoiceBox.h"
+
 #import "SRPostTopic.h"
-#import "SRDetailViewController.h"
+#import "SRChoiceBox.h"
+#import "SROpenTokVideoHandler.h"
+#import "SRObserveViewController.h"
 
-@interface SRMasterViewController : UIViewController<CollapseClickDelegate, SRChoiceBoxDelegate, SRPostTopicDelegate>
-@property (weak, nonatomic) IBOutlet CollapseClick *CollapseClickCell;
-@property (weak, nonatomic) IBOutlet UIView *postShoutContainer;
+@interface SRMasterViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, SRChoiceBoxDelegate, SRPostTopicDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *topicsTableView;
+@property (weak, nonatomic) IBOutlet UIView *postTopicContainer;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
-@property (weak, nonatomic) IBOutlet UIView *statusLabelContainer;
 
+@property (strong, nonatomic) NSIndexPath *openCellIndex;
+@property (strong, nonatomic) RKPaginator *paginator;
+@property (strong, nonatomic) SROpenTokVideoHandler *openTokHandler;
 
 @end

@@ -7,20 +7,14 @@
 //
 
 #import "AFHTTPClient.h"
+#import "RKPaginator.h"
 #import <RestKit/RestKit.h>
-#import <SystemConfiguration/SystemConfiguration.h>
-#import "SRTopic.h"
-#import "SRRoom.h"
 //#import "Reachability.h"
 
-typedef void(^JSONResponse)(NSDictionary* JSON);
-
+typedef void (^JSONResponse)(NSDictionary *JSON);
 
 @interface SRAPI : AFHTTPClient
 
-@property (strong, nonatomic) NSDictionary* user;
-
-+(SRAPI *)sharedInstance;
-
++ (SRAPI *)sharedInstance;
 
 @end

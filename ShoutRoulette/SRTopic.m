@@ -12,12 +12,12 @@
 
 
 - (BOOL)isEqual:(id)object {
-    if (![object isKindOfClass:[SRTopic class]]) {
-        return NO;
-    }  
+	if (![object isKindOfClass:[SRTopic class]]) {
+		return NO;
+	}
     
-    SRTopic *other = (SRTopic *)object;
-    return [other.topicId intValue] == [self.topicId intValue];
+	SRTopic *other = (SRTopic *)object;
+	return [other.topicId intValue] == [self.topicId intValue];
 }
 
 @end

@@ -11,39 +11,61 @@
 
 @interface SROpenTokVideoHandler : NSObject <OTPublisherDelegate, OTSessionDelegate, OTSubscriberDelegate>
 
-@property (strong, nonatomic) NSString* kApiKey;
-@property (strong, nonatomic) NSString* kSessionId;
-@property (strong, nonatomic) NSString* kToken;
+@property (strong, nonatomic) NSString *kApiKey;
+@property (strong, nonatomic) NSString *kSessionId;
+@property (strong, nonatomic) NSString *kToken;
 
+@property (strong, nonatomic) OTSession *session;
+@property (strong, nonatomic) OTPublisher *publisher;
+@property (strong, nonatomic) OTSubscriber *subscriber;
+@property (strong, nonatomic) OTSubscriber *subscriber2;
 
-@property (strong, nonatomic) OTSession* session;
-@property (strong, nonatomic) OTPublisher* publisher;
-@property (strong, nonatomic) OTSubscriber* subscriber;
+//maybe make uservidestream strong because the pointer is lost and cant be nilled?
+@property (strong, nonatomic) UIView *userVideoStreamConatiner;
+@property (strong, nonatomic) NSString *userVideoStreamName;
+@property (strong, nonatomic) UIView *opponentOneVideoStreamConatiner;
+@property (strong, nonatomic) NSString *opponentOneVideoStreamName;
 
-@property (strong, nonatomic) UIView* userVideoStreamConatiner;
-@property (strong, nonatomic) UIView* opponentOneVideoStreamConatiner;
+typedef NS_ENUM(NSInteger, SROpenTokVideoHandlerState){
+	SROpenTokStateDisconnected = 0,
+	SROpenTokStateConnecting = 1,
+	SROpenTokStatePublishing = 2,
+	SROpenTokStateSearchingForOpponent = 3,
+	SROpenTokStateConnectedToOpponent = 4,
+	SROpenTokStateOpponentDisconnected = 5,
+	SROpenTokStateDisconnecting = 6,
+	SROpenTokStateFailure = 7,
+	SROpenTokStateTwoIncomingStreams = 88, //for observers
+	SROpenTokStateAllPublishersDisconnected = 99 //for observers
+};
 
-typedef enum {
-    disconnected = 0,
-    connecting = 1, 
-    publishing = 2,
-    searchingForOpponent = 3,
-    connectedToOpponent = 4,
-    opponentDisconnected = 5,
-    disconnecting = 6
-} SROpenTokVideoHandlerState;
+//typedef enum {
+//	disconnected = 0,
+//	connecting = 1,
+//	publishing = 2,
+//	searchingForOpponent = 3,
+//	connectedToOpponent = 4,
+//	opponentDisconnected = 5,
+//	disconnecting = 6,
+//	failure = 7,
+//	twoIncomingStreams = 88, //for observers
+//	allPublishersDisconnected = 99 //for observers
+//} SROpenTokVideoHandlerState2;
 
-@property SROpenTokVideoHandlerState SROpentTokVideoHandlerState; 
-
+@property SROpenTokVideoHandlerState SROpentTokVideoHandlerState;
 
 //default = YES
 @property BOOL shouldPublish;
-@property bool isPublishing;
-@property bool isShutDownSafe;
-- (void)doConnectToRoomWithSession;
-- (void)registerUserVideoStreamContainer:(UIView *) userVideo;
-- (void)registerOpponentOneVideoStreamContainer:(UIView *) opponentOneVideo;
-- (void)safetlyCloseSession;
+@property BOOL isPublishing;
+@property BOOL isShutDownSafe;
 
+//default =NO
+@property BOOL isObserving;
+
+//apikeys, token and session be passed appropriate values before connecting to a room/session
+- (void)doConnectToRoomWithSession;
+- (void)registerUserVideoStreamContainer:(UIView *)userVideo;
+- (void)registerOpponentOneVideoStreamContainer:(UIView *)opponentOneVideo;
+- (void)safetlyCloseSession;
 
 @end

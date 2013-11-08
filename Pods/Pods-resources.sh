@@ -25,4 +25,3 @@ install_resource()
       ;;
   esac
 }
-install_resource 'OpenTokSDK/Opentok.framework/Versions/A/Resources/opentok.bundle'

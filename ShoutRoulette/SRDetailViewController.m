@@ -7,250 +7,351 @@
 //
 
 #import "SRDetailViewController.h"
-#import <QuartzCore/QuartzCore.h>
-
-//static int topOffsetUser = 3;
-//static int xOffsetUser = 4;
-static int topOffsetOpponent = 6;
-static int xOffsetOpponent = 7;
-static double opponentVidHeight = 220;
-static double opponentVidWidth = 300;
-//static double userVidHeight = 86;
-//static double userVidWidth = 87;
-//static bool subscribeToSelf = NO;
+#import "SRNavBarHelper.h"
+#import "SRSocialSharing.h"
+#import "SRAnimationHelper.h"
+#import "SRStringHelper.h"
+#import <TestFlight.h>
 
 @interface SRDetailViewController ()
 
-@property (strong, nonatomic) NSString* kApiKey;
-@property (strong, nonatomic) NSString* kSessionId;
-@property (strong, nonatomic) NSString* kToken;
+typedef NS_ENUM (NSInteger, SRStatusKey) {
+	SRStatusKeyDisconnected = 0,
+	SRStatusKeyConnecting = 1,
+	SRStatusKeyPublishing = 2,
+	SRStatusKeySearchingForOpponent = 3,
+	SRStatusKeyOpponentConnected = 4,
+	SRStatusKeyOpponentDisconnected = 5,
+	SRStatusKeyDisconnecting = 6,
+	SRStatusKeyOpponentFailed = 7,
+	SRStatusKeyTimeExpired = 8
+};
 
-@property BOOL safe;
-@property (strong, nonatomic) NSString* state;
-@property NSInteger* connectionCount;
 @end
 
 @implementation SRDetailViewController
 
-
--(void)viewWillAppear:(BOOL)animated{
-    self.safe = YES;
-    NSLog(@"ROOM DID APPEAR");
-}
-
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self configOpentTok];
-    [self performGetRoomRequest];
-    [self configNavBar];
-    [self configNotifcations];
+#pragma - This & SRObserveViewController will be refactored SRVideoRoomViewController base class
+- (void)viewDidLoad {
+	[super viewDidLoad];
     
-    //[self updateStatusLabel:@"Connecting" withColor:[UIColor blackColor]];
-
+	[self configOpentTok];
+	[self performGetRoomRequest];
+	[self configNavBar];
+	[self configNotifcations];
+	[self configProgressBar];
+	[TestFlight passCheckpoint:@"Loaded-Detail-VC"];
 }
 
--(void) configOpentTok{   
-    [self.openTokHandler registerUserVideoStreamContainer:self.userScreenContainer];
-    [self.openTokHandler registerOpponentOneVideoStreamContainer:self.opponentScreenContainer];
-}
-
--(void) configNavBar
-{
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(pressBackButton)];
-    UIImage *backButtonImage = [UIImage imageNamed:@"backButton"];
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(0, 0, 47, 32)];
-    [backButton setImage:backButtonImage forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(pressBackButton) forControlEvents:UIControlEventAllEvents];
-    UIBarButtonItem *navBackButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+- (void)configSocialSharing {
+	for (UIView *subview in self.view.subviews) {
+		if ([subview isKindOfClass:[SRSocialSharing class]]) {
+			return;
+		}
+	}
     
-    [self.navigationItem setLeftBarButtonItem:navBackButton];
+	//add off screen
+	CGRect frame = CGRectMake(0, [[UIScreen mainScreen] bounds].size.height, [[UIScreen mainScreen] bounds].size.width, 44);
+	SRSocialSharing *share = [[SRSocialSharing alloc] initWithFrame:frame];
+	[self.view addSubview:share];
     
-    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:backButton style: UIBarButtonItemStyleBordered target:self action:@selector(pressBackButton)];
-    //[[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButton forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    //[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1000, -1000)forBarMetrics:UIBarMetricsDefault];
+	share.sharingURL = [self createUrlForSharing];
+	share.sharingMessage = [self createMessageForSharing];
+    
+	//animate in
+	frame = CGRectMake(0, [[UIScreen mainScreen] bounds].size.height - 100, [[UIScreen mainScreen] bounds].size.width, 44);
+	[UIView animateWithDuration:3 delay:2 options:UIViewAnimationOptionCurveEaseOut animations: ^{
+	    share.frame = frame;
+	} completion:nil];
 }
 
--(void)pressBackButton{
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-    [self manageSafeClose];
-    
-    [self.openTokHandler safetlyCloseSession];
-    double delayInSeconds = 0;
-    //[self updateStatusLabel:@"Disconnecting" withColor:[UIColor grayColor]];
-
-//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self.navigationController popViewControllerAnimated:YES];
-    //});
+- (NSURL *)createUrlForSharing {
+	NSString *shortSessionId = [SRStringHelper trimSessionId:self.room.sessionId];
+	NSString *urlString = [NSString stringWithFormat:@"%@invites/%@/%@?q=%@", kSRAPIHOST, self.room.topicId, [SRStringHelper opposingPosition:self.room.position], shortSessionId];
+	return [NSURL URLWithString:urlString];
 }
 
--(void)configNotifcations
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(recieveNotification:)
-                                                 name:kSROpenTokVideoHandlerNotifcations
-                                               object:nil
+- (NSString *)createMessageForSharing {
+	NSString *opponentsStance = [SRStringHelper opposingPosition:self.room.position];
+	opponentsStance = [SRStringHelper capitalizeFirstLetter:opponentsStance];
+    
+	return [NSString stringWithFormat:@"%@ | %@?", self.room.title, opponentsStance];
+}
+
+- (void)configOpentTok {
+	[self.openTokHandler registerUserVideoStreamContainer:self.userScreenContainer];
+	self.openTokHandler.userVideoStreamName = self.room.position;
+    
+	[self.openTokHandler registerOpponentOneVideoStreamContainer:self.opponentScreenContainer];
+	self.openTokHandler.opponentOneVideoStreamName = [SRStringHelper opposingPosition:self.room.position];
+    
+	self.openTokHandler.shouldPublish = YES;
+	self.openTokHandler.isObserving = NO;
+}
+
+- (void)configNavBar {
+	UIBarButtonItem *navBackButton =
+    [SRNavBarHelper buttonForNavBarWithImage:[UIImage imageNamed:@"backButton"]
+                            highlightedImage:nil
+                                    selector:@selector(pressBackButton)
+                                      target:self
+     ];
+	[self.navigationItem setLeftBarButtonItem:navBackButton];
+    
+	self.title = [SRStringHelper capitalizeFirstLetter:self.room.position];
+}
+
+- (void)pressBackButton {
+	[self replaceLeftNaveBarItemWithActivityView];
+	[self manageSafeClose];
+    
+	double delayInSeconds = kSRBackButtonDelayTime;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+	    [self.navigationController popViewControllerAnimated:YES];
+	});
+}
+
+- (void)replaceLeftNaveBarItemWithActivityView {
+	self.navigationItem.leftBarButtonItem.enabled = NO;
+	UIBarButtonItem *activityView = [SRNavBarHelper activityIndicatorNavButton];
+    
+	[self.navigationItem setLeftBarButtonItem:nil animated:YES];
+	[self.navigationItem setLeftBarButtonItem:activityView animated:YES];
+}
+
+- (void)configNotifcations {
+	[[NSNotificationCenter defaultCenter] addObserver:self
+	                                         selector:@selector(handleSROpenTokNotifications:)
+	                                             name:kSROpenTokVideoHandlerNotifcations
+	                                           object:nil
+     ];
+    
+	[[NSNotificationCenter defaultCenter] addObserver:self
+	                                         selector:@selector(appWillResignActive) name:UIApplicationWillResignActiveNotification object:nil
      ];
 }
 
--(void)recieveNotification:(NSNotification *)notification
-{
-    if ([[notification name] isEqualToString:kSROpenTokVideoHandlerNotifcations]){
-        NSDictionary *userInfo = notification.userInfo;
-        NSNumber *message = [userInfo objectForKey:@"message"];
-        [self statusMessage: message];
-    }
+- (void)appWillResignActive {
+	[self manageSafeClose];
+	[self.navigationController popViewControllerAnimated:NO];
 }
 
--(void)statusMessage:(NSNumber*)message{
+- (void)handleSROpenTokNotifications:(NSNotification *)notification {
+	if ([[notification name] isEqualToString:kSROpenTokVideoHandlerNotifcations]) {
+		NSDictionary *userInfo = notification.userInfo;
+		NSNumber *message = [userInfo objectForKey:@"message"];
+		[self updateRoomStatusForNumber:message];
+	}
+}
+
+- (NSDictionary *)statusKeysAndMessages {
+	NSDictionary *statusKeysAndMessages = @{ @0 : @"Disconnected",
+                                          @1 : @"Connecting...",
+                                          @2 : @"Publishing Your Video...",
+                                          @3 : @"Searching for Idiots...",
+                                          @4 : @"Start Shouting!",
+                                          @5 : @"Opponent Stopped Shouting! Well done!",
+                                          @6 : @"Disconnecting...",
+                                          @7 : @"Searching for Idiots...",
+                                          @8 : @"Time Up! Match Over! Searching...",
+                                          @77 : @"Searching for Idiots...",
+                                          @88 : @"Observing Idiots",
+                                          @99 : @"Everyone Left! Searching..." };
+	return statusKeysAndMessages;
+}
+
+- (void)updateRoomStatusForNumber:(NSNumber *)message {
+	NSString *result = [[self statusKeysAndMessages] objectForKey:message];
     
-        NSString *result = nil;
-        
-        switch([message intValue]) {
-            case 0:
-                result = @"Disconnected";
-                break;
-            case 1:
-                result = @"Connecting...";
-                break;
-            case 2:
-                result = @"Publishing Your Video...";
-                break;
-            case 3:
-                result = @"Searching for Idiots...";
-                break;
-            case 4:
-                result = @"Start Shouting!";
-                break;
-            case 5:
-                result = @"Opponent Stopped Shouting! You Win!";
-                break;
-            case 6:
-                result = @"Disconnecting...";
-                break;
-                
-                
-            default:
-                result = @"Retry";
-        }
-
-    [self updateStatusLabel:result withColor:[self statusLabelColorPicker:message]];
-    NSLog(@"STATUS LABEL UPDATE: %@", message);
-
+	switch ([message intValue]) {
+		case SRStatusKeyDisconnected:
+		case SRStatusKeyPublishing:
+		case SRStatusKeySearchingForOpponent:
+			break;
+            
+		case SRStatusKeyConnecting:
+			[self startRetryTimer];
+			break;
+            
+		case SRStatusKeyOpponentConnected:
+			[self startProgressBar];
+			[self stopTimer:self.retryTimer];
+			[TestFlight passCheckpoint:@"DetailVC-Connected-To-Opponent"];
+			break;
+            
+		case SRStatusKeyOpponentDisconnected:
+			[self closeSessionAndRetryWithDelay:6];
+			[self stopTimer:self.progressTimer];
+			break;
+            
+		case SRStatusKeyDisconnecting:
+			[self stopTimer:self.progressTimer];
+			break;
+            
+		case SRStatusKeyOpponentFailed:
+			[self closeSessionAndRetryWithDelay:3];
+			break;
+            
+		case SRStatusKeyTimeExpired:
+			[self closeSessionAndRetryWithDelay:5];
+			break;
+            
+		default:
+			result = @"Retry";
+	}
+    
+	[self updateStatusLabel:result withColor:[self statusLabelColorPicker:message] animated:YES];
+	NSLog(@"STATUS LABEL UPDATE: %@", result);
 }
 
--(UIColor*)statusLabelColorPicker:(NSString *)Message{
-    return [UIColor blackColor];
-
+- (void)closeSessionAndRetryWithDelay:(float)delay {
+	[self.openTokHandler safetlyCloseSession];
+	[self performSelector:@selector(retry) withObject:nil afterDelay:delay];
 }
 
--(void)performGetRoomRequest{
-    [[RKObjectManager sharedManager] getObject:self.room
-                                          path:nil
-                                    parameters:nil
-        success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
-            self.openTokHandler.kToken = self.room.token;
-            self.openTokHandler.kSessionId = self.room.sessionId;
-            self.roomTitle.text = self.room.title;
-            self.navigationController.title = self.room.position;
-            [self.openTokHandler doConnectToRoomWithSession];
-        }failure:^(RKObjectRequestOperation *operation, NSError *error){
-            //Retry?
-    }];
+- (UIColor *)statusLabelColorPicker:(NSNumber *)Message {
+	//will update colors depending on state later
+	return [UIColor whiteColor];
 }
 
-
--(void)viewDidDisappear:(BOOL)animated{
-    [self doCloseRoomId:self.room.roomId position:self.room.position];
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    NSLog(@"ROOM DISAPPEARED! ");
+- (void)performGetRoomRequest {
+	[TestFlight passCheckpoint:@"DetailVC-PerformedGetRoomRequest"];
+	__weak typeof(self) weakSelf = self;
+    
+	[[RKObjectManager sharedManager] getObject:weakSelf.room
+	                                      path:nil
+	                                parameters:nil
+	                                   success: ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+                                           weakSelf.openTokHandler.kToken = weakSelf.room.token;
+                                           weakSelf.openTokHandler.kSessionId = weakSelf.room.sessionId;
+                                           weakSelf.roomTitle.text = weakSelf.room.title;
+                                           weakSelf.navigationController.title = weakSelf.room.position;
+                                           [weakSelf configSocialSharing];
+                                           [weakSelf.openTokHandler doConnectToRoomWithSession];
+                                       } failure: ^(RKObjectRequestOperation *operation, NSError *error) {
+                                           [self performSelector:@selector(retry) withObject:nil afterDelay:4];
+                                       }];
 }
 
--(void)manageSafeClose{
-    [self doCloseRoomId:self.room.roomId position:self.room.position];
+- (void)manageSafeClose {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+	[self stopTimer:self.retryTimer];
+	[self stopTimer:self.progressTimer];
+	[self.openTokHandler safetlyCloseSession];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+	[self doPerformCloseRoomRequest];
 }
 
--(void)doCloseRoomId:(NSNumber *)roomId position:(NSString *)position{
-    [[RKObjectManager sharedManager] deleteObject:self.room
-                                             path:nil
-                                       parameters:nil
-                                          success:nil
-                                          failure:nil
+- (void)dealloc {
+	[SRAnimationHelper stopAnimations:self.statusLabel];
+	self.openTokHandler = nil;
+	self.room = nil;
+	self.title = nil;
+	self.navigationItem.leftBarButtonItem = nil;
+	[TestFlight passCheckpoint:@"DetailVC-Closed"];
+}
+
+- (void)doPerformCloseRoomRequest {
+	if (self.room.roomId.intValue < 1) {
+		return;
+	}
+	__weak typeof(self) weakSelf = self;
+    
+	[[RKObjectManager sharedManager] deleteObject:weakSelf.room
+	                                         path:nil
+	                                   parameters:nil
+	                                      success:nil
+	                                      failure:nil
      ];
 }
 
-//listen for connection changes to update status label
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    //if ([keyPath isEqualToString:@"connectionCount"]) {
-        //[self setStatusLabel];
-    //}
+- (void)startRetryTimer {
+	NSLog(@"Retry Timer Started");
+	self.retryTimer  = [NSTimer scheduledTimerWithTimeInterval:(60 * 2) //change to 5 min
+	                                                    target:self
+	                                                  selector:@selector(retry)
+	                                                  userInfo:nil
+	                                                   repeats:YES];
 }
 
+- (void)retry {
+	[self manageSafeClose];
+    
+	if ([self.navigationController.visibleViewController isKindOfClass:[SRDetailViewController class]]) {
+		double delayInSeconds = kSRBackButtonDelayTime;
+		dispatch_time_t popTime = (DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+		    [self configOpentTok];
+		    [self configNotifcations];
+		    [self performSelector:@selector(performGetRoomRequest) withObject:nil afterDelay:4];
+		});
+	}
+}
 
 #pragma mark - label
-- (void)updateStatusLabel:(NSString *) message withColor:(UIColor*) color
-{
-    self.statusLabel.text = message;
-    [self fadeOutFadeInAnimation:self.statusLabel andColor:color];
+- (void)updateStatusLabel:(NSString *)message withColor:(UIColor *)color animated:(BOOL)animated {
+	self.statusLabel.text = message;
+	if (animated) {
+		[self fadeOutFadeInAnimation:self.statusLabel andColor:color];
+	}
+	else {
+		[SRAnimationHelper stopAnimations:self.statusLabel];
+	}
 }
 
-- (void)fadeOutFadeInAnimation:(UILabel *)label andColor:(UIColor*)color
-{
-    //Customize animation
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    animation.FromValue = [NSNumber numberWithFloat:0.2f];
-    animation.toValue = [NSNumber numberWithFloat:1.0f];
-    animation.autoreverses = YES;
-    //animation.BeginTime = CACurrentMediaTime()+.8;
-    //animation.timingFuncti on = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseOut];
-    animation.removedOnCompletion = NO;
-    animation.duration = 1;
-    animation.repeatCount = 99;
+- (void)fadeOutFadeInAnimation:(UILabel *)label andColor:(UIColor *)color {
+	[label.layer addAnimation:[SRAnimationHelper fadeOfRoomStatusLabel] forKey:nil];
     
-    //add animation
-    [label.layer addAnimation:animation forKey:nil];
-    
-    //change label color
-    label.textColor = color;
+	label.textColor = color;
 }
 
--(void)stopAnimations:(UIView*) view{
-    [view.layer removeAllAnimations];
+#pragma mark - Progress Bar
+- (void)configProgressBar {
+	self.bottomViewContainer.backgroundColor = [UIColor blackColor];
+	self.progressBar.progressTintColor = [UIColor orangeColor];
 }
 
--(UIColor *)darkGreen{
-    return [UIColor colorWithRed:(0/255.0) green:(104/255.0) blue:(0/255.0) alpha:1];
+- (void)startProgressBar {
+	[self.progressBar.layer addAnimation:[SRAnimationHelper fadeInOfProgressBar] forKey:nil];
+	self.progressBar.alpha = 1;
+	self.progressBar.progress = 0;
+	self.progressTimer  = [NSTimer scheduledTimerWithTimeInterval:.5
+	                                                       target:self
+	                                                     selector:@selector(changeProgressValue)
+	                                                     userInfo:nil
+	                                                      repeats:YES];
 }
 
--(void)retryButtonPressed:(id)sender{
-    [self doCloseRoomId:self.room.roomId position:self.room.position];
-    [self performGetRoomRequest];
-    
+- (void)stopTimer:(NSTimer *)timer {
+	[timer invalidate];
+	timer = nil;
 }
 
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)changeProgressValue {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+	    BOOL complete = NO;
+	    float progressValue = self.progressBar.progress;
+	    progressValue += .00834;
+        
+	    if (progressValue > .99) {
+	        progressValue = 1;
+	        [self stopTimer:self.progressTimer];
+	        complete = true;
+		}
+        
+	    NSString *time = [NSString stringWithFormat:@"%.0f", 60 - ceil(progressValue * 60)];
+	    NSString *message = [NSString stringWithFormat:@"Time Left: %@",  time];
+        
+	    dispatch_async(dispatch_get_main_queue(), ^(void) {
+	        self.progressBar.progress      = progressValue;
+	        [self updateStatusLabel:message withColor:[UIColor whiteColor] animated:NO];
+	        if (complete == YES) {
+	            [self updateRoomStatusForNumber:@8];
+			}
+		});
+	});
 }
-
 
 @end
-
-//- (void)updateSubscriber
-//{
-//    NSLog(@"updateing subscriber");
-//    for (NSString* streamId in self.session.streams) {
-//        OTStream* stream = [self.session.streams valueForKey:streamId];
-//        if (stream.connection.connectionId != self.session.connection.connectionId) {
-//            self.subscriber = [[OTSubscriber alloc] initWithStream:stream delegate:self];
-//            break;
-//        }
-//    }
-//}

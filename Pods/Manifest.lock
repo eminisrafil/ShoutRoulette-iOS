@@ -1,6 +1,5 @@
 PODS:
-  - AFNetworking (1.3.2)
-  - OpenTokSDK (1.4.3)
+  - AFNetworking (1.3.3)
   - RestKit (0.20.3):
     - RestKit/Core
   - RestKit/Core (0.20.3):
@@ -20,20 +19,21 @@ PODS:
   - SVPullToRefresh (0.4.1)
   - TestFlightSDK (2.0)
   - TransitionKit (1.1.1)
+  - YLProgressBar (2.0.0)
 
 DEPENDENCIES:
-  - OpenTokSDK (~> 1.4.2)
   - RestKit (~> 0.20.0)
   - SVPullToRefresh
   - TestFlightSDK (~> 2.0)
+  - YLProgressBar (~> 2.0.0)
 
 SPEC CHECKSUMS:
-  AFNetworking: 7f9bcd7c287a75476cd5c61e82fd3380e93e4c54
-  OpenTokSDK: 10e69cb4d06f6fc9bcf343beae28b47cffea3ff6
+  AFNetworking: 0700ec7a58c36ad217173e167f6e4df7270df66b
   RestKit: 1f181c180105a92f11ec4f6cd7de37625e516d83
   SOCKit: 2f3bc4d07910de12dcc202815e07db68a3802581
   SVPullToRefresh: 61a0e4bd12bd6f8e3465909810b0fbeb1a28d5f2
   TestFlightSDK: 940906d4b2550cf397c6f2d2fcc4ebfdcd8ae858
   TransitionKit: d0e3344aac92991395d4c2e72d9c5a8ceeb12910
+  YLProgressBar: d8d0f3747160b780241b53a9c8cb15ee5c614ce1
 
 COCOAPODS: 0.19.1

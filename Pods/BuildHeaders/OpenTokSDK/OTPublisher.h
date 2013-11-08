@@ -1,1 +1,0 @@
-../../OpenTokSDK/Opentok.framework/Versions/A/Headers/OTPublisher.h

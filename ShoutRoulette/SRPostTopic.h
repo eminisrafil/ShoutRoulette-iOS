@@ -10,16 +10,15 @@
 
 @protocol SRPostTopicDelegate <NSObject>
 @required
--(void)postTopicButtonPressed: (NSString *)contents;
+- (void)postTopicButtonPressed:(NSString *)contents;
 @end
 
-@interface SRPostTopic : UIView<UITextViewDelegate>
+@interface SRPostTopic : UIView <UITextViewDelegate>
 
-@property IBOutlet SRPostTopic  *SRPostTopic;
+@property (weak, nonatomic) IBOutlet SRPostTopic *SRPostTopic;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
-@property (weak, nonatomic) id<SRPostTopicDelegate> delegate;
+@property (weak, nonatomic) id <SRPostTopicDelegate> delegate;
 
--(IBAction)post:(id)sender;
+- (IBAction)post:(id)sender;
 
 @end
-

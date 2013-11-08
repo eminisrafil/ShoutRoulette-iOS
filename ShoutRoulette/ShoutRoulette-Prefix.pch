@@ -21,10 +21,4 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import "SRConstants.h"
-
-#define COLOR_LOG(__color, ...) NSLog(@"%@%@%@", XCODE_COLORS_ESCAPE __color, [NSString stringWithFormat:__VA_ARGS__], XCODE_COLORS_RESET)
-
-#define RED_LOG(...)            if (IsXcodeColorsEnabled()){COLOR_LOG(@"fg220,0,0;", __VA_ARGS__);} else {NSLog(__VA_ARGS__);}
-#define GREEN_LOG(...)          if (IsXcodeColorsEnabled()){COLOR_LOG(@"fg0,220,0;", __VA_ARGS__);} else {NSLog(__VA_ARGS__);}
-#define BLUE_LOG(...)           if (IsXcodeColorsEnabled()){COLOR_LOG(@"fg0,0,220;", __VA_ARGS__);} else {NSLog(__VA_ARGS__);}
 #endif

@@ -15,8 +15,8 @@
 @property NSNumber *topicId;
 @property NSString *sessionId;
 @property NSString *token;
-@property Boolean  *agree;
-@property Boolean  *disagree;
+@property Boolean *agree;
+@property Boolean *disagree;
 @property NSString *position;
-
+@property NSString *message;
 @end

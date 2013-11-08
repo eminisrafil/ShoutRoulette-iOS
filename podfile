@@ -1,7 +1,5 @@
-platform :ios, '6.0'
+platform :ios, '6.1'
 pod 'RestKit', '~> 0.20.0'
-#pod 'CollapseClick', '~> 1.0.1'
-pod 'OpenTokSDK', '~> 1.4.2'
 pod 'SVPullToRefresh' 
-pod 'TestFlightSDK', '~> 2.0'
+pod 'TestFlightSDK', '~> 2.0.2'
 

@@ -8,312 +8,296 @@
 
 #import "SROpenTokVideoHandler.h"
 
-
 @implementation SROpenTokVideoHandler
 
--(id)init{
-    
-    [self configOpentTokAuth];
-    [self configNotifications];
-    [self configStartUpOptions];
-    return self;
+- (id)init {
+	[self configOpentTokAuth];
+	[self configNotifications];
+	[self configStartUpOptions];
+	return self;
 }
-
 
 #pragma mark - Register
--(void) configOpentTokAuth{
-    //keys
-    self.kApiKey = @"20193772"; //<--yes i know this is here.
-    self.kSessionId = @"";
-    self.kToken = @"";
+- (void)configOpentTokAuth {
+	self.kApiKey = kSROpentTokAPIKey;
+	self.kSessionId = @"";
+	self.kToken = @"";
 }
 
--(void)configStartUpOptions
-{
-    //Should the user begin publising
-    self.shouldPublish = YES;
+- (void)configStartUpOptions {
+	//Should the user begin publising immediately after connecting to session
+	self.shouldPublish = YES;
+
+	self.SROpentTokVideoHandlerState = SROpenTokStateDisconnected;
     
-    self.SROpentTokVideoHandlerState = 0;
-    
-    self.isShutDownSafe = YES;
+	self.isShutDownSafe = YES;
+	self.isObserving = NO;
 }
 
--(void)configNotifications
-{
-    [self addObserver:self forKeyPath:@"SROpentTokVideoHandlerState" options:0 context:nil];
+- (void)configNotifications {
+	[self addObserver:self forKeyPath:kSROpentTokVideoHandlerStateObserver options:0 context:nil];
 }
 
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary  *)change context:(void *)context
-{
-    if([keyPath isEqualToString:@"SROpentTokVideoHandlerState"]){
-        [self sendNotifications];
-    }
-    
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if ([keyPath isEqualToString:kSROpentTokVideoHandlerStateObserver]) {
+		[self sendNotifications];
+	}
 }
 
--(void)sendNotifications
-{
-    NSDictionary *message = @{@"message": @(self.SROpentTokVideoHandlerState)};
+- (void)sendNotifications {
+	NSDictionary *message = @{ @"message": @(self.SROpentTokVideoHandlerState) };
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kSROpenTokVideoHandlerNotifcations object:self userInfo:message];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSROpenTokVideoHandlerNotifcations object:self userInfo:message];
 }
 
 //stream container must be set in order to publish
--(void)registerUserVideoStreamContainer:(UIView *)userVideo
-{
-    self.userVideoStreamConatiner = userVideo;
+- (void)registerUserVideoStreamContainer:(UIView *)userVideo {
+	self.userVideoStreamConatiner = nil;
+	self.userVideoStreamConatiner = userVideo;
 }
 
--(void) registerOpponentOneVideoStreamContainer:(UIView *)opponentOneVideo{
-    self.opponentOneVideoStreamConatiner = opponentOneVideo;
+- (void)registerOpponentOneVideoStreamContainer:(UIView *)opponentOneVideo {
+	self.opponentOneVideoStreamConatiner = nil;
+	self.opponentOneVideoStreamConatiner = opponentOneVideo;
 }
 
 #pragma - Connecting - Sessions
-//Connect to a new room
-- (void)doConnectToRoomWithSession
-{
-    self.SROpentTokVideoHandlerState = 1;
-    self.session = [[OTSession alloc] initWithSessionId:self.kSessionId
-                                                delegate:self];
-    [self.session connectWithApiKey:self.kApiKey token:self.kToken];
-    NSLog(@"THIS is the sessionID: %@",self.kSessionId);
+- (void)doConnectToRoomWithSession {
+	self.SROpentTokVideoHandlerState = SROpenTokStateConnecting;
+    
+	self.session = nil;
+	self.subscriber = nil;
+	self.subscriber2 = nil;
+	self.publisher = nil;
+    
+	self.session = [[OTSession alloc] initWithSessionId:self.kSessionId
+	                                           delegate:self];
+	[self.session connectWithApiKey:self.kApiKey token:self.kToken];
+    
+	NSLog(@"This is the sessionID: %@", self.kSessionId);
 }
+
 //Connection was established
-- (void)sessionDidConnect:(OTSession*)session
-{
-    if(self.shouldPublish){
-        [self doPublish];
-    }
+- (void)sessionDidConnect:(OTSession *)session {
+	if (self.shouldPublish) {
+		[self doPublish];
+	}
+	else {
+		self.SROpentTokVideoHandlerState = SROpenTokStateSearchingForOpponent;
+	}
 }
 
 #pragma - Connecting - Publishing
+#pragma Refactor this method
 //Publish the users stream. (Smaller box)
-- (void)doPublish
-{
-    if(!self.publisher.view){
-        self.isShutDownSafe = NO; 
-
-        //self.SROpentTokVideoHandlerState = publising
-        self.SROpentTokVideoHandlerState = 2;
+- (void)doPublish {
+	self.isShutDownSafe = NO;
+    
+	self.SROpentTokVideoHandlerState = SROpenTokStatePublishing;
+	if (!self.publisher.view) {
+		self.isPublishing = YES;
+		NSString *publisherName = [NSString stringWithFormat:@"%@", self.userVideoStreamName];
         
-        NSLog(@"publishing");
-        self.isPublishing = YES;
-
-        self.publisher = [[OTPublisher alloc] initWithDelegate:self name:UIDevice.currentDevice.name];
-        self.publisher.publishAudio = YES;
-        self.publisher.publishVideo = YES;
-        self.publisher.name = [NSString stringWithFormat:@"%@  Time:%@",[[UIDevice currentDevice] name], [NSDate date]];
-        [self.session publish:self.publisher];
+		self.publisher = [[OTPublisher alloc] initWithDelegate:self name:publisherName];
+		self.publisher.publishAudio = YES;
+		self.publisher.publishVideo = YES;
         
-        [self.publisher.view setFrame:CGRectMake(0, 0, self.userVideoStreamConatiner.frame.size.width, self.userVideoStreamConatiner.frame.size.height)];
-        self.userVideoStreamConatiner.layer.cornerRadius = 4;
-        self.userVideoStreamConatiner.layer.borderWidth = 4;
-        self.userVideoStreamConatiner.layer.shadowRadius = 4;
+		[self.session publish:self.publisher];
         
-        //self.userScreenContainer.clipsToBounds = NO;
-        //self.publisher.view.layer.shadowOffset =CGSizeMake(4, 4);
-        [self.userVideoStreamConatiner addSubview:self.publisher.view];
-        self.SROpentTokVideoHandlerState =3;
+		[self addPublishersVideoToView:self.userVideoStreamConatiner];
         
-        //Shutting down within ~2 seconds of beginning to publish is prone to errors
-        [self delaySafeShutdown];
-    }
+		self.SROpentTokVideoHandlerState = SROpenTokStateSearchingForOpponent;
+        
+		//Shutting down within ~2 seconds of beginning to publish is prone to errors
+		[self delaySafeShutdown];
+	}
 }
 
--(void)delaySafeShutdown
-{
-    double delayInSeconds = 2;
-    NSLog(@"Shutdown is not safe");
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        self.isShutDownSafe = YES;
-        NSLog(@"Shutdown is safe :) ");
-    });
+- (void)addPublishersVideoToView:(UIView *)view {
+	[self.publisher.view setFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
+	view.layer.cornerRadius = 4;
+	view.layer.borderWidth = 3;
+	[view addSubview:self.publisher.view];
+}
+
+- (void)delaySafeShutdown {
+	double delayInSeconds = 2;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+	    self.isShutDownSafe = YES;
+	});
 }
 
 #pragma - Connecting - Subscribing (to Opponents)
 //Session got a new stream - Gets called everytime a new video stream is posted, including the users
-- (void)session:(OTSession*)mySession didReceiveStream:(OTStream*)stream
-{
-    NSLog(@"MYSESSION RECIEVED Stream name: %@",stream.name);
-    if (![stream.connection.connectionId isEqualToString: self.session.connection.connectionId]) {
-            NSLog(@"OPPONENT CONNECTED TO SESSION");
-            NSLog(@"Connection Count: %u",self.session.connectionCount);
-            [self initSubscriberWithOpponentStream:stream];
-    }
+- (void)session:(OTSession *)mySession didReceiveStream:(OTStream *)stream {
+	NSLog(@"MYSESSION RECIEVED NAMED:(%@) Connection Count: %u ", stream.name, self.session.connectionCount);
+	NSString *streamName = [NSString stringWithFormat:@"%@", stream.name];
+    
+	if (self.isObserving) {
+		if ([streamName isEqualToString:@"agree"]) {
+			[self initSubscriber:self.subscriber WithOpponentStream:stream];
+		}
+		else {
+			[self initSubscriber:self.subscriber2 WithOpponentStream:stream];
+		}
+	}
+    
+	if (![stream.connection.connectionId isEqualToString:self.session.connection.connectionId] && !self.isObserving) {
+		[self initSubscriber:self.subscriber WithOpponentStream:stream];
+	}
 }
 
 //Subscribe to Opponent (User is both a Subscriber and a Published in a Shouting Match)
--(void)initSubscriberWithOpponentStream:(OTStream*)opponentStream
-{
-    self.subscriber = [[OTSubscriber alloc] initWithStream:opponentStream delegate:self];
-    self.subscriber.subscribeToAudio = YES;
-    self.subscriber.subscribeToVideo = YES;
-    NSLog(@"INIT: SUBSCRIBING TO OPPONENTS STREAM: %@", self.subscriber);
+- (void)initSubscriber:(OTSubscriber *)subscriber WithOpponentStream:(OTStream *)opponentStream {
+	subscriber = [[OTSubscriber alloc] initWithStream:opponentStream delegate:self];
+	subscriber.subscribeToAudio = YES;
+	subscriber.subscribeToVideo = YES;
 }
 
 //User (acting as a subscriber) connects to opponent's stream
-- (void)subscriberDidConnectToStream:(OTSubscriber*)subscriber
-{
-    NSLog(@"CONNECTED TO SUBSCRIBER's STREAM");
-    NSLog(@"subscriberDidConnectToStream (%@)", subscriber.stream.connection.connectionId);
-    [self addOppentStream:subscriber toContainer:self.opponentOneVideoStreamConatiner];
+- (void)subscriberDidConnectToStream:(OTSubscriber *)subscriber {
+	NSLog(@"subscriberDidConnectToStream (%@)", subscriber.stream.name);
+	if ([subscriber.stream.name isEqualToString:@"agree"] && self.isObserving) {
+		[self addOppentStream:subscriber toContainer:self.userVideoStreamConatiner];
+	}
+	else {
+		[self addOppentStream:subscriber toContainer:self.opponentOneVideoStreamConatiner];
+	}
 }
 
-//add Opponents stream to container
-//the opponents stream is in subscriber.view
--(void)addOppentStream:(OTSubscriber*)subscriber toContainer:(UIView*)view{
-    self.SROpentTokVideoHandlerState =4;
-    NSLog(@"ADDING OPPONENT VIDEO TO FRAME!");
-    [subscriber.view setFrame:CGRectMake(0, 0, 280, 200)];
-    //[subscriber.view setFrame:CGRectMake(xOffsetOpponent, topOffsetOpponent, opponentVidWidth, opponentVidHeight)];
-    subscriber.view.layer.cornerRadius = 2;
-    subscriber.view.layer.borderWidth = 1;
-    NSLog(@"%@", view);
-    NSLog(@"%@", subscriber.view);
-    [view addSubview:subscriber.view];
+- (void)addOppentStream:(OTSubscriber *)subscriber toContainer:(UIView *)view {
+	[subscriber.view setFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
+	view.layer.cornerRadius = 3;
+	view.layer.borderWidth = 3;
+    
+	[view addSubview:subscriber.view];
+}
+
+//Moment when videos first synchronize
+- (void)subscriberVideoDataReceived:(OTSubscriber *)subscriber {
+	self.SROpentTokVideoHandlerState = SROpenTokStateConnectedToOpponent;
+    
+	if (self.isObserving) {
+		if ((int)[self.session.streams count] == 2) {
+			self.SROpentTokVideoHandlerState = SROpenTokStateTwoIncomingStreams;
+		}
+	}
 }
 
 #pragma - Disconnecting - Sessions
--(void)safetlyCloseSession{   
-    self.SROpentTokVideoHandlerState= 6;
-    NSLog(@"SHUTING DOWN!");
-
-    //USE GRAND CENTRAL DISPATCH
-    if(self.isShutDownSafe){
-//        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-//            //Background Thread
-//            [self doUnpublish];
-//            [self doUnsubscribe];
-//            [self doDisconnect];
-//            
-//            dispatch_async(dispatch_get_main_queue(), ^(void){
-//                //Run UI Updates
-//            });
-//        });
-//        dispatch_queue_t myQueue = dispatch_queue_create("My Shudown Queue",NULL);
-//        dispatch_async(myQueue, ^{
-//            // Perform long running process
-                        [self doUnpublish];
-                        [self doUnsubscribe];
-                        [self doDisconnect];
-//            NSLog(@"shutdown queue");
-//
-//        });
-//        
-    } else {
-        [self performSelector:@selector(safetlyCloseSession) withObject:nil afterDelay:2];
-        NSLog(@"RETRY SHUTDOWN IN 2 seconds");
-    }
+- (void)safetlyCloseSession {
+	self.SROpentTokVideoHandlerState = SROpenTokStateDisconnecting;
+    
+	if (self.isShutDownSafe) {
+		[self doUnpublish];
+		[self doUnsubscribe];
+		[self doDisconnect];
+	}
+	else {
+		[self performSelector:@selector(safetlyCloseSession) withObject:nil afterDelay:2];
+	}
 }
 
-//Unpublish user stream
-- (void)doUnpublish
-{
-    if ([self isViewDisplayed:self.publisher.view]) {
-        [self.session unpublish:self.publisher];
-    } 
+//Unpublish user stream --Nil out containers?
+- (void)doUnpublish {
+	if ([self isViewDisplayed:self.publisher.view]) {
+		[self.session unpublish:self.publisher];
+		for (UIView *view in self.userVideoStreamConatiner.subviews) {
+			[view.layer removeAllAnimations];
+			//uncomment to remove entire container
+			//[view removeFromSuperview];
+		}
+	}
+	self.userVideoStreamConatiner.layer.borderWidth = 0;
+	self.userVideoStreamConatiner = nil;
+	self.userVideoStreamName = nil;
 }
 
 //http://stackoverflow.com/a/15251624/1858229
-- (bool)isViewDisplayed:(UIView*)view
-{
-    if (view.window) {
-        CGRect viewFrame = [view.window convertRect:view.frame fromView:view.superview];
-        CGRect screenFrame = view.window.bounds;
-        NSLog(@"Publisher is view displayed!");
-        return CGRectIntersectsRect(viewFrame, screenFrame);
-    }
-    NSLog(@"Publisher NOTTTT view displayed!");
-    return false;
+- (BOOL)isViewDisplayed:(UIView *)view {
+	if (view.window) {
+		CGRect viewFrame = [view.window convertRect:view.frame fromView:view.superview];
+		CGRect screenFrame = view.window.bounds;
+		return CGRectIntersectsRect(viewFrame, screenFrame);
+	}
+	return false;
+}
+//sorry about repeat method calls, it seems to work better with OpentokAPI
+- (void)doUnsubscribe {
+	[self.subscriber close];
+	[self.subscriber close];
+	if (self.subscriber2) {
+		[self.subscriber2 close];
+		[self.subscriber2 close];
+		self.userVideoStreamConatiner.layer.borderWidth = 0;
+		self.userVideoStreamConatiner = nil;
+	}
+	self.opponentOneVideoStreamConatiner.layer.borderWidth = 0;
+	self.opponentOneVideoStreamConatiner = nil;
+	self.opponentOneVideoStreamName = nil;
 }
 
--(void) doUnsubscribe{
-    [self.subscriber close];
-    [self.subscriber close];
-    [self.subscriber close];
-    [self.subscriber close];
+- (void)doDisconnect {
+	[self.session disconnect];
+	[self.session disconnect];
 }
 
-/**
- * The status of this OTSession instance. Useful for ad-hoc queries about session status.
- *
- * Valid values are defined in OTSessionConnectionStatus:
- *
- * - `OTSessionConnectionStatusConnected` - The session is connected.
- * - `OTSessionConnectionStatusConnecting` - The session is connecting.
- * - `OTSessionConnectionStatusDisconnected` - The session is not connected.
- * - `OTSessionConnectionStatusFailed` - The attempt to connect to the session failed.
- *
- * On instantiation, expect the `sessionConnectionStatus` to have the value `OTSessionConnectionStatusDisconnected`.
- *
- * You can use a key-value observer to monitor this property. However, the <[OTSessionDelegate sessionDidConnect:]>
- * and <[OTSessionDelegate sessionDidDisconnect:]> messages are sent to the session's delegate when the session
- * connects and disconnects.
- */
-
--(bool)isDisconnected
-{
-    NSLog(@"Connection Status: %u",self.session.sessionConnectionStatus);
-    NSLog(@"Connection Count: %u",self.session.connectionCount);
+- (void)sessionDidDisconnect:(OTSession *)session {
+	self.SROpentTokVideoHandlerState = SROpenTokStateDisconnected;
     
-    //is publishing?
-    if((self.session.sessionConnectionStatus == 2 || self.session.sessionConnectionStatus == 3) && self.session.connectionCount == 0){
-        NSLog(@"SESSION IS ALREADY DISCONNECTED!"); 
-        return true; 
-    }
-    return false;
-    //nil if not connected
-    //self.session.connection;
+	//NSLog(@"sessionDidDisconnect: %@", session.stream.name);
 }
 
--(void)doDisconnect
-{
-    if([self isDisconnected]){
-        //gives too many false positives
-        //return;
-    }
-    [self.session disconnect];
-    [self.session disconnect];
-    [self.session disconnect];
-    [self.session disconnect];
+- (void)session:(OTSession *)session didDropStream:(OTStream *)stream {
+	//NSLog(@"session didDropStream (%@)", stream.name);
+	if (![stream.connection.connectionId isEqualToString:self.session.connection.connectionId] && !self.isObserving) {
+		self.opponentOneVideoStreamConatiner.layer.borderWidth = 0;
+		self.SROpentTokVideoHandlerState = SROpenTokStateOpponentDisconnected;
+	}
+    
+	//refactor/check this
+	if (self.isObserving) {
+		switch ([session.streams count]) {
+			case 0:
+				self.SROpentTokVideoHandlerState = SROpenTokStateAllPublishersDisconnected;
+				break;
+                
+			case 1:
+				self.SROpentTokVideoHandlerState = SROpenTokStateConnectedToOpponent;
+                
+			case 2:
+				self.SROpentTokVideoHandlerState = SROpenTokStateTwoIncomingStreams;
+                
+			default:
+				break;
+		}
+	}
 }
-
-- (void)sessionDidDisconnect:(OTSession*)session
-{
-    NSLog(@"DELEGATE CALL: sessionDidDisconnect: %@", session.sessionId);
-    NSLog(@"%@",self.session.delegate);
-    NSLog(@"Connection Count: %d", self.session.connectionCount);
-}
-
-- (void)session:(OTSession*)session didDropStream:(OTStream*)stream
-{
-    NSLog(@"session didDropStream (%@)", stream.name);
-    if (![stream.connection.connectionId isEqualToString: self.session.connection.connectionId]) {
-        self.SROpentTokVideoHandlerState = 5; 
-    }
-}
-
 
 #pragma Failures
-- (void)session:(OTSession*)session didFailWithError:(OTError*)error
-{
-    NSLog(@"session: didFailWithError:");
-    NSLog(@"- error code: %d", error.code);
-    NSLog(@"- description: %@", error.localizedDescription);
+- (void)session:(OTSession *)session didFailWithError:(OTError *)error {
+	self.SROpentTokVideoHandlerState = SROpenTokStateFailure;
+    
+	NSLog(@"session:%@ didFailWithError:", session);
+	NSLog(@"- error code: %d", error.code);
+	NSLog(@"- description: %@", error.localizedDescription);
 }
 
-- (void)publisher:(OTPublisher*)publisher didFailWithError:(OTError*) error
-{
-    NSLog(@"publisher: %@ didFailWithError:", publisher);
-    NSLog(@"- error code: %d", error.code);
-    NSLog(@"- description: %@", error.localizedDescription);
+- (void)publisher:(OTPublisher *)publisher didFailWithError:(OTError *)error {
+	self.SROpentTokVideoHandlerState = SROpenTokStateFailure;
+    
+	NSLog(@"publisher: %@ didFailWithError:", publisher);
+	NSLog(@"- error code: %d", error.code);
+	NSLog(@"- description: %@", error.localizedDescription);
 }
 
-- (void)subscriber:(OTSubscriber *)subscriber didFailWithError:(OTError *)error
-{
-    NSLog(@"subscriber: %@ didFailWithError: ", subscriber.stream.streamId);
-    NSLog(@"- code: %d", error.code);
-    NSLog(@"- description: %@", error.localizedDescription);
+- (void)subscriber:(OTSubscriber *)subscriber didFailWithError:(OTError *)error {
+	self.SROpentTokVideoHandlerState = SROpenTokStateFailure;
+    
+	NSLog(@"subscriber: %@ didFailWithError: ", subscriber.stream.streamId);
+	NSLog(@"- code: %d", error.code);
+	NSLog(@"- description: %@", error.localizedDescription);
 }
+
 @end

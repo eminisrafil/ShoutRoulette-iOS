@@ -15,7 +15,7 @@
 @property NSNumber *agreeDebaters;
 @property NSNumber *disagreeDebaters;
 @property NSNumber *observers;
-@property NSNumber *total; 
+@property NSNumber *total;
 @property NSString *createdAt;
 
 @end
