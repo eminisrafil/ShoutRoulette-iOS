@@ -12,6 +12,7 @@ Podfile.lock
 *.jpg
 *.png
 *.jpeg
+!AppStoreScreenShots/*.png
 
 # Xcode
 .DS_Store
