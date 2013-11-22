@@ -4,7 +4,7 @@ ShoutRoulette-iOS
 ![ShoutRoulette](https://github.com/eminisrafil/ShoutRoulette-iOS/blob/master/AppStoreScreenShots/ShoutRoulette.png?raw=true) |
 ![ShoutRoulette](https://github.com/eminisrafil/ShoutRoulette-iOS/blob/master/AppStoreScreenShots/ShoutRoulette-Observe.png?raw=true)  -->
 
-[![ScreenShot](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](http://vimeo.com/60722216)
+[![ScreenShot](https://dl.dropboxusercontent.com/u/107556675/Ania/Screenshot%20from%202013-11-22%2000%3A26%3A15.png)](http://vimeo.com/60722216)
 
 
 | Tables        | Are           | Cool  |
