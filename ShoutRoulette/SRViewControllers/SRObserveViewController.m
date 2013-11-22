@@ -103,7 +103,8 @@ typedef NS_ENUM (NSInteger, SRRoomStatusKey) {
 }
 
 - (NSDictionary *)statusKeysAndMessages {
-	NSDictionary *statusKeysAndMessages = @{ @0 : @"Disconnected",
+	NSDictionary *statusKeysAndMessages = @{
+                                          @0 : @"Disconnected",
                                           @1 : @"Connecting...",
                                           @3 : @"Searching for Idiots...",
                                           @4 : @"Searching for one more...",
@@ -112,7 +113,8 @@ typedef NS_ENUM (NSInteger, SRRoomStatusKey) {
                                           @7 : @"Searching for Idiots...",
                                           @77 : @"Searching for Idiots...",
                                           @88 : @"Observing Idiots",
-                                          @99 : @"Everyone Left! Searching..." };
+                                          @99 : @"Everyone Left! Searching..."
+                                          };
 	return statusKeysAndMessages;
 }
 
