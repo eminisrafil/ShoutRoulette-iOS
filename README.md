@@ -33,6 +33,10 @@ iOS APP: Emin Israfil
 <br>
 
 **Press:**  
-http://www.slate.com/blogs/future_tense/2012/10/10/shoutroulette_video_chat_parody_website_lets_you_shout_at_strangers_who.html  
-https://dl.dropboxusercontent.com/u/107556675/416845_10100438065405292_1801581165_n.jpg  
-Full List at: www.ShoutRoulette.com/press  
+- [Slate.com/shoutroulette_video_chat_parody_website_lets_you_shout_at_strangers.html](http://www.slate.com/blogs/future_tense/2012/10/10/shoutroulette_video_chat_parody_website_lets_you_shout_at_strangers_who.html)  
+- https://dl.dropboxusercontent.com/u/107556675/416845_10100438065405292_1801581165_n.jpg  
+- Full List at: [www.ShoutRoulette.com/press]www.ShoutRoulette.com/press  
+
+
+
+have a nice day :)
