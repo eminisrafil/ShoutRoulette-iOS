@@ -1,0 +1,37 @@
+#import "SRConstants.h"
+
+//Notifications
+NSString *const kSROpenTokVideoHandlerNotifcations = @"kSROpenTokVideoHandlerNotifcations";
+NSString *const kSRFetchNewTopicsAndReloadTableData = @"kFetchNewTopicsAndReloadTableData";
+NSString *const kSRFetchRoomFromUrl = @"kFetchRoomFromUrl";
+
+//Observers
+NSString *const kSROpentTokVideoHandlerStateObserver = @"SROpentTokVideoHandlerState";
+
+//Times
+const int kSRBackButtonDelayTime = 3;
+const int kSRShoutMatchTime = 60;
+
+//URLS
+#ifdef DEBUG
+NSString *const kSRAPIHOST = @"http://HIDDEN/";
+#else
+NSString *const kSRAPIHOST = @"http://shoutroulette.com/";
+#endif
+NSString *const kSRPaginationParamterString = @"?page=:currentPage&per_page=:perPage";
+
+//Segues
+NSString *const kSRMasterVCPushToDetailVC = @"showDetail";
+NSString *const kSRMasterVCPushToObserveVC = @"showObserve";
+NSString *const  kSRMasterVCPushToNoResults =@"noResults";
+
+//UITableViewCells
+NSString *const kSRCollapsibleCellClosed = @"SRCollapsibleCellClosed";
+
+//API Keys
+NSString *const kSROpentTokAPIKey = @"SECRET";
+NSString *const kSRTestFlightAPIKey = @"SECRET";
+
+//SRLengths
+const int kSRMaxPostLength = 60;
+const int kSRMinPostLength = 4;
