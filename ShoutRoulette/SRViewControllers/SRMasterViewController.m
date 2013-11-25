@@ -10,6 +10,7 @@
 #import "SRDetailViewController.h"
 #import "SRCollapsibleCell.h"
 #import "SRAPI.h"
+#import "SRUserStats.h"
 
 #import "SRUrlHelper.h"
 #import "SRNavBarHelper.h"
@@ -262,7 +263,7 @@
 }
 
 - (void)postTopicButtonPressed:(NSString *)contents {
-	//set up params
+    
 	NSDictionary *newTopic = @{ @"topic":contents };
     
 	[[RKObjectManager sharedManager] postObject:nil path:@"topics/new" parameters:newTopic success: ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {

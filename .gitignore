@@ -6,6 +6,7 @@
 xcuserdata
 *.workspace
 Podfile.lock
+ShoutRoulette/ShoutRoulette/SRConstants/SRConstants.m
 
  
 #assets
