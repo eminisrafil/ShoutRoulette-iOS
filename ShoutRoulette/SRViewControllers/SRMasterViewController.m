@@ -30,9 +30,6 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-//    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
-//        self.edgesForExtendedLayout = UIRectEdgeNone;
-//    }
     
 	[self configureTableView];
 	[self configureNavBar];

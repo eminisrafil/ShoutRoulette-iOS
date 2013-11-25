@@ -84,8 +84,6 @@
         dispatch_async(publishQueue, ^{
             [self doPublish];
         });
-        
-		//[self doPublish];
 	}
 	else {
 		self.SROpentTokVideoHandlerState = SROpenTokStateSearchingForOpponent;
@@ -179,8 +177,6 @@
 	view.layer.borderWidth = 3;
     
 	[view addSubview:subscriber.view];
-    
-    //added after
     [self connectedToOpponentRoomUpdate];
 }
 
@@ -189,6 +185,7 @@
 //    [self connectedToOpponent];
 //}
 
+//added in case connection is audio only
 -(void)connectedToOpponentRoomUpdate {
 	self.SROpentTokVideoHandlerState = SROpenTokStateConnectedToOpponent;
     
@@ -213,7 +210,6 @@
 	}
 }
 
-//Unpublish user stream --Nil out containers?
 - (void)doUnpublish {
 	if ([self isViewDisplayed:self.publisher.view]) {
 		[self.session unpublish:self.publisher];

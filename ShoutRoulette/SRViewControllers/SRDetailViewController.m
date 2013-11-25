@@ -149,7 +149,7 @@ typedef NS_ENUM (NSInteger, SRStatusKey) {
 	NSDictionary *statusKeysAndMessages = @{
                                           @0 : @"Disconnected",
                                           @1 : @"Connecting...",
-                                          @2 : @"Publishing Your Video...",
+                                          @2 : @"Searching for Idiots...",
                                           @3 : @"Searching for Idiots...",
                                           @4 : @"Start Shouting!",
                                           @5 : @"Opponent Stopped Shouting! Well done!",

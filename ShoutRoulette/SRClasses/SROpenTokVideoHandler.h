@@ -20,7 +20,6 @@
 @property (strong, nonatomic) OTSubscriber *subscriber;
 @property (strong, nonatomic) OTSubscriber *subscriber2;
 
-//maybe make uservidestream strong because the pointer is lost and cant be nilled?
 @property (strong, nonatomic) UIView *userVideoStreamConatiner;
 @property (strong, nonatomic) NSString *userVideoStreamName;
 @property (strong, nonatomic) UIView *opponentOneVideoStreamConatiner;
@@ -39,18 +38,6 @@ typedef NS_ENUM(NSInteger, SROpenTokVideoHandlerState){
 	SROpenTokStateAllPublishersDisconnected = 99 //for observers
 };
 
-//typedef enum {
-//	disconnected = 0,
-//	connecting = 1,
-//	publishing = 2,
-//	searchingForOpponent = 3,
-//	connectedToOpponent = 4,
-//	opponentDisconnected = 5,
-//	disconnecting = 6,
-//	failure = 7,
-//	twoIncomingStreams = 88, //for observers
-//	allPublishersDisconnected = 99 //for observers
-//} SROpenTokVideoHandlerState2;
 
 @property SROpenTokVideoHandlerState SROpentTokVideoHandlerState;
 

@@ -16,9 +16,7 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-//    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
-//        self.edgesForExtendedLayout = UIRectEdgeNone;
-//    }
+
 	[self configureScrollViewContainer];
 	[self addCenteredImageTo:self.containerScrollView];
 	[TestFlight passCheckpoint:@"No-Results-ViewController"];
