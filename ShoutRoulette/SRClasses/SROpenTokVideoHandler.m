@@ -80,7 +80,7 @@
 //Connection was established
 - (void)sessionDidConnect:(OTSession *)session {
 	if (self.shouldPublish) {
-        dispatch_queue_t publishQueue = dispatch_queue_create("Emin's Publishers Queue", NULL);
+        dispatch_queue_t publishQueue = dispatch_queue_create("SROpenTok's Publishers Queue", NULL);
         dispatch_async(publishQueue, ^{
             [self doPublish];
         });

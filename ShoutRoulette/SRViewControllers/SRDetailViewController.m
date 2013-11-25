@@ -294,13 +294,17 @@ typedef NS_ENUM (NSInteger, SRStatusKey) {
 
 #pragma mark - label
 - (void)updateStatusLabel:(NSString *)message withColor:(UIColor *)color animated:(BOOL)animated {
-	self.statusLabel.text = message;
-	if (animated) {
-		[self fadeOutFadeInAnimation:self.statusLabel andColor:color];
-	}
-	else {
-		[SRAnimationHelper stopAnimations:self.statusLabel];
-	}
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        weakSelf.statusLabel.text = message;
+        if (animated) {
+            [weakSelf fadeOutFadeInAnimation:weakSelf.statusLabel andColor:color];
+        }
+        else {
+            [SRAnimationHelper stopAnimations:weakSelf.statusLabel];
+        }
+    });
 }
 
 - (void)fadeOutFadeInAnimation:(UILabel *)label andColor:(UIColor *)color {
