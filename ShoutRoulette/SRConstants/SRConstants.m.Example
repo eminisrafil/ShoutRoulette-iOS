@@ -23,7 +23,7 @@ NSString *const kSRPaginationParamterString = @"?page=:currentPage&per_page=:per
 //Segues
 NSString *const kSRMasterVCPushToDetailVC = @"showDetail";
 NSString *const kSRMasterVCPushToObserveVC = @"showObserve";
-NSString *const  kSRMasterVCPushToNoResults =@"noResults";
+NSString *const kSRMasterVCPushToNoResults = @"noResults";
 
 //UITableViewCells
 NSString *const kSRCollapsibleCellClosed = @"SRCollapsibleCellClosed";
