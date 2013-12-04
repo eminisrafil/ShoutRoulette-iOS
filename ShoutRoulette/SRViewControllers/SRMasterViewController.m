@@ -41,6 +41,14 @@
 	[self configurePostTopicContainer];
 }
 
+
+
+-(void)displayUserInstallationMessage{
+    SRUserStats *userStats = [SRUserStats new];
+    [userStats displayUserInstallationMessage];
+    [userStats incrementStat:@"logins"];
+}
+
 - (void)configureNotifications {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchNewTopicsAndReloadTableData) name:kSRFetchNewTopicsAndReloadTableData object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchRoomWithUrl:) name:kSRFetchRoomFromUrl object:nil];
@@ -204,6 +212,7 @@
 		        [weakSelf insertRowsInTableView:topicsArrayTemp];
 			}
 		    [weakSelf.topicsTableView.infiniteScrollingView stopAnimating];
+            [weakSelf performSelector:@selector(displayUserInstallationMessage) withObject:nil afterDelay:3];
 		} failure: ^(RKPaginator *paginator, NSError *error) {
 		    weakSelf.isPaginatorLoading = NO;
 		    [weakSelf.topicsTableView.infiniteScrollingView stopAnimating];

@@ -10,6 +10,7 @@
 #import "SRNavBarHelper.h"
 #import "SRStringHelper.h"
 #import <TestFlight.h>
+#import "SRUserStats.h"
 
 @interface SRObserveViewController ()
 
@@ -39,6 +40,7 @@ typedef NS_ENUM (NSInteger, SRRoomStatusKey) {
 	[self configNavBar];
 	[self configNotifcations];
 	[TestFlight passCheckpoint:@"Loaded-Observe-VC"];
+    [self displayFirstObserveMessage];
 }
 
 - (void)configOpentTok {
@@ -158,6 +160,12 @@ typedef NS_ENUM (NSInteger, SRRoomStatusKey) {
     
 	[self updateStatusLabel:result withColor:[self statusLabelColorPicker:message] animated:YES];
 	NSLog(@"STATUS LABEL UPDATE: %@", result);
+}
+
+-(void)displayFirstObserveMessage{
+    SRUserStats *userStats = [[SRUserStats alloc] init];
+    [userStats displayFirstObserveMessage];
+    [userStats incrementStat:@"observes"];
 }
 
 - (void)startRetryTimer {

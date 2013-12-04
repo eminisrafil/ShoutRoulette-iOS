@@ -10,6 +10,7 @@
 #import "SRAPI.h"
 #import "SRRoom.h"
 #import "SROpenTokVideoHandler.h"
+#import "SRUserStats.h"
 
 @interface SRDetailViewController : UIViewController
 

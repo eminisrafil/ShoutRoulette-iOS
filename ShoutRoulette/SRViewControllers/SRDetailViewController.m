@@ -40,6 +40,7 @@ typedef NS_ENUM (NSInteger, SRStatusKey) {
 	[self configNavBar];
 	[self configNotifcations];
 	[self configProgressBar];
+    [self displayFirstShoutMessage];
 	[TestFlight passCheckpoint:@"Loaded-Detail-VC"];
 }
 
@@ -234,6 +235,12 @@ typedef NS_ENUM (NSInteger, SRStatusKey) {
                                        } failure: ^(RKObjectRequestOperation *operation, NSError *error) {
                                            [self performSelector:@selector(retry) withObject:nil afterDelay:4];
                                        }];
+}
+
+-(void)displayFirstShoutMessage{
+    SRUserStats *userStats = [[SRUserStats alloc]init];
+    [userStats displayFirstMatchMessage];
+    [userStats incrementStat:@"shouts"];
 }
 
 - (void)manageSafeClose {
