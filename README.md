@@ -20,6 +20,7 @@ Shout at an idiot, about a thing
 | Backend:               | Rails, deployed to Heroku |
 | Compatibility:         | iOS 6, iOS 7 for iPhone 4 and above |
 | Capability:            | App connects users from all over the world to join in video shouting matches. The app supports shouting from iPhone native app and computer.
+| Social:                | Invite friends and share via Twitter, Facebook, and SMS |
 | App Store:             | Video functionality temporarily disabled to comply with App Store Guidelines. Only voice is enabled in iOS app. Video will be reintroduced amoung Facebook/Twitter friends only. |
 
 <br>
