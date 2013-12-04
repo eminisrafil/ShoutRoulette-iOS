@@ -1,8 +1,8 @@
 #this project
 #ShoutRoulette/
-*.xib
-*.nib
-*.storyboard
+#*.xib
+#*.nib
+#*.storyboard
 xcuserdata
 *.workspace
 Podfile.lock
@@ -11,7 +11,7 @@ ShoutRoulette/ShoutRoulette/SRConstants/SRConstants.m
  
 #assets
 *.jpg
-*.png
+#*.png
 *.jpeg
 !AppStoreScreenShots/*.png
 
