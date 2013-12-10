@@ -34,14 +34,3 @@
 }
 
 @end
-
-//UIImage *leftButtonImage = [UIImage imageNamed:@"shuffle.png"];
-//UIImage *leftButtonImagePressed = [UIImage imageNamed:@"shufflePressed.png"];
-//
-//UIButton* leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//[leftButton setFrame:CGRectMake(0, 0, 30, 24)];
-//[leftButton addTarget:self action:@selector(joinRandomRoom) forControlEvents:UIControlEventTouchUpInside];
-//[leftButton setImage:leftButtonImage forState:UIControlStateNormal];
-//[leftButton setImage:leftButtonImagePressed forState:UIControlStateHighlighted];
-//
-//self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];

@@ -34,13 +34,13 @@ typedef NS_ENUM (NSInteger, SRRoomStatusKey) {
 #pragma - This & SRDetailViewController will be refactored SRVideoRoomViewController base class
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
+    
 	[self configOpentTok];
 	[self performGetRoomRequest];
 	[self configNavBar];
 	[self configNotifcations];
 	[TestFlight passCheckpoint:@"Loaded-Observe-VC"];
-    [self displayFirstObserveMessage];
+	[self displayFirstObserveMessage];
 }
 
 - (void)configOpentTok {
@@ -106,17 +106,17 @@ typedef NS_ENUM (NSInteger, SRRoomStatusKey) {
 
 - (NSDictionary *)statusKeysAndMessages {
 	NSDictionary *statusKeysAndMessages = @{
-                                          @0 : @"Disconnected",
-                                          @1 : @"Connecting...",
-                                          @3 : @"Searching for Idiots...",
-                                          @4 : @"Searching for one more...",
-                                          @5 : @"Match Over! Searching...",
-                                          @6 : @"Disconnecting...",
-                                          @7 : @"Searching for Idiots...",
-                                          @77 : @"Searching for Idiots...",
-                                          @88 : @"Observing Idiots",
-                                          @99 : @"Everyone Left! Searching..."
-                                          };
+                                            @0 : @"Disconnected",
+                                            @1 : @"Connecting...",
+                                            @3 : @"Searching for Idiots...",
+                                            @4 : @"Searching for one more...",
+                                            @5 : @"Match Over! Searching...",
+                                            @6 : @"Disconnecting...",
+                                            @7 : @"Searching for Idiots...",
+                                            @77 : @"Searching for Idiots...",
+                                            @88 : @"Observing Idiots",
+                                            @99 : @"Everyone Left! Searching..."
+                                            };
 	return statusKeysAndMessages;
 }
 
@@ -162,10 +162,10 @@ typedef NS_ENUM (NSInteger, SRRoomStatusKey) {
 	NSLog(@"STATUS LABEL UPDATE: %@", result);
 }
 
--(void)displayFirstObserveMessage{
-    SRUserStats *userStats = [[SRUserStats alloc] init];
-    [userStats displayFirstObserveMessage];
-    [userStats incrementStat:@"observes"];
+- (void)displayFirstObserveMessage {
+	SRUserStats *userStats = [[SRUserStats alloc] init];
+	[userStats displayFirstObserveMessage];
+	[userStats incrementStat:@"observes"];
 }
 
 - (void)startRetryTimer {
@@ -196,8 +196,8 @@ typedef NS_ENUM (NSInteger, SRRoomStatusKey) {
 }
 
 - (void)performGetRoomRequest {
-
 	__weak typeof(self) weakSelf = self;
+    
 	[[RKObjectManager sharedManager] getObject:weakSelf.room
 	                                      path:nil
 	                                parameters:nil

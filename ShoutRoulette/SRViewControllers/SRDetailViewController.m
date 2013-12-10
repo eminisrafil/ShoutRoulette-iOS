@@ -34,13 +34,13 @@ typedef NS_ENUM (NSInteger, SRStatusKey) {
 #pragma - This & SRObserveViewController will be refactored SRVideoRoomViewController base class
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
+    
 	[self configOpentTok];
 	[self performGetRoomRequest];
 	[self configNavBar];
 	[self configNotifcations];
 	[self configProgressBar];
-    [self displayFirstShoutMessage];
+	[self displayFirstShoutMessage];
 	[TestFlight passCheckpoint:@"Loaded-Detail-VC"];
 }
 
@@ -148,19 +148,19 @@ typedef NS_ENUM (NSInteger, SRStatusKey) {
 
 - (NSDictionary *)statusKeysAndMessages {
 	NSDictionary *statusKeysAndMessages = @{
-                                          @0 : @"Disconnected",
-                                          @1 : @"Connecting...",
-                                          @2 : @"Searching for Idiots...",
-                                          @3 : @"Searching for Idiots...",
-                                          @4 : @"Start Shouting!",
-                                          @5 : @"Opponent Stopped Shouting! Well done!",
-                                          @6 : @"Disconnecting...",
-                                          @7 : @"Searching for Idiots...",
-                                          @8 : @"Time Up! Match Over! Searching...",
-                                          @77 : @"Searching for Idiots...",
-                                          @88 : @"Observing Idiots",
-                                          @99 : @"Everyone Left! Searching..."
-                                          };
+                                            @0 : @"Disconnected",
+                                            @1 : @"Connecting...",
+                                            @2 : @"Searching for Idiots...",
+                                            @3 : @"Searching for Idiots...",
+                                            @4 : @"Start Shouting!",
+                                            @5 : @"Opponent Stopped Shouting! Well done!",
+                                            @6 : @"Disconnecting...",
+                                            @7 : @"Searching for Idiots...",
+                                            @8 : @"Time Up! Match Over! Searching...",
+                                            @77 : @"Searching for Idiots...",
+                                            @88 : @"Observing Idiots",
+                                            @99 : @"Everyone Left! Searching..."
+                                            };
 	return statusKeysAndMessages;
 }
 
@@ -237,10 +237,10 @@ typedef NS_ENUM (NSInteger, SRStatusKey) {
                                        }];
 }
 
--(void)displayFirstShoutMessage{
-    SRUserStats *userStats = [[SRUserStats alloc]init];
-    [userStats displayFirstMatchMessage];
-    [userStats incrementStat:@"shouts"];
+- (void)displayFirstShoutMessage {
+	SRUserStats *userStats = [[SRUserStats alloc]init];
+	[userStats displayFirstMatchMessage];
+	[userStats incrementStat:@"shouts"];
 }
 
 - (void)manageSafeClose {
@@ -301,17 +301,17 @@ typedef NS_ENUM (NSInteger, SRStatusKey) {
 
 #pragma mark - label
 - (void)updateStatusLabel:(NSString *)message withColor:(UIColor *)color animated:(BOOL)animated {
+	__weak typeof(self) weakSelf = self;
     
-    __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        weakSelf.statusLabel.text = message;
-        if (animated) {
-            [weakSelf fadeOutFadeInAnimation:weakSelf.statusLabel andColor:color];
-        }
-        else {
-            [SRAnimationHelper stopAnimations:weakSelf.statusLabel];
-        }
-    });
+	dispatch_async(dispatch_get_main_queue(), ^{
+	    weakSelf.statusLabel.text = message;
+	    if (animated) {
+	        [weakSelf fadeOutFadeInAnimation:weakSelf.statusLabel andColor:color];
+		}
+	    else {
+	        [SRAnimationHelper stopAnimations:weakSelf.statusLabel];
+		}
+	});
 }
 
 - (void)fadeOutFadeInAnimation:(UILabel *)label andColor:(UIColor *)color {

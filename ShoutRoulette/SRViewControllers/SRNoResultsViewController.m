@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
+    
 	[self configureScrollViewContainer];
 	[self addCenteredImageTo:self.containerScrollView];
 	[TestFlight passCheckpoint:@"No-Results-ViewController"];

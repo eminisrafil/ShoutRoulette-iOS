@@ -61,26 +61,3 @@
 }
 
 @end
-
-//    NSLog(@"%@", sender);
-//    NSLog(@"%ld", (long)[sender tag]);
-//    UIButton *button = (UIButton *)sender;
-//    //CGRect frame = CGRectMake(300, 330, 320, 30);
-//
-//    CGAffineTransform size = CGAffineTransformMakeScale(3, 3);
-//    CGAffineTransform frame = CGAffineTransformMakeTranslation(10,-100);
-//    button.transform = CGAffineTransformIdentity;
-//
-//    //self.statusLabel.transform = CGAffineTransformMakeScale(0.01, 0.01);
-//    //self.statusLabel.transform = CGAffineTransformConcat(size, frame);
-//    [UIView animateWithDuration:1 delay:3 options:UIViewAnimationOptionCurveEaseOut animations:^{
-//        // animate it to the identity transform (100% scale)
-//        button.transform = CGAffineTransformConcat(size, frame);
-//        button.alpha = 0;
-//        //self.statusLabel.transform = CGAffineTransformIdentity;
-//    } completion:^(BOOL finished){
-//        //[SRAnimationHelper stopAnimations:self.statusLabel];
-//        // if you want to do something once the animation finishes, put it here
-//        button.alpha = 1;
-//        button.transform = CGAffineTransformIdentity;
-//    }];

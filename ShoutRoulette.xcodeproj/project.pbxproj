@@ -117,14 +117,25 @@
 		23586545184FE29A003362E8 /* TableViewSectionHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23586526184FE29A003362E8 /* TableViewSectionHeader@2x.png */; };
 		23586546184FE29A003362E8 /* userCharDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23586527184FE29A003362E8 /* userCharDefault@2x.png */; };
 		23586547184FE29A003362E8 /* userVidContainer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23586528184FE29A003362E8 /* userVidContainer@2x.png */; };
+		2360CDC618565C28007FF375 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2360CDBF18565A81007FF375 /* XCTest.framework */; };
+		2360CDC818565C28007FF375 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2360CDC718565C28007FF375 /* Foundation.framework */; };
+		2360CDCA18565C28007FF375 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2360CDC918565C28007FF375 /* UIKit.framework */; };
+		2360CDD018565C28007FF375 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2360CDCE18565C28007FF375 /* InfoPlist.strings */; };
+		2360CDD218565C28007FF375 /* ShoutRoulette_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2360CDD118565C28007FF375 /* ShoutRoulette_Tests.m */; };
 		236B6AB91843E75D00126058 /* SRUserStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 236B6AB81843E75D00126058 /* SRUserStats.m */; };
+		2398EA7118567805000E6F3B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2398EA7018567805000E6F3B /* Default-568h@2x.png */; };
 		239D19571738C8E6004658C8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 239D19551738C8E6004658C8 /* InfoPlist.strings */; };
 		239D19661738C8E6004658C8 /* MainStoryboard-iOS6.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 239D19641738C8E6004658C8 /* MainStoryboard-iOS6.storyboard */; };
 		23AB3DE018308A68006B322B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23AB3DDF18308A68006B322B /* Images.xcassets */; };
+		23BABE171856960D00F14595 /* Opentok.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8D61831B58500C457C9 /* Opentok.framework */; };
+		23BABE181856968100F14595 /* Opentok.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8D61831B58500C457C9 /* Opentok.framework */; };
+		23BABE1918569A0500F14595 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8D81831B5E300C457C9 /* CoreTelephony.framework */; };
+		23BE9D5B185691CB00A341EB /* SRMasterViewController_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BE9D5A185691CB00A341EB /* SRMasterViewController_Tests.m */; };
+		23C8D38218566A2F004E6C5B /* SRPostTopic_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C8D38118566A2F004E6C5B /* SRPostTopic_Tests.m */; };
 		23D4256B1831D425002CE09C /* TableViewSectionHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23D4256A1831D425002CE09C /* TableViewSectionHeader@2x.png */; };
+		23E25A6F18565DCD0088CC7A /* opentok.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 23E25A6E18565DCD0088CC7A /* opentok.bundle */; };
+		23E25A71185663E10088CC7A /* SRTopic_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E25A70185663E10088CC7A /* SRTopic_Tests.m */; };
 		23E3DB77182F4259000B731F /* MainStoryboard-iOS7.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23E3DB75182F4259000B731F /* MainStoryboard-iOS7.storyboard */; };
-		23E7B8D51831A68A00C457C9 /* opentok.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 23B2F1E518037CEC00B83321 /* opentok.bundle */; };
-		23E7B8D71831B58500C457C9 /* Opentok.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8D61831B58500C457C9 /* Opentok.framework */; };
 		23E7B8D91831B5E300C457C9 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8D81831B5E300C457C9 /* CoreTelephony.framework */; };
 		23E7B8DF1831B6E800C457C9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8DA1831B6E800C457C9 /* AudioToolbox.framework */; };
 		23E7B8E01831B6E800C457C9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8DB1831B6E800C457C9 /* AVFoundation.framework */; };
@@ -132,8 +143,19 @@
 		23E7B8E21831B6E900C457C9 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8DD1831B6E800C457C9 /* CoreMedia.framework */; };
 		23E7B8E31831B6E900C457C9 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8DE1831B6E800C457C9 /* CoreVideo.framework */; };
 		23E7B8E51831B72900C457C9 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7B8E41831B72900C457C9 /* libstdc++.dylib */; };
+		B9A7957A35024A7AB73CFE45 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17C616799240789E6129D6 /* libPods.a */; };
 		CB3E79DDD4F349779BB541A7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17C616799240789E6129D6 /* libPods.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2360CDD418565C28007FF375 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 239D19411738C8E6004658C8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 239D19481738C8E6004658C8;
+			remoteInfo = ShoutRoulette;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0E17C616799240789E6129D6 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,16 +289,28 @@
 		23586526184FE29A003362E8 /* TableViewSectionHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TableViewSectionHeader@2x.png"; path = "assets@2x/TableViewSectionHeader@2x.png"; sourceTree = "<group>"; };
 		23586527184FE29A003362E8 /* userCharDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "userCharDefault@2x.png"; path = "assets@2x/userCharDefault@2x.png"; sourceTree = "<group>"; };
 		23586528184FE29A003362E8 /* userVidContainer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "userVidContainer@2x.png"; path = "assets@2x/userVidContainer@2x.png"; sourceTree = "<group>"; };
+		2360CDBF18565A81007FF375 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		2360CDC518565C27007FF375 /* ShoutRoulette Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ShoutRoulette Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2360CDC718565C28007FF375 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2360CDC918565C28007FF375 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2360CDCD18565C28007FF375 /* ShoutRoulette Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShoutRoulette Tests-Info.plist"; sourceTree = "<group>"; };
+		2360CDCF18565C28007FF375 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2360CDD118565C28007FF375 /* ShoutRoulette_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShoutRoulette_Tests.m; sourceTree = "<group>"; };
+		2360CDD318565C28007FF375 /* ShoutRoulette Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShoutRoulette Tests-Prefix.pch"; sourceTree = "<group>"; };
 		236B6AB71843E75D00126058 /* SRUserStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SRUserStats.h; path = SRClasses/SRUserStats.h; sourceTree = "<group>"; };
 		236B6AB81843E75D00126058 /* SRUserStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SRUserStats.m; path = SRClasses/SRUserStats.m; sourceTree = "<group>"; };
 		237EC05F182C6B6200822272 /* ShoutRoulette-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShoutRoulette-Info.plist"; sourceTree = "<group>"; };
 		237EC061182C6BA400822272 /* ShoutRoulette-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ShoutRoulette-Prefix.pch"; sourceTree = "<group>"; };
+		2398EA7018567805000E6F3B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		239D19491738C8E6004658C8 /* ShoutRoulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShoutRoulette.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		239D19561738C8E6004658C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		239D19651738C8E6004658C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = "en.lproj/MainStoryboard-iOS6.storyboard"; sourceTree = "<group>"; };
 		23AB3DDF18308A68006B322B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		23B2F1E518037CEC00B83321 /* opentok.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = opentok.bundle; path = Pods/Opentok.framework/Versions/A/Resources/opentok.bundle; sourceTree = "<group>"; };
+		23BE9D5A185691CB00A341EB /* SRMasterViewController_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRMasterViewController_Tests.m; sourceTree = "<group>"; };
+		23C8D38118566A2F004E6C5B /* SRPostTopic_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRPostTopic_Tests.m; sourceTree = "<group>"; };
 		23D4256A1831D425002CE09C /* TableViewSectionHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TableViewSectionHeader@2x.png"; path = "../../../../../Dropbox/shoutroulette design/designs 2.0/exportedDesignAssets/TableViewSectionHeader@2x.png"; sourceTree = "<group>"; };
+		23E25A6E18565DCD0088CC7A /* opentok.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = opentok.bundle; path = Pods/Opentok.framework/Versions/A/Resources/opentok.bundle; sourceTree = "<group>"; };
+		23E25A70185663E10088CC7A /* SRTopic_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRTopic_Tests.m; sourceTree = "<group>"; };
 		23E3DB76182F4259000B731F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = "en.lproj/MainStoryboard-iOS7.storyboard"; sourceTree = "<group>"; };
 		23E7B8D61831B58500C457C9 /* Opentok.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Opentok.framework; path = Pods/Opentok.framework; sourceTree = "<group>"; };
 		23E7B8D81831B5E300C457C9 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -290,6 +324,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2360CDC218565C27007FF375 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23BABE1918569A0500F14595 /* CoreTelephony.framework in Frameworks */,
+				2360CDC618565C28007FF375 /* XCTest.framework in Frameworks */,
+				23BABE181856968100F14595 /* Opentok.framework in Frameworks */,
+				2360CDCA18565C28007FF375 /* UIKit.framework in Frameworks */,
+				2360CDC818565C28007FF375 /* Foundation.framework in Frameworks */,
+				B9A7957A35024A7AB73CFE45 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		239D19461738C8E6004658C8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -298,11 +345,11 @@
 				23E7B8E11831B6E800C457C9 /* CoreAudio.framework in Frameworks */,
 				23E7B8E01831B6E800C457C9 /* AVFoundation.framework in Frameworks */,
 				23E7B8D91831B5E300C457C9 /* CoreTelephony.framework in Frameworks */,
-				23E7B8D71831B58500C457C9 /* Opentok.framework in Frameworks */,
 				23E7B8E21831B6E900C457C9 /* CoreMedia.framework in Frameworks */,
 				231BB44417FCB73800339526 /* MessageUI.framework in Frameworks */,
 				231BB44217FCB72C00339526 /* Social.framework in Frameworks */,
 				23E7B8DF1831B6E800C457C9 /* AudioToolbox.framework in Frameworks */,
+				23BABE171856960D00F14595 /* Opentok.framework in Frameworks */,
 				230FDF9017EE8751003E54E6 /* libz.dylib in Frameworks */,
 				23E7B8E31831B6E900C457C9 /* CoreVideo.framework in Frameworks */,
 				CB3E79DDD4F349779BB541A7 /* libPods.a in Frameworks */,
@@ -426,6 +473,28 @@
 			path = "assets@2x/itunes:defaults";
 			sourceTree = "<group>";
 		};
+		2360CDCB18565C28007FF375 /* ShoutRoulette Tests */ = {
+			isa = PBXGroup;
+			children = (
+				23BE9D5A185691CB00A341EB /* SRMasterViewController_Tests.m */,
+				23C8D38118566A2F004E6C5B /* SRPostTopic_Tests.m */,
+				23E25A70185663E10088CC7A /* SRTopic_Tests.m */,
+				2360CDD118565C28007FF375 /* ShoutRoulette_Tests.m */,
+				2360CDCC18565C28007FF375 /* Supporting Files */,
+			);
+			path = "ShoutRoulette Tests";
+			sourceTree = "<group>";
+		};
+		2360CDCC18565C28007FF375 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2360CDCD18565C28007FF375 /* ShoutRoulette Tests-Info.plist */,
+				2360CDCE18565C28007FF375 /* InfoPlist.strings */,
+				2360CDD318565C28007FF375 /* ShoutRoulette Tests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		2395AC4F1756F6660002E46A /* SRDesignAssets */ = {
 			isa = PBXGroup;
 			children = (
@@ -438,7 +507,9 @@
 		239D19401738C8E6004658C8 = {
 			isa = PBXGroup;
 			children = (
+				2398EA7018567805000E6F3B /* Default-568h@2x.png */,
 				239D19521738C8E6004658C8 /* ShoutRoulette */,
+				2360CDCB18565C28007FF375 /* ShoutRoulette Tests */,
 				239D194B1738C8E6004658C8 /* Frameworks */,
 				239D194A1738C8E6004658C8 /* Products */,
 			);
@@ -448,6 +519,7 @@
 			isa = PBXGroup;
 			children = (
 				239D19491738C8E6004658C8 /* ShoutRoulette.app */,
+				2360CDC518565C27007FF375 /* ShoutRoulette Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -455,6 +527,8 @@
 		239D194B1738C8E6004658C8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23E25A6E18565DCD0088CC7A /* opentok.bundle */,
+				2360CDBF18565A81007FF375 /* XCTest.framework */,
 				23E7B8DA1831B6E800C457C9 /* AudioToolbox.framework */,
 				23E7B8DB1831B6E800C457C9 /* AVFoundation.framework */,
 				23E7B8DC1831B6E800C457C9 /* CoreAudio.framework */,
@@ -464,10 +538,11 @@
 				23E7B8D61831B58500C457C9 /* Opentok.framework */,
 				231BB44317FCB73800339526 /* MessageUI.framework */,
 				231BB44117FCB72C00339526 /* Social.framework */,
-				23B2F1E518037CEC00B83321 /* opentok.bundle */,
 				230FDF8F17EE8751003E54E6 /* libz.dylib */,
 				0E17C616799240789E6129D6 /* libPods.a */,
 				23E7B8E41831B72900C457C9 /* libstdc++.dylib */,
+				2360CDC718565C28007FF375 /* Foundation.framework */,
+				2360CDC918565C28007FF375 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -609,6 +684,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2360CDC418565C27007FF375 /* ShoutRoulette Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2360CDD618565C28007FF375 /* Build configuration list for PBXNativeTarget "ShoutRoulette Tests" */;
+			buildPhases = (
+				D9A9C67F08A845178CE84613 /* Check Pods Manifest.lock */,
+				2360CDC118565C27007FF375 /* Sources */,
+				2360CDC218565C27007FF375 /* Frameworks */,
+				2360CDC318565C27007FF375 /* Resources */,
+				54C7D5B3491F48348D311AD5 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2360CDD518565C28007FF375 /* PBXTargetDependency */,
+			);
+			name = "ShoutRoulette Tests";
+			productName = "ShoutRoulette Tests";
+			productReference = 2360CDC518565C27007FF375 /* ShoutRoulette Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		239D19481738C8E6004658C8 /* ShoutRoulette */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 239D196F1738C8E6004658C8 /* Build configuration list for PBXNativeTarget "ShoutRoulette" */;
@@ -638,6 +733,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = SR;
 				TargetAttributes = {
+					2360CDC418565C27007FF375 = {
+						TestTargetID = 239D19481738C8E6004658C8;
+					};
 					239D19481738C8E6004658C8 = {
 						DevelopmentTeam = 92PP8M48XE;
 					};
@@ -656,11 +754,20 @@
 			projectRoot = "";
 			targets = (
 				239D19481738C8E6004658C8 /* ShoutRoulette */,
+				2360CDC418565C27007FF375 /* ShoutRoulette Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2360CDC318565C27007FF375 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2360CDD018565C28007FF375 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		239D19471738C8E6004658C8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -671,8 +778,8 @@
 				23586539184FE29A003362E8 /* navBar@2x.png in Resources */,
 				235864EE184FDFFC003362E8 /* agree.png in Resources */,
 				235864AB184FD4D4003362E8 /* icon-iOS6@2x.png in Resources */,
+				23E25A6F18565DCD0088CC7A /* opentok.bundle in Resources */,
 				235864AE184FD4D4003362E8 /* launchScreen@2x.png in Resources */,
-				23E7B8D51831A68A00C457C9 /* opentok.bundle in Resources */,
 				239D19571738C8E6004658C8 /* InfoPlist.strings in Resources */,
 				23586547184FE29A003362E8 /* userVidContainer@2x.png in Resources */,
 				23497A97182F3AD500A70041 /* navBar@2x.png in Resources */,
@@ -757,6 +864,7 @@
 				235864F1184FDFFC003362E8 /* blackBackground.png in Resources */,
 				235864FB184FDFFC003362E8 /* Shout!.png in Resources */,
 				23497A8D182F3AD500A70041 /* greyDisagree@2x.png in Resources */,
+				2398EA7118567805000E6F3B /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,9 +899,50 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 		};
+		54C7D5B3491F48348D311AD5 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D9A9C67F08A845178CE84613 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2360CDC118565C27007FF375 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23C8D38218566A2F004E6C5B /* SRPostTopic_Tests.m in Sources */,
+				23E25A71185663E10088CC7A /* SRTopic_Tests.m in Sources */,
+				2360CDD218565C28007FF375 /* ShoutRoulette_Tests.m in Sources */,
+				23BE9D5B185691CB00A341EB /* SRMasterViewController_Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		239D19451738C8E6004658C8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -825,7 +974,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		2360CDD518565C28007FF375 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 239D19481738C8E6004658C8 /* ShoutRoulette */;
+			targetProxy = 2360CDD418565C28007FF375 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		2360CDCE18565C28007FF375 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2360CDCF18565C28007FF375 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		239D19551738C8E6004658C8 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -853,6 +1018,71 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2360CDD718565C28007FF375 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E20F5996255246A38FB8072B /* Pods.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ShoutRoulette.app/ShoutRoulette";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/emin/Desktop/x2/x/ShoutRoulette/Pods,
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShoutRoulette Tests/ShoutRoulette Tests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "ShoutRoulette Tests/ShoutRoulette Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		2360CDD818565C28007FF375 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E20F5996255246A38FB8072B /* Pods.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ShoutRoulette.app/ShoutRoulette";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/emin/Desktop/x2/x/ShoutRoulette/Pods,
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShoutRoulette Tests/ShoutRoulette Tests-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "ShoutRoulette Tests/ShoutRoulette Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		239D196D1738C8E6004658C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -878,6 +1108,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"\"${PODS_ROOT}/Opentok.framework/Versions/A/Headers\"",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -903,6 +1138,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"\"${PODS_ROOT}/Opentok.framework/Versions/A/Headers\"",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "84F0DDD7-1704-4B0F-9C3D-57229474F0F9";
@@ -922,11 +1162,48 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"\"$(SRCROOT)/ShoutRoulette\"",
-					"\"$(SRCROOT)/Pods\"",
+					"\\\\\\\"$(SRCROOT)/ShoutRoulette\\\\\\\"",
+					"\\\\\\\"$(SRCROOT)/Pods\\\\\\\"",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/emin/Desktop/x2/x/ShoutRoulette/Pods,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ShoutRoulette/ShoutRoulette-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/ISO8601DateFormatterValueTransformer\"",
+					"\"${PODS_ROOT}/Headers/RKValueTransformers\"",
+					"\"${PODS_ROOT}/Headers/RestKit\"",
+					"\"${PODS_ROOT}/Headers/RestKit/CoreData\"",
+					"\"${PODS_ROOT}/Headers/RestKit/Network\"",
+					"\"${PODS_ROOT}/Headers/RestKit/ObjectMapping\"",
+					"\"${PODS_ROOT}/Headers/RestKit/Support\"",
+					"\"${PODS_ROOT}/Headers/SOCKit\"",
+					"\"${PODS_ROOT}/Headers/SVPullToRefresh\"",
+					"\"${PODS_ROOT}/Headers/TestFlightSDK\"",
+					"\"${PODS_ROOT}/Headers/TransitionKit\"",
+					"\"${PODS_ROOT}/Headers/Vendor/LibComponentLogging/Core\"",
+					"\"${PODS_ROOT}/Headers/Vendor/LibComponentLogging/NSLog\"",
+					"\"${PODS_ROOT}/Opentok.framework/Versions/A/Headers\"",
+				);
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/ISO8601DateFormatterValueTransformer\"",
+					"\"${PODS_ROOT}/Headers/RKValueTransformers\"",
+					"\"${PODS_ROOT}/Headers/RestKit\"",
+					"\"${PODS_ROOT}/Headers/RestKit/CoreData\"",
+					"\"${PODS_ROOT}/Headers/RestKit/Network\"",
+					"\"${PODS_ROOT}/Headers/RestKit/ObjectMapping\"",
+					"\"${PODS_ROOT}/Headers/RestKit/Support\"",
+					"\"${PODS_ROOT}/Headers/SOCKit\"",
+					"\"${PODS_ROOT}/Headers/SVPullToRefresh\"",
+					"\"${PODS_ROOT}/Headers/TestFlightSDK\"",
+					"\"${PODS_ROOT}/Headers/TransitionKit\"",
+					"\"${PODS_ROOT}/Headers/Vendor/LibComponentLogging/Core\"",
+					"\"${PODS_ROOT}/Headers/Vendor/LibComponentLogging/NSLog\"",
+				);
 				INFOPLIST_FILE = "ShoutRoulette/ShoutRoulette-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -989,8 +1266,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"\"$(SRCROOT)/ShoutRoulette\"",
-					"\"$(SRCROOT)/Pods\"",
+					"\\\\\\\"$(SRCROOT)/ShoutRoulette\\\\\\\"",
+					"\\\\\\\"$(SRCROOT)/Pods\\\\\\\"",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/emin/Desktop/x2/x/ShoutRoulette/Pods,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ShoutRoulette/ShoutRoulette-Prefix.pch";
@@ -1048,6 +1327,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2360CDD618565C28007FF375 /* Build configuration list for PBXNativeTarget "ShoutRoulette Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2360CDD718565C28007FF375 /* Debug */,
+				2360CDD818565C28007FF375 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		239D19441738C8E6004658C8 /* Build configuration list for PBXProject "ShoutRoulette" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

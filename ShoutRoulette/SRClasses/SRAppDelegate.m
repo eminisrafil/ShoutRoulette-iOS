@@ -26,13 +26,13 @@
 	return true;
 }
 
-- (BOOL)application:(UIApplication *)application
+- (BOOL)  application:(UIApplication *)application
               openURL:(NSURL *)url
     sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 	return [self application:application handleOpenURL:url];
 }
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {   
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSRFetchRoomFromUrl object:nil userInfo:@{ @"url" : url }];
     
 	return YES;
@@ -46,21 +46,22 @@
 
 //Check For iPad Later
 - (void)chooseStoryBoard {
-    UIStoryboard *storyBoard;
+	UIStoryboard *storyBoard;
     
-    //http://stackoverflow.com/questions/12561599/how-to-check-ios-version-is-ios-6
-    NSArray *vComp = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
+	//http://stackoverflow.com/questions/12561599/how-to-check-ios-version-is-ios-6
+	NSArray *vComp = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
     
-    if ([[vComp objectAtIndex:0] intValue] >= 7) {
-        storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard-iOS7" bundle:nil];
-        UIViewController *initViewController = [storyBoard instantiateInitialViewController];
-        [self.window setRootViewController:initViewController];
-    } else if ([[vComp objectAtIndex:0] intValue] >= 6) {
-        storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard-iOS6" bundle:nil];
-        UIViewController *initViewController = [storyBoard instantiateInitialViewController];
-        [self.window setRootViewController:initViewController];
-        [self customizeNavBar];
-    }
+	if ([[vComp objectAtIndex:0] intValue] >= 7) {
+		storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard-iOS7" bundle:nil];
+		UIViewController *initViewController = [storyBoard instantiateInitialViewController];
+		[self.window setRootViewController:initViewController];
+	}
+	else if ([[vComp objectAtIndex:0] intValue] >= 6) {
+		storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard-iOS6" bundle:nil];
+		UIViewController *initViewController = [storyBoard instantiateInitialViewController];
+		[self.window setRootViewController:initViewController];
+		[self customizeNavBar];
+	}
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

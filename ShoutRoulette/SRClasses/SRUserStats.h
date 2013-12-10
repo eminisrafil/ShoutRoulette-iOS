@@ -10,9 +10,9 @@
 
 @interface SRUserStats : NSObject
 
--(NSNumber *)getUsageStat:(NSString *)stat;
--(void)incrementStat:(NSString *)stat;
--(void)displayUserInstallationMessage;
--(void)displayFirstMatchMessage;
--(void)displayFirstObserveMessage;
+- (NSNumber *)getUsageStat:(NSString *)stat;
+- (void)incrementStat:(NSString *)stat;
+- (void)displayUserInstallationMessage;
+- (void)displayFirstMatchMessage;
+- (void)displayFirstObserveMessage;
 @end

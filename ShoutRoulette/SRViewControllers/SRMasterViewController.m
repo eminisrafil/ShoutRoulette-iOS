@@ -9,7 +9,6 @@
 #import "SRMasterViewController.h"
 #import "SRDetailViewController.h"
 #import "SRCollapsibleCell.h"
-#import "SRAPI.h"
 #import "SRUserStats.h"
 
 #import "SRUrlHelper.h"
@@ -41,12 +40,10 @@
 	[self configurePostTopicContainer];
 }
 
-
-
--(void)displayUserInstallationMessage{
-    SRUserStats *userStats = [SRUserStats new];
-    [userStats displayUserInstallationMessage];
-    [userStats incrementStat:@"logins"];
+- (void)displayUserInstallationMessage {
+	SRUserStats *userStats = [SRUserStats new];
+	[userStats displayUserInstallationMessage];
+	[userStats incrementStat:@"logins"];
 }
 
 - (void)configureNotifications {
@@ -136,7 +133,6 @@
 	return randomRoom;
 }
 
-
 - (NSString *)randomlyChooseAgreeDisagree {
 	int r = arc4random() % 2;
 	return (r == 0) ? @"agree" : @"disagree";
@@ -212,7 +208,7 @@
 		        [weakSelf insertRowsInTableView:topicsArrayTemp];
 			}
 		    [weakSelf.topicsTableView.infiniteScrollingView stopAnimating];
-            [weakSelf performSelector:@selector(displayUserInstallationMessage) withObject:nil afterDelay:3];
+		    [weakSelf performSelector:@selector(displayUserInstallationMessage) withObject:nil afterDelay:3];
 		} failure: ^(RKPaginator *paginator, NSError *error) {
 		    weakSelf.isPaginatorLoading = NO;
 		    [weakSelf.topicsTableView.infiniteScrollingView stopAnimating];
@@ -221,7 +217,7 @@
 	}
     
 	if (!self.isPaginatorLoading) {
-        [self.paginator cancel];
+		[self.paginator cancel];
 		self.isPaginatorLoading = YES;
 		[self.paginator loadPage:self.offset];
 	}
@@ -272,7 +268,6 @@
 }
 
 - (void)postTopicButtonPressed:(NSString *)contents {
-    
 	NSDictionary *newTopic = @{ @"topic":contents };
     
 	[[RKObjectManager sharedManager] postObject:nil path:@"topics/new" parameters:newTopic success: ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {

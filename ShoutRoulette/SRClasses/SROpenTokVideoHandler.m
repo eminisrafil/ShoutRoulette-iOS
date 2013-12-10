@@ -11,9 +11,12 @@
 @implementation SROpenTokVideoHandler
 
 - (id)init {
-	[self configOpentTokAuth];
-	[self configNotifications];
-	[self configStartUpOptions];
+	self = [super init];
+	if (self) {
+		[self configOpentTokAuth];
+		[self configNotifications];
+		[self configStartUpOptions];
+	}
 	return self;
 }
 
@@ -27,9 +30,7 @@
 - (void)configStartUpOptions {
 	//Should the user begin publising immediately after connecting to session
 	self.shouldPublish = YES;
-
 	self.SROpentTokVideoHandlerState = SROpenTokStateDisconnected;
-    
 	self.isShutDownSafe = YES;
 	self.isObserving = NO;
 }
@@ -73,17 +74,14 @@
 	self.session = [[OTSession alloc] initWithSessionId:self.kSessionId
 	                                           delegate:self];
 	[self.session connectWithApiKey:self.kApiKey token:self.kToken];
-    
-	//NSLog(@"This is the sessionID: %@", self.kSessionId);
 }
 
-//Connection was established
 - (void)sessionDidConnect:(OTSession *)session {
 	if (self.shouldPublish) {
-        dispatch_queue_t publishQueue = dispatch_queue_create("SROpenTok's Publishers Queue", NULL);
-        dispatch_async(publishQueue, ^{
-            [self doPublish];
-        });
+		dispatch_queue_t publishQueue = dispatch_queue_create("SROpenTok's Publishers Queue", NULL);
+		dispatch_async(publishQueue, ^{
+		    [self doPublish];
+		});
 	}
 	else {
 		self.SROpentTokVideoHandlerState = SROpenTokStateSearchingForOpponent;
@@ -99,16 +97,17 @@
 	if (!self.publisher.view) {
 		self.isPublishing = YES;
 		NSString *publisherName = [NSString stringWithFormat:@"%@", self.userVideoStreamName];
-        __weak typeof(self) weakSelf = self;
+		__weak typeof(self) weakSelf = self;
+        
 		self.publisher = [[OTPublisher alloc] initWithDelegate:weakSelf name:publisherName];
 		self.publisher.publishAudio = YES;
 		self.publisher.publishVideo = NO;
         
-        [self.session publish:self.publisher];
+		[self.session publish:self.publisher];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self addPublishersVideoToView:self.userVideoStreamConatiner];
-        });
+		dispatch_async(dispatch_get_main_queue(), ^{
+		    [self addPublishersVideoToView:self.userVideoStreamConatiner];
+		});
         
 		self.SROpentTokVideoHandlerState = SROpenTokStateSearchingForOpponent;
         
@@ -135,7 +134,6 @@
 #pragma - Connecting - Subscribing (to Opponents)
 //Session got a new stream - Gets called everytime a new video stream is posted, including the users
 - (void)session:(OTSession *)mySession didReceiveStream:(OTStream *)stream {
-	//NSLog(@"MYSESSION RECIEVED NAMED:(%@) Connection Count: %u ", stream.name, self.session.connectionCount);
 	NSString *streamName = [NSString stringWithFormat:@"%@", stream.name];
     
 	if (self.isObserving) {
@@ -150,7 +148,6 @@
 	if (![stream.connection.connectionId isEqualToString:self.session.connection.connectionId] && !self.isObserving) {
 		[self initSubscriber:self.subscriber WithOpponentStream:stream];
 	}
-
 }
 
 //Subscribe to Opponent (User is both a Subscriber and a Published in a Shouting Match)
@@ -177,7 +174,7 @@
 	view.layer.borderWidth = 3;
     
 	[view addSubview:subscriber.view];
-    [self connectedToOpponentRoomUpdate];
+	[self connectedToOpponentRoomUpdate];
 }
 
 //Moment when videos first synchronize
@@ -185,8 +182,8 @@
 //    [self connectedToOpponent];
 //}
 
-//added in case connection is audio only
--(void)connectedToOpponentRoomUpdate {
+//Added in case connection is audio only
+- (void)connectedToOpponentRoomUpdate {
 	self.SROpentTokVideoHandlerState = SROpenTokStateConnectedToOpponent;
     
 	if (self.isObserving) {
@@ -233,12 +230,11 @@
 	}
 	return false;
 }
+
 //sorry about repeat method calls, it seems to work better with OpentokAPI
 - (void)doUnsubscribe {
 	[self.subscriber close];
-	[self.subscriber close];
 	if (self.subscriber2) {
-		[self.subscriber2 close];
 		[self.subscriber2 close];
 		self.userVideoStreamConatiner.layer.borderWidth = 0;
 		self.userVideoStreamConatiner = nil;
@@ -255,18 +251,14 @@
 
 - (void)sessionDidDisconnect:(OTSession *)session {
 	self.SROpentTokVideoHandlerState = SROpenTokStateDisconnected;
-    
-	//NSLog(@"sessionDidDisconnect: %@", session.stream.name);
 }
 
 - (void)session:(OTSession *)session didDropStream:(OTStream *)stream {
-	//NSLog(@"session didDropStream (%@)", stream.name);
 	if (![stream.connection.connectionId isEqualToString:self.session.connection.connectionId] && !self.isObserving) {
 		self.opponentOneVideoStreamConatiner.layer.borderWidth = 0;
 		self.SROpentTokVideoHandlerState = SROpenTokStateOpponentDisconnected;
 	}
     
-	//refactor/check this
 	if (self.isObserving) {
 		switch ([session.streams count]) {
 			case 0:
@@ -289,25 +281,22 @@
 - (void)session:(OTSession *)session didFailWithError:(OTError *)error {
 	self.SROpentTokVideoHandlerState = SROpenTokStateFailure;
     
-//	NSLog(@"session:%@ didFailWithError:", session);
-//	NSLog(@"- error code: %d", error.code);
-//	NSLog(@"- description: %@", error.localizedDescription);
+    //	NSLog(@"session:%@ didFailWithError:", session);
+    //	NSLog(@"- error code: %d", error.code);
 }
 
 - (void)publisher:(OTPublisher *)publisher didFailWithError:(OTError *)error {
 	self.SROpentTokVideoHandlerState = SROpenTokStateFailure;
     
-//	NSLog(@"publisher: %@ didFailWithError:", publisher);
-//	NSLog(@"- error code: %d", error.code);
-//	NSLog(@"- description: %@", error.localizedDescription);
+    //	NSLog(@"publisher: %@ didFailWithError:", publisher);
+    //	NSLog(@"- error code: %d", error.code);
 }
 
 - (void)subscriber:(OTSubscriber *)subscriber didFailWithError:(OTError *)error {
 	self.SROpentTokVideoHandlerState = SROpenTokStateFailure;
     
-//	NSLog(@"subscriber: %@ didFailWithError: ", subscriber.stream.streamId);
-//	NSLog(@"- code: %d", error.code);
-//	NSLog(@"- description: %@", error.localizedDescription);
+    //	NSLog(@"subscriber: %@ didFailWithError: ", subscriber.stream.streamId);
+    //	NSLog(@"- code: %d", error.code);
 }
 
 @end

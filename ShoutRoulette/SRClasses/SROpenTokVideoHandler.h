@@ -25,7 +25,7 @@
 @property (strong, nonatomic) UIView *opponentOneVideoStreamConatiner;
 @property (strong, nonatomic) NSString *opponentOneVideoStreamName;
 
-typedef NS_ENUM(NSInteger, SROpenTokVideoHandlerState){
+typedef NS_ENUM (NSInteger, SROpenTokVideoHandlerState) {
 	SROpenTokStateDisconnected = 0,
 	SROpenTokStateConnecting = 1,
 	SROpenTokStatePublishing = 2,

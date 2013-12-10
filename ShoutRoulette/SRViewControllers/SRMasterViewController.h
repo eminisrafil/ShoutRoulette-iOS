@@ -1,9 +1,9 @@
 //
 //  SRMasterViewController.h
+//  ShoutRoulette
 //
-//
-//  Created by emin on 8/29/13.
-//
+//  Created by emin on 5/7/13.
+//  Copyright (c) 2013 SR. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -12,6 +12,7 @@
 #import "SRChoiceBox.h"
 #import "SROpenTokVideoHandler.h"
 #import "SRObserveViewController.h"
+#import "SRAPI.h"
 
 @interface SRMasterViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, SRChoiceBoxDelegate, SRPostTopicDelegate>
 

@@ -50,48 +50,48 @@
 		//Topic mapping
 		RKObjectMapping *topicMapping = [RKObjectMapping mappingForClass:[SRTopic class]];
 		[topicMapping addAttributeMappingsFromDictionary:@{
-             @"id": @"topicId",
-             @"title" :@"title",
-             @"created_at" : @"createdAt",
-             @"disagree_debaters": @"disagreeDebaters",
-             @"agree_debaters" : @"agreeDebaters",
-             @"observers" : @"observers"
-		 }];
+                                                           @"id": @"topicId",
+                                                           @"title" :@"title",
+                                                           @"created_at" : @"createdAt",
+                                                           @"disagree_debaters": @"disagreeDebaters",
+                                                           @"agree_debaters" : @"agreeDebaters",
+                                                           @"observers" : @"observers"
+                                                           }];
         
 		//setup Room mapping
 		RKObjectMapping *roomMapping = [RKObjectMapping mappingForClass:[SRRoom class]];
 		[roomMapping addAttributeMappingsFromDictionary:@{
-             @"room_id": @"roomId",
-             @"title" :@"title",
-             @"session_id": @"sessionId",
-             @"token": @"token",
-             @"created_at" : @"createdAt",
-             @"agree": @"agree",
-             @"disagree" : @"disagree",
-             @"error_message": @"messageMessage"
-		 }];
+                                                          @"room_id": @"roomId",
+                                                          @"title" :@"title",
+                                                          @"session_id": @"sessionId",
+                                                          @"token": @"token",
+                                                          @"created_at" : @"createdAt",
+                                                          @"agree": @"agree",
+                                                          @"disagree" : @"disagree",
+                                                          @"error_message": @"messageMessage"
+                                                          }];
         
 		RKObjectMapping *roomDeleteMapping = [RKObjectMapping mappingForClass:[SRRoom class]];
-		[roomMapping addAttributeMappingsFromDictionary:@{@"message": @"message"}];
+		[roomMapping addAttributeMappingsFromDictionary:@{ @"message": @"message" }];
         
-        RKObjectMapping *newTopicsMapping = [RKObjectMapping mappingForClass:[SRTopic class]];
-        [newTopicsMapping addAttributeMappingsFromDictionary:@{@"message":@"message"}];
+		RKObjectMapping *newTopicsMapping = [RKObjectMapping mappingForClass:[SRTopic class]];
+		[newTopicsMapping addAttributeMappingsFromDictionary:@{ @"message":@"message" }];
         
-        RKResponseDescriptor *topicResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:topicMapping method:RKRequestMethodGET pathPattern:nil keyPath:@"Topics" statusCodes:[NSIndexSet indexSetWithIndex:200]];
+		RKResponseDescriptor *topicResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:topicMapping method:RKRequestMethodGET pathPattern:nil keyPath:@"Topics" statusCodes:[NSIndexSet indexSetWithIndex:200]];
         
-        RKResponseDescriptor *roomResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:roomMapping method:RKRequestMethodGET pathPattern:nil keyPath:@"Room" statusCodes:[NSIndexSet indexSetWithIndex:200]];
+		RKResponseDescriptor *roomResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:roomMapping method:RKRequestMethodGET pathPattern:nil keyPath:@"Room" statusCodes:[NSIndexSet indexSetWithIndex:200]];
         
-        RKResponseDescriptor *roomDeleteResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:roomDeleteMapping method:RKRequestMethodDELETE pathPattern:nil keyPath:@"message" statusCodes:[NSIndexSet indexSetWithIndex:200]];
+		RKResponseDescriptor *roomDeleteResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:roomDeleteMapping method:RKRequestMethodDELETE pathPattern:nil keyPath:@"message" statusCodes:[NSIndexSet indexSetWithIndex:200]];
         
-        RKResponseDescriptor *newTopicsResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:newTopicsMapping method:RKRequestMethodPOST pathPattern:@"topics/new" keyPath:nil statusCodes:[NSIndexSet indexSetWithIndex:200]];
+		RKResponseDescriptor *newTopicsResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:newTopicsMapping method:RKRequestMethodPOST pathPattern:@"topics/new" keyPath:nil statusCodes:[NSIndexSet indexSetWithIndex:200]];
         
         
 		[objectManager addResponseDescriptor:topicResponseDescriptor];
-        [objectManager addResponseDescriptor:newTopicsResponseDescriptor];
+		[objectManager addResponseDescriptor:newTopicsResponseDescriptor];
 		[objectManager addResponseDescriptor:roomResponseDescriptor];
 		[objectManager addResponseDescriptor:roomDeleteResponseDescriptor];
         
-        //Routing
+		//Routing
 		//Get a Room
 		[objectManager.router.routeSet addRoute:[RKRoute routeWithClass:[SRRoom class] pathPattern:@"room/:topicId/:position" method:RKRequestMethodGET]];
 		//Close a Room
@@ -101,10 +101,10 @@
 		RKObjectMapping *topicPaginationMapping = [RKObjectMapping mappingForClass:[RKPaginator class]];
         
 		[topicPaginationMapping addAttributeMappingsFromDictionary:@{
-             @"Pagination.per_page": @"perPage",
-             @"Pagination.total_pages": @"pageCount",
-             @"pagination.total_objects": @"objectCount",
-		 }];
+                                                                     @"Pagination.per_page": @"perPage",
+                                                                     @"Pagination.total_pages": @"pageCount",
+                                                                     @"pagination.total_objects": @"objectCount",
+                                                                     }];
         
 		[objectManager setPaginationMapping:topicPaginationMapping];
 	}

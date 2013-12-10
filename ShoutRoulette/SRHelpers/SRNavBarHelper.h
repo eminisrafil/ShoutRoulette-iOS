@@ -11,6 +11,6 @@
 @interface SRNavBarHelper : NSObject
 
 + (UIBarButtonItem *)buttonForNavBarWithImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage selector:(SEL)sel target:(NSObject *)target;
-
 + (UIBarButtonItem *)activityIndicatorNavButton;
+
 @end
