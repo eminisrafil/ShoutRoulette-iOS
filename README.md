@@ -22,6 +22,8 @@ Shout at an idiot, about a thing
 | Capability:            | App connects users from all over the world to join in video shouting matches. The app supports shouting from iPhone native app and computer.
 | Social:                | Invite friends and share via Twitter, Facebook, and SMS |
 | App Store:             | Video functionality temporarily disabled to comply with App Store Guidelines. Only voice is enabled in iOS app. Video will be reintroduced amoung Facebook/Twitter friends only. |
+| iTunes Link:           | https://itunes.apple.com/us/app/shoutroulette/id740817024 |
+| Interesting Code: | [MasterViewController.m](https://github.com/eminisrafil/ShoutRoulette-iOS/blob/master/ShoutRoulette/SRViewControllers/SRMasterViewController.m), [ SROpenTokVideoHandler.h](https://github.com/eminisrafil/ShoutRoulette-iOS/blob/master/ShoutRoulette/SRClasses/SROpenTokVideoHandler.h), [SROpenTokVideoHandler.m](https://github.com/eminisrafil/ShoutRoulette-iOS/blob/master/ShoutRoulette/SRClasses/SROpenTokVideoHandler.m)|
 
 <br>
 <hr>
