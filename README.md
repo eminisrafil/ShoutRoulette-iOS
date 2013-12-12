@@ -35,7 +35,7 @@ iOS APP: Emin Israfil
 <hr>
 <br>
 
-**Reception:**  
+**Links:**  
 - "The site’s big challenge going forward, of course, will be to differentiate itself from the existing offerings on cable news" - [Slate.com](http://www.slate.com/blogs/future_tense/2012/10/10/shoutroulette_video_chat_parody_website_lets_you_shout_at_strangers_who.html)  
 - "The team of four entrepreneurs and hackers has no financial backing and no business model, but demoed to one of the most engaged audiences we’ve ever seen at the New York Tech Meetup." -  [BizJournals.com](http://upstart.bizjournals.com/companies/rebel-brands/2012/10/10/shout-roulette-demos-at-nytm.html)
 - https://dl.dropboxusercontent.com/u/107556675/416845_10100438065405292_1801581165_n.jpg  
