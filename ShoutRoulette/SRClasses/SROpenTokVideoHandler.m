@@ -245,7 +245,7 @@
 }
 
 - (void)doDisconnect {
-	[self.session disconnect];
+	[self.session disconnect]; 
 }
 
 - (void)sessionDidDisconnect:(OTSession *)session {
